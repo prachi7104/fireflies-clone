@@ -7,8 +7,9 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import Settings, get_settings
 from app.core.database import create_db_engine, init_db
 from app.core.errors import register_exception_handlers
-from app.routers import meta
+from app.routers import meetings, meta, users
 from app.services.meta_service import increment_boot_count
+from app.services.user_service import ensure_demo_user
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -21,6 +22,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI):
         app.state.fts5_enabled = init_db(engine)
         with session_factory() as db:
+            ensure_demo_user(db)
             increment_boot_count(db)
         yield
         engine.dispose()
@@ -38,5 +40,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_headers=["*"],
     )
     register_exception_handlers(app)
-    app.include_router(meta.router)
+    for module in (meta, users, meetings):
+        app.include_router(module.router)
     return app
