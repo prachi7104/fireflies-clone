@@ -62,6 +62,13 @@ def test_action_items_find_commitments_and_requests_with_assignees():
     assert len(items) <= 8
 
 
+def test_trailing_addressee_name_is_dropped_from_the_task():
+    segments = [ParsedSegment("Emily Park", 0, 5000, "Can you send me two screenshots of the timeline by Friday, Marcus?")]
+    items = generate_rules_notes("Review", ["Emily Park", "Marcus Chen"], segments, 5000).action_items
+    assert items[0].text == "Send me two screenshots of the timeline by Friday"
+    assert items[0].assignee == "Marcus Chen"
+
+
 def test_short_or_empty_transcripts_still_produce_notes():
     tiny = [ParsedSegment("Ann Lee", 0, 2000, "Hi.")]
     n = generate_rules_notes("Quick chat", ["Ann Lee"], tiny, 2000)

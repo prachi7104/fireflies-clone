@@ -224,6 +224,10 @@ def _task_from_sentence(
         return None
 
     task = task.strip().rstrip(".?!").strip()
+    # "…by Friday, Marcus" → the name says who it's for, not what to do.
+    trailing = re.search(r",\s*([A-Z][a-z]+)$", task)
+    if trailing and first_names.get(trailing.group(1)):
+        task = task[: trailing.start()].strip()
     if len(task) > 160:
         task = task[:157].rsplit(" ", 1)[0] + "…"
     if len(task.split()) < MIN_TASK_WORDS:
