@@ -1,5 +1,17 @@
 // The only module that talks to the backend. Every request goes through apiFetch.
-import type { Health } from "./types";
+import type {
+  ActionItem,
+  ActionItemCreateInput,
+  ActionItemUpdateInput,
+  Health,
+  MeetingCreateInput,
+  MeetingDetail,
+  MeetingListPage,
+  MeetingListParams,
+  MeetingUpdateInput,
+  ParticipantListItem,
+  User,
+} from "./types";
 
 export const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000").replace(/\/+$/, "");
 
@@ -59,6 +71,12 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   return data as T;
 }
 
+export function errorMessage(error: unknown): string {
+  if (error instanceof ApiError) return error.detail;
+  if (error instanceof Error) return error.message;
+  return "Something went wrong";
+}
+
 // FastAPI returns {"detail": "..."} for domain errors and {"detail": [{loc, msg}]} for validation errors.
 function describeError(data: unknown, status: number): string {
   if (data && typeof data === "object" && "detail" in data) {
@@ -75,3 +93,27 @@ function describeError(data: unknown, status: number): string {
 }
 
 export const getHealth = () => apiFetch<Health>("/api/health");
+export const getMe = () => apiFetch<User>("/api/me");
+
+export const listMeetings = (params: MeetingListParams) =>
+  apiFetch<MeetingListPage>("/api/meetings", { query: { ...params } });
+export const getMeeting = (id: number) => apiFetch<MeetingDetail>(`/api/meetings/${id}`);
+export const createMeeting = (input: MeetingCreateInput) =>
+  apiFetch<MeetingDetail>("/api/meetings", { method: "POST", json: input });
+export const importMeeting = (formData: FormData) =>
+  apiFetch<MeetingDetail>("/api/meetings/import", { method: "POST", formData });
+export const updateMeeting = (id: number, input: MeetingUpdateInput) =>
+  apiFetch<MeetingDetail>(`/api/meetings/${id}`, { method: "PATCH", json: input });
+export const deleteMeeting = (id: number) => apiFetch<void>(`/api/meetings/${id}`, { method: "DELETE" });
+
+export const listParticipants = (q?: string) =>
+  apiFetch<ParticipantListItem[]>("/api/participants", { query: { q } });
+
+export const createActionItem = (meetingId: number, input: ActionItemCreateInput) =>
+  apiFetch<ActionItem>(`/api/meetings/${meetingId}/action-items`, { method: "POST", json: input });
+export const updateActionItem = (id: number, input: ActionItemUpdateInput) =>
+  apiFetch<ActionItem>(`/api/action-items/${id}`, { method: "PATCH", json: input });
+export const deleteActionItem = (id: number) => apiFetch<void>(`/api/action-items/${id}`, { method: "DELETE" });
+
+export const exportMeetingUrl = (id: number, format: "md" | "txt") =>
+  buildUrl(`/api/meetings/${id}/export`, { format });
