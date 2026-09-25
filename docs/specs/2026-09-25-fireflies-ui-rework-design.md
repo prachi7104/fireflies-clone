@@ -9,7 +9,7 @@
 
 | Topic | Decision |
 |---|---|
-| Theme | **Light by default** (Fireflies' default; dark is its "Appearance (BETA)" option), plus a **Light / Dark / System** picker in Settings, the same as Fireflies. This also covers the brief's "Dark mode" bonus. |
+| Theme | **Dark by default** (the user's decision, matching how their Fireflies workspace looks), plus a **Light / Dark / System** picker in Settings, the same as Fireflies. This also covers the brief's "Dark mode" bonus. |
 | Branding | Our own **lookalike mark**: a magenta rounded square with a white "F", drawn in SVG (not the Fireflies logo file). No ".clone" text. Tab titles read "… · Fireflies". The "not affiliated" note moves to Settings → About and the README. |
 | Scope | All screens: shell, meeting page, Meetings library, Home, Tasks, Settings. |
 
@@ -33,7 +33,7 @@
 
 - `globals.css` keeps the Tailwind scale names (`gray-50…900`, `brand-*`) but points them at CSS variables. Light values are declared on `:root` and dark values on `[data-theme="dark"]`. Components keep classes like `text-gray-700`, and dark mode flips the scale.
 - Semantic tokens replace the 33 hard-coded `bg-white`: `bg-surface` (panels), `bg-canvas` (page), `bg-raised` (chips, pills). Link blue becomes `text-link`.
-- `lib/theme.ts` holds a `ThemePreference` of `light | dark | system`, stored in `localStorage` under `theme`, resolved with `matchMedia('(prefers-color-scheme: dark)')`, and applied as `data-theme` on `<html>`.
+- `lib/theme.ts` holds a `ThemePreference` of `light | dark | system` (default `dark`), stored in `localStorage` under `theme`, resolved with `matchMedia('(prefers-color-scheme: dark)')`, and applied as `data-theme` on `<html>`.
 - A tiny inline script in `layout.tsx` sets `data-theme` before the first paint, so there's no light flash. It's wrapped in try/catch because storage can be blocked.
 
 ## 4. Shell

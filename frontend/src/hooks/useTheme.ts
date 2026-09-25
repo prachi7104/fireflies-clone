@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 
-import { THEME_STORAGE_KEY, parsePreference, resolveTheme, type ThemePreference } from "@/lib/theme";
+import { DEFAULT_PREFERENCE, THEME_STORAGE_KEY, parsePreference, resolveTheme, type ThemePreference } from "@/lib/theme";
 
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 const CHANGE_EVENT = "themechange";
 
 // Used only when localStorage is blocked (some private windows), so a choice still applies for this visit.
-let memoryPreference: ThemePreference = "light";
+let memoryPreference: ThemePreference = DEFAULT_PREFERENCE;
 
 function readPreference(): ThemePreference {
   try {
@@ -33,7 +33,7 @@ function subscribe(onChange: () => void) {
 
 /** The Light / Dark / System preference, and the theme it resolves to right now. */
 export function useTheme() {
-  const preference = useSyncExternalStore(subscribe, readPreference, () => "light" as const);
+  const preference = useSyncExternalStore(subscribe, readPreference, () => DEFAULT_PREFERENCE);
   const systemDark = useSyncExternalStore(subscribe, () => window.matchMedia(DARK_QUERY).matches, () => false);
   const resolved = resolveTheme(preference, systemDark);
 

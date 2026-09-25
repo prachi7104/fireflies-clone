@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // The inline script may change data-theme before React hydrates, so that attribute is allowed to differ.
-    <html lang="en" data-theme="light" suppressHydrationWarning className={`${inter.variable} ${dmSans.variable}`}>
+    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${inter.variable} ${dmSans.variable}`}>
       <head>
         {/* A fixed string from lib/theme.ts (no user input): applies the saved theme before first paint. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

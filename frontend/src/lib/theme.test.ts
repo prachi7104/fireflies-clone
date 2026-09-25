@@ -3,9 +3,10 @@ import { describe, expect, it } from "vitest";
 import { parsePreference, resolveTheme } from "./theme";
 
 describe("theme", () => {
-  it("defaults unknown or missing values to light", () => {
-    expect(parsePreference(null)).toBe("light");
-    expect(parsePreference("purple")).toBe("light");
+  it("defaults unknown or missing values to dark", () => {
+    expect(parsePreference(null)).toBe("dark");
+    expect(parsePreference("purple")).toBe("dark");
+    expect(parsePreference("light")).toBe("light");
     expect(parsePreference("dark")).toBe("dark");
     expect(parsePreference("system")).toBe("system");
   });
