@@ -222,3 +222,16 @@ export function useCreateTask() {
     },
   });
 }
+
+/** Delete from the Tasks page: refresh every task list, the library counts and that meeting. */
+export function useDeleteTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id }: { id: number; meetingId: number }) => deleteActionItem(id),
+    onSuccess: (_result, { meetingId }) => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.meeting(meetingId) });
+    },
+  });
+}
