@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.core.config import Settings, get_settings
 from app.core.database import create_db_engine, init_db
+from app.core.errors import register_exception_handlers
 from app.routers import meta
 from app.services.meta_service import increment_boot_count
 
@@ -36,5 +37,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    register_exception_handlers(app)
     app.include_router(meta.router)
     return app
