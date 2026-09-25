@@ -41,16 +41,16 @@ export function MeetingRow({
     : [];
 
   return (
-    <li className="group relative flex items-start gap-4 px-4 py-3.5 transition-colors hover:bg-gray-50">
+    <li className="group relative flex items-start gap-3 px-4 py-3 transition-colors hover:bg-raised">
       <span
-        className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"
+        className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"
         title={source.label}
       >
         <source.icon className="size-5" />
       </span>
 
       <div className="min-w-0 flex-1">
-        <Link href={href} className="block truncate text-sm font-semibold text-gray-900 hover:text-brand-700">
+        <Link href={href} className="block truncate text-sm font-medium text-gray-900 hover:text-brand-700">
           {/* Stretched link: the whole row is clickable, but the menu stays independently clickable. */}
           <span className="absolute inset-0" aria-hidden />
           {meeting.title}
@@ -62,7 +62,7 @@ export function MeetingRow({
           {meeting.open_action_items > 0 ? (
             <>
               <span aria-hidden>·</span>
-              <span className="font-medium text-brand-700">
+              <span className="text-brand-700">
                 {meeting.open_action_items} open action item{meeting.open_action_items === 1 ? "" : "s"}
               </span>
             </>
@@ -71,9 +71,9 @@ export function MeetingRow({
         {meeting.match ? (
           <Link
             href={`${href}?t=${Math.floor(meeting.match.start_ms / 1000)}`}
-            className="relative z-10 mt-2 flex items-start gap-2 rounded-md bg-gray-50 px-2.5 py-1.5 text-xs text-gray-600 ring-1 ring-gray-200 hover:ring-brand-200"
+            className="relative z-10 mt-2 flex items-start gap-2 rounded-md bg-raised px-2.5 py-1.5 text-xs text-gray-600 ring-1 ring-line hover:ring-brand-200"
           >
-            <span className="shrink-0 font-medium tabular-nums text-brand-600">{formatClock(meeting.match.start_ms)}</span>
+            <span className="shrink-0 font-medium tabular-nums text-link">{formatClock(meeting.match.start_ms)}</span>
             <span className="line-clamp-2">
               <HighlightedText text={meeting.match.text} ranges={matchRanges} />
             </span>

@@ -28,11 +28,13 @@ export function MeetingList({
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       {groups.map((group) => (
         <section key={group.label} aria-label={group.label}>
-          <h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-500">{group.label}</h2>
-          <ul className="divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-surface shadow-card">
+          <h2 className="sticky top-0 z-10 border-b border-line bg-canvas/95 px-4 py-1.5 text-xs font-medium text-gray-500 backdrop-blur">
+            {group.label}
+          </h2>
+          <ul className="divide-y divide-line">
             {group.items.map((meeting) => (
               <MeetingRow key={meeting.id} meeting={meeting} query={query} onEdit={onEdit} onDelete={onDelete} />
             ))}

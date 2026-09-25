@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseFilters, serializeFilters, toApiParams } from "./filters";
+import { DEFAULT_FILTERS, parseFilters, serializeFilters, toApiParams } from "./filters";
 
 const now = new Date(2026, 8, 25, 15, 0, 0); // local time, Sep 25 2026 15:00
 
@@ -30,5 +30,21 @@ describe("filters", () => {
 
   it("maps the uploads view to imported sources", () => {
     expect(toApiParams(parseFilters(new URLSearchParams("view=uploads")), now).source).toEqual(["upload", "paste"]);
+  });
+
+  it("parses and serializes today/14d presets and source filters", () => {
+    const f = parseFilters(new URLSearchParams("preset=14d&source=upload&source=seed&source=bogus"));
+    expect(f.preset).toBe("14d");
+    expect(f.sources).toEqual(["upload", "seed"]);
+    expect(serializeFilters(f).toString()).toBe("preset=14d&source=upload&source=seed");
+  });
+
+  it("maps today and 14d to local-midnight lower bounds", () => {
+    expect(toApiParams({ ...DEFAULT_FILTERS, preset: "today" }, now).date_from).toBe(new Date(2026, 8, 25).toISOString());
+    expect(toApiParams({ ...DEFAULT_FILTERS, preset: "14d" }, now).date_from).toBe(new Date(2026, 8, 12).toISOString());
+  });
+
+  it("passes chosen sources to the API and counts them as an active filter", () => {
+    expect(toApiParams({ ...DEFAULT_FILTERS, sources: ["paste"] }, now).source).toEqual(["paste"]);
   });
 });

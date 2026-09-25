@@ -1,7 +1,12 @@
 // Library filters live in the URL: shareable, survive a refresh, and the Back button restores them.
-import type { MeetingListParams } from "./types";
+import type { MeetingListParams, MeetingSource } from "./types";
 
-export type DatePreset = "any" | "7d" | "30d" | "custom";
+export type DatePreset = "any" | "today" | "7d" | "14d" | "30d" | "custom";
+
+const PRESETS: DatePreset[] = ["today", "7d", "14d", "30d", "custom"];
+const SOURCES: MeetingSource[] = ["upload", "paste", "seed"];
+// How many days before today each rolling preset starts (today counts as day 0).
+const DAYS_BACK: Partial<Record<DatePreset, number>> = { today: 0, "7d": 6, "14d": 13, "30d": 29 };
 export type LibraryView = "all" | "uploads";
 
 export interface LibraryFilters {
@@ -10,6 +15,7 @@ export interface LibraryFilters {
   preset: DatePreset;
   from: string | null; // YYYY-MM-DD, local calendar date (custom range only)
   to: string | null; // YYYY-MM-DD, inclusive
+  sources: MeetingSource[]; // "Captured from": upload / paste / seed; empty means any
   sort: "newest" | "oldest";
   view: LibraryView;
 }
@@ -20,6 +26,7 @@ export const DEFAULT_FILTERS: LibraryFilters = {
   preset: "any",
   from: null,
   to: null,
+  sources: [],
   sort: "newest",
   view: "all",
 };
@@ -36,9 +43,10 @@ export function parseFilters(params: URLSearchParams): LibraryFilters {
       .getAll("participant")
       .map(Number)
       .filter((id) => Number.isInteger(id) && id > 0),
-    preset: preset === "7d" || preset === "30d" || preset === "custom" ? preset : "any",
+    preset: PRESETS.find((value) => value === preset) ?? "any",
     from: from && ISO_DATE.test(from) ? from : null,
     to: to && ISO_DATE.test(to) ? to : null,
+    sources: params.getAll("source").filter((value): value is MeetingSource => SOURCES.includes(value as MeetingSource)),
     sort: params.get("sort") === "oldest" ? "oldest" : "newest",
     view: params.get("view") === "uploads" ? "uploads" : "all",
   };
@@ -53,13 +61,14 @@ export function serializeFilters(filters: LibraryFilters): URLSearchParams {
     if (filters.from) params.set("from", filters.from);
     if (filters.to) params.set("to", filters.to);
   }
+  for (const source of filters.sources) params.append("source", source);
   if (filters.sort !== "newest") params.set("sort", filters.sort);
   if (filters.view !== "all") params.set("view", filters.view);
   return params;
 }
 
 export function hasActiveFilters(filters: LibraryFilters): boolean {
-  return Boolean(filters.q) || filters.participantIds.length > 0 || filters.preset !== "any";
+  return Boolean(filters.q) || filters.participantIds.length > 0 || filters.preset !== "any" || filters.sources.length > 0;
 }
 
 function localMidnight(date: Date): Date {
@@ -77,10 +86,12 @@ export function toApiParams(filters: LibraryFilters, now: Date): MeetingListPara
   if (filters.q) params.q = filters.q;
   if (filters.participantIds.length) params.participant_id = filters.participantIds;
   if (filters.view === "uploads") params.source = ["upload", "paste"];
+  else if (filters.sources.length) params.source = filters.sources;
 
-  if (filters.preset === "7d" || filters.preset === "30d") {
+  const daysBack = DAYS_BACK[filters.preset];
+  if (daysBack !== undefined) {
     const start = localMidnight(now);
-    start.setDate(start.getDate() - (filters.preset === "7d" ? 6 : 29));
+    start.setDate(start.getDate() - daysBack);
     params.date_from = start.toISOString();
   } else if (filters.preset === "custom") {
     if (filters.from) params.date_from = parseLocalDate(filters.from).toISOString();

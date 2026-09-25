@@ -7,7 +7,7 @@ export default function MeetingsPage() {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-8">
+        <div className="h-full bg-surface">
           <LibrarySkeleton />
         </div>
       }

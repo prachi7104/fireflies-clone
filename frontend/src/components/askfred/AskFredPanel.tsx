@@ -4,6 +4,7 @@ import { ArrowUp, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { useHydrated } from "@/hooks/useHydrated";
 import { useMe } from "@/lib/queries";
 
 /**
@@ -21,7 +22,8 @@ export function AskFredPanel({
 }) {
   const { data: me } = useMe();
   const [draft, setDraft] = useState("");
-  const firstName = me?.name.split(" ")[0] ?? "there";
+  const hydrated = useHydrated();
+  const firstName = (hydrated && me?.name.split(" ")[0]) || "there";
 
   function send(text: string) {
     if (!text.trim()) return;
