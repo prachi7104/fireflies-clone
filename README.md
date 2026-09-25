@@ -37,7 +37,8 @@ The live app opens straight into a seeded workspace with eight realistic meeting
 **Meetings library (`/meetings`)**
 - Rows show the title, date, duration, participants and open action items, grouped under day headings.
 - Search matches the meeting title, participant names **and transcript text**. Transcript hits show the matching line with the words highlighted and a timestamp that opens the meeting at that moment.
-- A Fireflies-style **Filters** pop-over: Participants (any of), Date Range (Today, Last 7 / 14 / 30 days, custom), and Captured From (upload, paste, recorded). Newest / oldest sort.
+- A Fireflies-style **Filters** pop-over: Participants (any of), **Topics** (any of), Date Range (Today, Last 7 / 14 / 30 days, custom), and Captured From (upload, paste, recorded). Newest / oldest sort.
+- Clicking a topic chip on a meeting opens the library filtered to the meetings that share that topic.
 - Filters live in the URL, so they survive a refresh and work with Back and Forward.
 - A channels panel (My Meetings, All Meetings, Uploads) and an AskFred panel, as in Fireflies.
 
@@ -58,10 +59,10 @@ The live app opens straight into a seeded workspace with eight realistic meeting
 - Sample files can be downloaded from the dialog.
 - **Edit** the title, date and participants. Removing someone who speaks in the transcript is blocked with a clear message.
 - **Delete** a meeting after a confirmation. Everything that belongs to it is removed.
-- **Action items:** add, edit text, assign or unassign, complete or reopen, and delete, on the meeting page or on the **Tasks** page (`/tasks`), which gathers items from every meeting (My Tasks / All Tasks, Open / Completed).
+- **Action items:** add, edit text, assign or unassign, complete or reopen, and delete, on the meeting page or on the **Tasks** page (`/tasks`). Tasks gathers items from every meeting (My Tasks / All Tasks, Open / Completed) and uses the same row component, so every edit works there too.
 
 **Fireflies experience**
-- Icon rail navigation with tooltips.
+- Icon rail navigation with tooltips, expandable to a labelled sidebar (remembered per browser).
 - A top bar with Ctrl/⌘+K search, Upgrade, notifications and a **Capture ▾** menu.
 - Home with Quick Start, Recent, Upcoming and an AI Feed.
 - Settings with a working **Light / Dark / System** theme picker. Dark is the default.
@@ -75,6 +76,7 @@ The live app opens straight into a seeded workspace with eight realistic meeting
 |---|---|
 | Library: title, date, duration, participants; sort by recency | `/meetings` |
 | Search and filter by title, date, participant | Top search box (Ctrl+K) and **Filters** on `/meetings` |
+| Bonus: tags / topics and filtering by them | **Filters → Topics**, or click a topic chip on a meeting |
 | Navbar with profile / settings placeholders | Icon rail (avatar menu at the bottom), `/settings` |
 | Transcript with speaker labels and timestamps | Any meeting, **Transcript** tab |
 | Player with seek bar | Bottom of any meeting page |
@@ -131,7 +133,7 @@ backend/
     core/                   config (env), database (engine, SQLite pragmas, FTS5), deps (db session, current user), errors
     models/                 SQLAlchemy tables: user, participant, meeting, transcript, notes, action_item, app_meta
     schemas/                Pydantic request/response models
-    routers/                meetings, action_items, participants, users, meta (health)
+    routers/                meetings, action_items, participants, keywords, users, meta (health)
     services/
       transcript_parser.py  .txt / .vtt / .json → normalized segments
       meeting_service.py    create / update / delete meetings in one transaction
@@ -139,7 +141,7 @@ backend/
       action_item_service.py
       notes/                rules.py (deterministic notes), llm.py (provider interface), generate_notes()
     seed/                   seed.py + data/ (meetings.json and one .txt transcript per meeting)
-  tests/                    pytest suite (83 tests)
+  tests/                    pytest suite (88 tests)
   requirements.txt · .python-version · .env.example
 frontend/
   src/
@@ -367,7 +369,7 @@ erDiagram
 | Chapter end times not stored | Derived from the next chapter's start, or the meeting's duration |
 | Times as integer milliseconds | No float rounding; exact comparisons for seek and sync |
 | `summaries` is a 1:1 table with provenance (`generated_by`, `model`, `generated_at`) | Notes can be regenerated or come from different sources, and the UI shows where they came from. Bullet notes are a JSON list because they're always read and written as a whole |
-| Keywords as rows with a composite PK | No duplicate terms per meeting, and filtering by topic is indexable |
+| Keywords as rows with a composite PK, stored lower-case | No duplicate terms per meeting, and the Topics filter is an exact match on the indexed `term` column |
 | Completion as state (`is_done` + `completed_at`, tied by a CHECK) | Done items keep their history, and the two columns can't contradict each other |
 | FTS5 external-content table + triggers | Fast ranked full-text search across all transcripts without duplicating text; triggers keep it in sync, including on cascade deletes |
 | ORM relationships use `passive_deletes=True` | One `DELETE FROM meetings` lets the database cascade, instead of the ORM loading and deleting every child row |
@@ -386,13 +388,14 @@ All routes are under `/api`. Interactive docs are at `/docs`. Errors use `{"deta
 |---|---|---|---|
 | GET | `/api/health` | — | `{status, database, fts5, llm_provider, boot_count}` |
 | GET | `/api/me` | — | The current user |
-| GET | `/api/meetings` | `q`, `participant_id` (repeatable, any of), `date_from` (inclusive), `date_to` (exclusive), `source` (repeatable), `sort=newest\|oldest`, `limit` (1–100), `offset` | `{items, total, limit, offset}`. Each item has `match: {segment_id, start_ms, text}` when `q` matched transcript text |
+| GET | `/api/meetings` | `q`, `participant_id` (repeatable, any of), `date_from` (inclusive), `date_to` (exclusive), `source` (repeatable), `keyword` (repeatable, any of), `sort=newest\|oldest`, `limit` (1–100), `offset` | `{items, total, limit, offset}`. Each item has `match: {segment_id, start_ms, text}` when `q` matched transcript text |
 | POST | `/api/meetings` | JSON `{title, started_at?, transcript, format?: auto\|txt\|vtt\|json, participants?}` | 201, the full meeting |
 | POST | `/api/meetings/import` | multipart `file` (.txt/.vtt/.json ≤ 1 MB), `title?`, `started_at?`, `participants?` (comma-separated) | 201, the full meeting |
 | GET | `/api/meetings/{id}` | — | The meeting with participants, segments, summary, keywords, chapters and action items |
 | PATCH | `/api/meetings/{id}` | `{title?, started_at?, participants?}`. Omitted fields are untouched; `participants` replaces the set | 200; 409 if a speaker would be removed |
 | DELETE | `/api/meetings/{id}` | — | 204; cascades to everything the meeting owns |
 | GET | `/api/participants` | `q?` | People in your meetings, with meeting counts |
+| GET | `/api/keywords` | — | Topics in your meetings, most-used first: `[{term, meeting_count}]` |
 | GET | `/api/action-items` | `scope=mine\|all`, `status=open\|done\|all` | `{items}`: action items across all meetings, with meeting title, date and assignee name (the Tasks page) |
 | POST | `/api/meetings/{id}/action-items` | `{text, assignee_id?}` | 201; 422 if the assignee isn't in the meeting |
 | PATCH | `/api/action-items/{id}` | `{text?, assignee_id?, is_done?}`. An explicit `null` assignee unassigns; an omitted field is untouched | 200 |
@@ -450,15 +453,15 @@ Notes are generated when a meeting is created, inside the same database transact
 
 ## Testing
 
-**Backend** (83 tests): `cd backend` then `python -m pytest`, using the venv's Python. Each test gets a fresh temporary SQLite database. The suite covers:
+**Backend** (88 tests): `cd backend` then `python -m pytest`, using the venv's Python. Each test gets a fresh temporary SQLite database. The suite covers:
 - the transcript parser: every format, timestamp variants, estimation, errors and limits;
 - the rules notes generator: determinism, chapters, action-item and assignee detection;
 - meetings: create by paste and import, 413 and 415 errors, PATCH semantics, removing a speaker → 409, delete cascades including the FTS index;
 - search: title, participant and transcript matches; special characters never causing a 500; filters and pagination;
-- action items, and the Tasks list with scope, status and ownership;
+- action items, the Tasks list (scope, status, ownership) and topic filtering;
 - schema constraints, mock auth and ownership (404 for other users), LLM fallback, seed idempotency, health and CORS.
 
-**Frontend** (30 tests): `cd frontend` then `npm test`. They cover:
+**Frontend** (32 tests): `cd frontend` then `npm test`. They cover:
 - URL filter parsing and API mapping;
 - time formatting;
 - highlight ranges;
@@ -490,7 +493,7 @@ Every change is also checked with `npm run lint`, `npm run typecheck` and `npm r
 ## Assumptions and limitations
 
 - **Authentication is mocked**, as the brief allows. There's one demo workspace and the `X-User-Id` header selects the user. Ownership checks are still enforced in every query, so the model is ready for real auth.
-- **No audio or speech-to-text** (out of scope). The player runs a simulated clock over the transcript timeline, and the page says so.
+- **No audio or speech-to-text** (the brief puts real transcription out of scope and lists it as a placeholder). **Capture ▾ → Upload audio or video** says it's coming soon. The player runs a simulated clock over the transcript timeline, and the page says so.
 - **People are identified by normalised display name**, because transcripts carry names, not emails. The `email` column is where real identity would go.
 - **Transcripts are immutable after import.** Title, date, participants and action items are editable.
 - **Notes come from the rules generator**, which is deterministic and fast but less fluent than an LLM. Seeded meetings have hand-written notes.
