@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import Settings, get_settings
 from app.core.database import create_db_engine, init_db
 from app.core.errors import register_exception_handlers
-from app.routers import meetings, meta, users
+from app.routers import meetings, meta, participants, users
 from app.services.meta_service import increment_boot_count
 from app.services.user_service import ensure_demo_user
 
@@ -40,6 +40,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_headers=["*"],
     )
     register_exception_handlers(app)
-    for module in (meta, users, meetings):
+    for module in (meta, users, meetings, participants):
         app.include_router(module.router)
     return app

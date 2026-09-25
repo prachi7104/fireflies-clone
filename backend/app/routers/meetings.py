@@ -1,16 +1,46 @@
 from datetime import datetime
+from typing import Literal
 
-from fastapi import APIRouter, Depends, File, Form, Response, UploadFile
+from fastapi import APIRouter, Depends, File, Form, Query, Request, Response, UploadFile
 from sqlalchemy.orm import Session
 
 from app.core.config import Settings
 from app.core.deps import get_current_user, get_db, get_settings_dep
 from app.models import User
-from app.schemas.meeting import MeetingCreate, MeetingDetail, MeetingUpdate
+from app.schemas.meeting import MeetingCreate, MeetingDetail, MeetingListPage, MeetingUpdate
 from app.services import meeting_service
 from app.services.notes import provider_from_settings
+from app.services.search_service import MeetingFilters, list_meetings
 
 router = APIRouter(prefix="/api/meetings", tags=["meetings"])
+
+
+@router.get("", response_model=MeetingListPage)
+def list_meetings_route(
+    request: Request,
+    q: str | None = Query(None, max_length=200, description="Matches title, participant names and transcript text"),
+    participant_id: list[int] = Query([], description="Meetings with ANY of these people"),
+    date_from: datetime | None = Query(None, description="Inclusive lower bound (ISO 8601)"),
+    date_to: datetime | None = Query(None, description="Exclusive upper bound (ISO 8601)"),
+    source: list[Literal["seed", "upload", "paste"]] = Query([]),
+    sort: Literal["newest", "oldest"] = "newest",
+    limit: int | None = Query(None, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+    settings: Settings = Depends(get_settings_dep),
+) -> MeetingListPage:
+    filters = MeetingFilters(
+        q=q,
+        participant_ids=participant_id,
+        date_from=date_from,
+        date_to=date_to,
+        sources=list(source),
+        sort=sort,
+        limit=limit or settings.default_page_size,
+        offset=offset,
+    )
+    return list_meetings(db, user, filters, use_fts=request.app.state.fts5_enabled)
 
 
 @router.post("", response_model=MeetingDetail, status_code=201)
