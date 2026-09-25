@@ -54,7 +54,7 @@ export function ActionItemRow({
         onClick={onToggle}
         className={clsx(
           "mt-0.5 flex size-[18px] shrink-0 items-center justify-center rounded border transition-colors",
-          item.is_done ? "border-brand-500 bg-brand-500 text-white" : "border-gray-300 bg-white hover:border-brand-400",
+          item.is_done ? "border-brand-500 bg-brand-500 text-white" : "border-gray-300 bg-surface hover:border-brand-400",
         )}
       >
         {item.is_done ? <Check className="size-3" strokeWidth={3} /> : null}
@@ -76,7 +76,7 @@ export function ActionItemRow({
               }
             }}
             aria-label="Action item text"
-            className="w-full rounded-md border border-brand-300 bg-white px-2 py-1 text-sm outline-none ring-4 ring-brand-100"
+            className="w-full rounded-md border border-brand-300 bg-surface px-2 py-1 text-sm outline-none ring-4 ring-brand-100"
           />
         ) : (
           <button

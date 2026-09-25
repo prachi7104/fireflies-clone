@@ -23,7 +23,7 @@ export function ProfileMenu() {
       >
         {me ? <Avatar id={me.id} name={me.name} /> : <span className="block size-8 rounded-full bg-gray-100" />}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60">
+      <DropdownMenuContent side="right" align="end" className="w-60">
         <div className="px-2.5 py-2">
           <p className="truncate text-sm font-semibold text-gray-900">{me?.name ?? "Loading…"}</p>
           <p className="truncate text-xs text-gray-500">{me?.email}</p>

@@ -23,7 +23,17 @@ const SAMPLES = [
   { href: "/samples/customer-call.json", label: "customer-call.json" },
 ];
 
-export function CreateMeetingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export type CreateTab = "upload" | "paste";
+
+export function CreateMeetingDialog({
+  open,
+  onOpenChange,
+  initialTab = "upload",
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  initialTab?: CreateTab;
+}) {
   return (
     <Dialog
       open={open}
@@ -33,14 +43,14 @@ export function CreateMeetingDialog({ open, onOpenChange }: { open: boolean; onO
       className="max-w-2xl"
     >
       {/* Mounted only while open, so every opening starts with a clean form. */}
-      {open ? <CreateMeetingForm onDone={() => onOpenChange(false)} /> : null}
+      {open ? <CreateMeetingForm initialTab={initialTab} onDone={() => onOpenChange(false)} /> : null}
     </Dialog>
   );
 }
 
-function CreateMeetingForm({ onDone }: { onDone: () => void }) {
+function CreateMeetingForm({ initialTab, onDone }: { initialTab: CreateTab; onDone: () => void }) {
   const router = useRouter();
-  const [tab, setTab] = useState<"upload" | "paste">("upload");
+  const [tab, setTab] = useState<CreateTab>(initialTab);
   const [form, setForm] = useState<MeetingFormValue>(() => ({
     title: "",
     startedAtLocal: toLocalInputValue(new Date()),
@@ -123,7 +133,7 @@ function CreateMeetingForm({ onDone }: { onDone: () => void }) {
             }}
             className={clsx(
               "flex items-center justify-center gap-2 rounded-md py-2 text-sm font-medium transition-colors",
-              tab === key ? "bg-white text-gray-900 shadow-card" : "text-gray-500 hover:text-gray-800",
+              tab === key ? "bg-surface text-gray-900 shadow-card" : "text-gray-500 hover:text-gray-800",
             )}
           >
             <Icon className="size-4" /> {label}
@@ -193,7 +203,7 @@ function CreateMeetingForm({ onDone }: { onDone: () => void }) {
             rows={8}
             placeholder={"[00:00] Priya Nair: Welcome everyone, let's get started.\n[00:12] Marcus Chen: I'll share the mockups by Friday."}
             aria-label="Transcript text"
-            className="w-full rounded-lg border border-gray-300 bg-white p-3 font-mono text-xs leading-5 text-gray-900 shadow-card placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
+            className="w-full rounded-lg border border-gray-300 bg-surface p-3 font-mono text-xs leading-5 text-gray-900 shadow-card placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
           />
           <p className="mt-1 text-xs text-gray-500">
             One line per speaker, like <code className="rounded bg-gray-100 px-1">[mm:ss] Name: text</code>. WebVTT and

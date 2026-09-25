@@ -3,7 +3,7 @@
 import { CloudUpload, SearchX, TriangleAlert, Video } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { UploadButton } from "@/components/layout/UploadButton";
+import { CaptureButton } from "@/components/layout/CaptureButton";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -21,7 +21,7 @@ const PAGE_SIZE = 20;
 
 export function LibrarySkeleton() {
   return (
-    <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white" aria-busy="true">
+    <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-surface" aria-busy="true">
       {Array.from({ length: 6 }, (_, index) => (
         <div key={index} className="flex items-center gap-4 px-4 py-4">
           <Skeleton className="size-10 rounded-lg" />
@@ -83,7 +83,7 @@ export function MeetingsLibrary() {
         {isPending ? (
           <LibrarySkeleton />
         ) : isError ? (
-          <div className="rounded-xl border border-gray-200 bg-white">
+          <div className="rounded-xl border border-gray-200 bg-surface">
             <EmptyState
               icon={TriangleAlert}
               title="Couldn't load meetings"
@@ -96,7 +96,7 @@ export function MeetingsLibrary() {
             />
           </div>
         ) : data.items.length === 0 ? (
-          <div className="rounded-xl border border-gray-200 bg-white">
+          <div className="rounded-xl border border-gray-200 bg-surface">
             {filtered ? (
               <EmptyState
                 icon={SearchX}
@@ -109,7 +109,7 @@ export function MeetingsLibrary() {
                 icon={isUploads ? CloudUpload : Video}
                 title={isUploads ? "No uploads yet" : "No meetings yet"}
                 description="Upload a .txt, .vtt or .json transcript, or paste one, to create your first meeting."
-                action={<UploadButton />}
+                action={<CaptureButton />}
               />
             )}
           </div>

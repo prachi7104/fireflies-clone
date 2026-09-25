@@ -84,11 +84,11 @@ function MeetingWorkspace({ meeting, initialMs }: { meeting: MeetingDetail; init
   const activeChapterIndex = findActiveIndex(chapterStarts, clock.currentMs);
 
   useEffect(() => {
-    document.title = `${meeting.title} · Fireflies Clone`;
+    document.title = `${meeting.title} · Fireflies`;
   }, [meeting.title]);
 
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="flex h-full flex-col bg-surface">
       <MeetingHeader meeting={meeting} onEdit={() => setDialog("edit")} onDelete={() => setDialog("delete")} />
       <EditMeetingDialog
         meetingId={meeting.id}
@@ -126,7 +126,7 @@ function MeetingWorkspace({ meeting, initialMs }: { meeting: MeetingDetail; init
 
 function DetailSkeleton() {
   return (
-    <div className="flex h-full flex-col bg-white" aria-busy="true">
+    <div className="flex h-full flex-col bg-surface" aria-busy="true">
       <div className="space-y-2 border-b border-gray-200 px-6 py-5">
         <Skeleton className="h-3 w-20" />
         <Skeleton className="h-6 w-80" />

@@ -37,7 +37,7 @@ export function TranscriptSearchBar({
           }}
           placeholder="Search in transcript"
           aria-label="Search in transcript"
-          className="h-9 w-full rounded-lg border border-gray-300 bg-white pl-9 pr-24 text-sm shadow-card placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100 [&::-webkit-search-cancel-button]:hidden"
+          className="h-9 w-full rounded-lg border border-gray-300 bg-surface pl-9 pr-24 text-sm shadow-card placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100 [&::-webkit-search-cancel-button]:hidden"
         />
         {hasQuery ? (
           <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
@@ -59,7 +59,7 @@ export function TranscriptSearchBar({
         type="button"
         onClick={onPrev}
         disabled={count === 0}
-        className="rounded-md border border-gray-300 bg-white p-1.5 text-gray-600 shadow-card hover:bg-gray-50 disabled:opacity-40"
+        className="rounded-md border border-gray-300 bg-surface p-1.5 text-gray-600 shadow-card hover:bg-gray-50 disabled:opacity-40"
         aria-label="Previous match"
       >
         <ChevronUp className="size-4" />
@@ -68,7 +68,7 @@ export function TranscriptSearchBar({
         type="button"
         onClick={onNext}
         disabled={count === 0}
-        className="rounded-md border border-gray-300 bg-white p-1.5 text-gray-600 shadow-card hover:bg-gray-50 disabled:opacity-40"
+        className="rounded-md border border-gray-300 bg-surface p-1.5 text-gray-600 shadow-card hover:bg-gray-50 disabled:opacity-40"
         aria-label="Next match"
       >
         <ChevronDown className="size-4" />

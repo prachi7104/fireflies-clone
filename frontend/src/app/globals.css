@@ -1,42 +1,132 @@
 @import "tailwindcss";
 
+/* Dark mode is driven by data-theme on <html> (set before paint by THEME_SCRIPT in lib/theme.ts). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* Fonts come from next/font (see layout.tsx): Inter for text, DM Sans for headings. */
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-dm-sans), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * Colours point at CSS variables, so one class (text-gray-700, bg-surface, ...) works in both themes:
+   * the light values are on :root, the dark ones on [data-theme="dark"].
+   */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-link: var(--link);
+
+  --color-brand-25: var(--brand-25);
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+
+  --color-gray-25: var(--gray-25);
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+
+  --color-highlight: var(--highlight);
+  --color-highlight-active: var(--highlight-active);
+
+  --shadow-card: var(--shadow-card-value);
+  --shadow-popover: var(--shadow-popover-value);
 }
 
-/* Design tokens matched to the Fireflies look: a violet brand scale and cool neutral greys. */
-@theme {
-  --color-brand-25: #fafaff;
-  --color-brand-50: #f4f3ff;
-  --color-brand-100: #ebe9fe;
-  --color-brand-200: #d9d6fe;
-  --color-brand-300: #bdb4fe;
-  --color-brand-400: #9b8afb;
-  --color-brand-500: #7a5af8;
-  --color-brand-600: #6938ef;
-  --color-brand-700: #5925dc;
-  --color-brand-800: #4a1fb8;
-  --color-brand-900: #3e1c96;
+/* Light: Fireflies' default theme (Untitled-UI greys, violet brand, #175CD3 timestamp links). */
+:root {
+  color-scheme: light;
+  --canvas: #ffffff;
+  --surface: #ffffff;
+  --raised: #f9fafb;
+  --line: #eaecf0;
+  --link: #175cd3;
 
-  --color-gray-25: #fcfcfd;
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f2f4f7;
-  --color-gray-200: #eaecf0;
-  --color-gray-300: #d0d5dd;
-  --color-gray-400: #98a2b3;
-  --color-gray-500: #667085;
-  --color-gray-600: #475467;
-  --color-gray-700: #344054;
-  --color-gray-800: #1d2939;
-  --color-gray-900: #101828;
+  --brand-25: #fafaff;
+  --brand-50: #f4f3ff;
+  --brand-100: #ebe9fe;
+  --brand-200: #d9d6fe;
+  --brand-300: #bdb4fe;
+  --brand-400: #9b8afb;
+  --brand-500: #7a5af8;
+  --brand-600: #6938ef;
+  --brand-700: #5925dc;
+  --brand-800: #4a1fb8;
+  --brand-900: #3e1c96;
 
-  --color-highlight: #fef0c7;
-  --color-highlight-active: #fdb022;
+  --gray-25: #fcfcfd;
+  --gray-50: #f9fafb;
+  --gray-100: #f2f4f7;
+  --gray-200: #eaecf0;
+  --gray-300: #d0d5dd;
+  --gray-400: #98a2b3;
+  --gray-500: #667085;
+  --gray-600: #475467;
+  --gray-700: #344054;
+  --gray-800: #1d2939;
+  --gray-900: #101828;
 
-  --shadow-card: 0 1px 2px 0 rgb(16 24 40 / 0.05);
-  --shadow-popover: 0 12px 16px -4px rgb(16 24 40 / 0.08), 0 4px 6px -2px rgb(16 24 40 / 0.03);
+  --highlight: #fef0c7;
+  --highlight-active: #fdb022;
+
+  --shadow-card-value: 0 1px 2px 0 rgb(16 24 40 / 0.05);
+  --shadow-popover-value: 0 12px 16px -4px rgb(16 24 40 / 0.08), 0 4px 6px -2px rgb(16 24 40 / 0.03);
+}
+
+/* Dark: values sampled from Fireflies' dark theme (page #131314, panels #1E1E1F, raised #292929). */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #131314;
+  --surface: #1a1a1b;
+  --raised: #262628;
+  --line: #2c2c2f;
+  --link: #84caff;
+
+  --brand-25: #1b1730;
+  --brand-50: #221c3d;
+  --brand-100: #2d2451;
+  --brand-200: #3c306e;
+  --brand-300: #5b4bb0;
+  --brand-400: #9b8afb;
+  --brand-500: #7a5af8;
+  --brand-600: #9d85ff;
+  --brand-700: #b8a8ff;
+  --brand-800: #d2c8ff;
+  --brand-900: #e8e2ff;
+
+  --gray-25: #18181a;
+  --gray-50: #222224;
+  --gray-100: #2a2a2d;
+  --gray-200: #333337;
+  --gray-300: #46464b;
+  --gray-400: #868686;
+  --gray-500: #aeaeb2;
+  --gray-600: #c3c3c8;
+  --gray-700: #d1d1d6;
+  --gray-800: #e8e8ec;
+  --gray-900: #fafafb;
+
+  --highlight: #5a4300;
+  --highlight-active: #b7791f;
+
+  --shadow-card-value: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow-popover-value: 0 12px 24px -4px rgb(0 0 0 / 0.6), 0 4px 8px -2px rgb(0 0 0 / 0.4);
 }
 
 html,
@@ -45,12 +135,12 @@ body {
 }
 
 body {
-  background: #ffffff;
-  color: var(--color-gray-900);
+  background: var(--canvas);
+  color: var(--gray-900);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-brand-100);
+  background: var(--brand-100);
 }

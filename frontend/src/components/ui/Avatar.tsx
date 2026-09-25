@@ -17,7 +17,7 @@ export function Avatar({ id, name, size = "md", className }: { id: number; name:
       title={name}
       aria-label={name}
       className={clsx(
-        "inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white ring-2 ring-white",
+        "inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white ring-2 ring-surface",
         SIZES[size],
         className,
       )}
@@ -47,7 +47,7 @@ export function AvatarStack({
       {rest > 0 ? (
         <span
           className={clsx(
-            "inline-flex items-center justify-center rounded-full bg-gray-100 font-medium text-gray-600 ring-2 ring-white",
+            "inline-flex items-center justify-center rounded-full bg-gray-100 font-medium text-gray-600 ring-2 ring-surface",
             SIZES[size],
           )}
           title={people.slice(max).map((person) => person.name).join(", ")}

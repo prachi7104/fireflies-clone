@@ -29,7 +29,7 @@ export function ParticipantInput({
   }
 
   return (
-    <div className="flex min-h-10 flex-wrap items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1.5 shadow-card focus-within:border-brand-300 focus-within:ring-4 focus-within:ring-brand-100">
+    <div className="flex min-h-10 flex-wrap items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-2 py-1.5 shadow-card focus-within:border-brand-300 focus-within:ring-4 focus-within:ring-brand-100">
       {value.map((name) => {
         const isLocked = lockedKeys.has(name.toLowerCase());
         return (

@@ -15,7 +15,7 @@ export function DropdownMenuContent({ className, align = "end", ...props }: Comp
         align={align}
         sideOffset={6}
         className={clsx(
-          "z-50 max-h-80 min-w-48 overflow-y-auto rounded-lg border border-gray-200 bg-white p-1 shadow-popover",
+          "z-50 max-h-80 min-w-48 overflow-y-auto rounded-lg border border-gray-200 bg-surface p-1 shadow-popover",
           className,
         )}
         {...props}

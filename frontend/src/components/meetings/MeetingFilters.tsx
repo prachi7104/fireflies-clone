@@ -30,7 +30,7 @@ function FilterButton({ active, children }: { active: boolean; children: React.R
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500",
         active
           ? "border-brand-300 bg-brand-50 text-brand-700"
-          : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50",
+          : "border-gray-300 bg-surface text-gray-700 hover:bg-gray-50",
       )}
     >
       {children}
@@ -116,7 +116,7 @@ export function MeetingFilters({
             value={filters.from ?? ""}
             max={filters.to ?? undefined}
             onChange={(event) => onChange({ from: event.target.value || null })}
-            className="h-9 rounded-lg border border-gray-300 bg-white px-2 text-sm text-gray-700 shadow-card focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
+            className="h-9 rounded-lg border border-gray-300 bg-surface px-2 text-sm text-gray-700 shadow-card focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
           />
           <span>to</span>
           <input
@@ -125,7 +125,7 @@ export function MeetingFilters({
             value={filters.to ?? ""}
             min={filters.from ?? undefined}
             onChange={(event) => onChange({ to: event.target.value || null })}
-            className="h-9 rounded-lg border border-gray-300 bg-white px-2 text-sm text-gray-700 shadow-card focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
+            className="h-9 rounded-lg border border-gray-300 bg-surface px-2 text-sm text-gray-700 shadow-card focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
           />
         </div>
       ) : null}
@@ -133,7 +133,7 @@ export function MeetingFilters({
       <button
         type="button"
         onClick={() => onChange({ sort: filters.sort === "newest" ? "oldest" : "newest" })}
-        className="inline-flex h-9 items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 text-sm font-medium text-gray-700 shadow-card hover:bg-gray-50"
+        className="inline-flex h-9 items-center gap-2 rounded-lg border border-gray-300 bg-surface px-3 text-sm font-medium text-gray-700 shadow-card hover:bg-gray-50"
         aria-label={`Sorted ${filters.sort === "newest" ? "newest first" : "oldest first"}; click to reverse`}
       >
         <ArrowUpDown className="size-4" />

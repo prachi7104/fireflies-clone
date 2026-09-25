@@ -84,7 +84,7 @@ export function TranscriptPanel({
               follow.resume();
               scrollLineIntoView(containerRef.current, activeIndex);
             }}
-            className="absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-gray-900 px-3.5 py-2 text-xs font-medium text-white shadow-popover hover:bg-gray-800"
+            className="absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-gray-900 px-3.5 py-2 text-xs font-medium text-canvas shadow-popover hover:bg-gray-700"
           >
             <ArrowDownToLine className="size-3.5" /> Resume auto-scroll
           </button>

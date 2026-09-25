@@ -27,7 +27,7 @@ export function MeetingHeader({
   onExport?: (format: "md" | "txt") => void;
 }) {
   return (
-    <div className="shrink-0 border-b border-gray-200 bg-white px-4 py-4 md:px-6">
+    <div className="shrink-0 border-b border-gray-200 bg-surface px-4 py-4 md:px-6">
       <Link href="/meetings" className="mb-2 inline-flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-800">
         <ArrowLeft className="size-3.5" /> Meetings
       </Link>
@@ -53,14 +53,14 @@ export function MeetingHeader({
             onClick={() => {
               void navigator.clipboard?.writeText(window.location.href.split("?")[0]).then(() => toast.success("Link copied"));
             }}
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 text-sm font-medium text-gray-700 shadow-card hover:bg-gray-50"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-3 text-sm font-medium text-gray-700 shadow-card hover:bg-gray-50"
           >
             <Link2 className="size-4" /> Share
           </button>
           <DropdownMenu>
             <DropdownMenuTrigger
               aria-label="Meeting actions"
-              className="rounded-lg border border-gray-300 bg-white p-2 text-gray-600 shadow-card hover:bg-gray-50"
+              className="rounded-lg border border-gray-300 bg-surface p-2 text-gray-600 shadow-card hover:bg-gray-50"
             >
               <Ellipsis className="size-4" />
             </DropdownMenuTrigger>

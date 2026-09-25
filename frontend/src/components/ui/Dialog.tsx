@@ -20,13 +20,13 @@ export function Dialog({ open, onOpenChange, title, description, children, foote
   return (
     <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-gray-900/40" />
+        <RadixDialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
         <RadixDialog.Content
           // Without a description, tell Radix there is none (it links one automatically when present).
           {...(description ? {} : { "aria-describedby": undefined })}
           className={clsx(
             "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
-            "flex-col rounded-xl bg-white shadow-popover focus:outline-none",
+            "flex-col rounded-xl bg-surface shadow-popover focus:outline-none",
             className,
           )}
         >

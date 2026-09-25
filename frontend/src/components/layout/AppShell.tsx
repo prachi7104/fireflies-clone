@@ -1,23 +1,38 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 
-import { Sidebar } from "./Sidebar";
-import { Topbar } from "./Topbar";
-import { UploadButton } from "./UploadButton";
+import { CreateMeetingProvider } from "@/components/meetings/CreateMeetingContext";
+import { TooltipProvider } from "@/components/ui/Tooltip";
 
-/** Fireflies-style frame: fixed sidebar on the left, top bar, and a scrolling content area. */
+import { IconRail } from "./IconRail";
+import { Topbar } from "./Topbar";
+
+/**
+ * Fireflies-style frame: icon rail on the left, a top bar, and a scrolling content area.
+ * A meeting page has its own breadcrumb bar instead of the global top bar, as in Fireflies.
+ */
 export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isMeetingPage = /^\/meetings\/[^/]+$/.test(pathname);
+
   return (
-    <div className="flex h-dvh overflow-hidden bg-white">
-      {/* Both read the URL's search params, which needs a Suspense boundary in the App Router. */}
-      <Suspense fallback={<div className="hidden w-60 shrink-0 border-r border-gray-200 md:block" />}>
-        <Sidebar />
-      </Suspense>
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Suspense fallback={<div className="h-16 shrink-0 border-b border-gray-200" />}>
-          <Topbar actions={<UploadButton />} />
-        </Suspense>
-        <main className="min-h-0 flex-1 overflow-y-auto bg-gray-25">{children}</main>
-      </div>
-    </div>
+    <TooltipProvider delayDuration={200}>
+      <CreateMeetingProvider>
+        <div className="flex h-dvh overflow-hidden bg-canvas">
+          <IconRail />
+          <div className="flex min-w-0 flex-1 flex-col">
+            {isMeetingPage ? null : (
+              // The top bar reads the URL's search params, which needs a Suspense boundary in the App Router.
+              <Suspense fallback={<div className="h-14 shrink-0 border-b border-line bg-surface" />}>
+                <Topbar />
+              </Suspense>
+            )}
+            <main className="min-h-0 flex-1 overflow-y-auto bg-canvas">{children}</main>
+          </div>
+        </div>
+      </CreateMeetingProvider>
+    </TooltipProvider>
   );
 }

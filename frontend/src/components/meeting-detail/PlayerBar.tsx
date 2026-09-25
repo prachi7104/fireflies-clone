@@ -18,7 +18,7 @@ const SPEEDS = [0.75, 1, 1.25, 1.5, 2];
 export function PlayerBar({ clock, durationMs, chapters }: { clock: PlaybackClock; durationMs: number; chapters: Chapter[] }) {
   const progress = durationMs > 0 ? (clock.currentMs / durationMs) * 100 : 0;
   return (
-    <div className="shrink-0 border-t border-gray-200 bg-white px-4 py-3 md:px-6">
+    <div className="shrink-0 border-t border-gray-200 bg-surface px-4 py-3 md:px-6">
       <div className="flex items-center gap-2 md:gap-3">
         <button
           type="button"
@@ -57,7 +57,7 @@ export function PlayerBar({ clock, durationMs, chapters }: { clock: PlaybackCloc
             <span
               key={chapter.id}
               title={chapter.title}
-              className="pointer-events-none absolute h-3 w-0.5 rounded bg-white ring-1 ring-gray-300"
+              className="pointer-events-none absolute h-3 w-0.5 rounded bg-surface ring-1 ring-gray-300"
               style={{ left: `${(chapter.start_ms / Math.max(durationMs, 1)) * 100}%` }}
             />
           ))}
@@ -73,7 +73,7 @@ export function PlayerBar({ clock, durationMs, chapters }: { clock: PlaybackCloc
             className={clsx(
               "relative h-6 w-full cursor-pointer appearance-none bg-transparent",
               "[&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full",
-              "[&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow [&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:ring-brand-500",
+              "[&::-webkit-slider-thumb]:bg-surface [&::-webkit-slider-thumb]:shadow [&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:ring-brand-500",
               "[&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-brand-500",
             )}
           />

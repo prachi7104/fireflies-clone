@@ -32,7 +32,7 @@ export function MeetingList({
       {groups.map((group) => (
         <section key={group.label} aria-label={group.label}>
           <h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-500">{group.label}</h2>
-          <ul className="divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-card">
+          <ul className="divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-surface shadow-card">
             {group.items.map((meeting) => (
               <MeetingRow key={meeting.id} meeting={meeting} query={query} onEdit={onEdit} onDelete={onDelete} />
             ))}
