@@ -11,13 +11,26 @@ const SIZES: Record<Size, string> = {
   lg: "size-10 text-sm",
 };
 
-export function Avatar({ id, name, size = "md", className }: { id: number; name: string; size?: Size; className?: string }) {
+export function Avatar({
+  id,
+  name,
+  size = "md",
+  square = false,
+  className,
+}: {
+  id: number;
+  name: string;
+  size?: Size;
+  square?: boolean;
+  className?: string;
+}) {
   return (
     <span
       title={name}
       aria-label={name}
       className={clsx(
-        "inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white ring-2 ring-surface",
+        "inline-flex shrink-0 items-center justify-center font-semibold text-white ring-2 ring-surface",
+        square ? "rounded-md" : "rounded-full",
         SIZES[size],
         className,
       )}

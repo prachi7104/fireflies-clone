@@ -13,8 +13,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { formatClock } from "@/lib/format";
 import type { ActionItem, MeetingParticipant } from "@/lib/types";
+
+import { TimeLink } from "./TimeLink";
 
 export function ActionItemRow({
   item,
@@ -45,7 +46,7 @@ export function ActionItemRow({
   }
 
   return (
-    <li className="group flex items-start gap-3 rounded-lg px-2 py-2 hover:bg-gray-50">
+    <li className="group flex items-start gap-3 rounded-lg px-2 py-1.5 hover:bg-raised">
       <button
         type="button"
         role="checkbox"
@@ -87,7 +88,7 @@ export function ActionItemRow({
             }}
             title="Click to edit"
             className={clsx(
-              "block w-full text-left text-sm leading-5",
+              "block w-full text-left text-[15px] leading-6",
               item.is_done ? "text-gray-400 line-through" : "text-gray-800",
             )}
           >
@@ -133,23 +134,14 @@ export function ActionItemRow({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {item.start_ms !== null ? (
-            <button
-              type="button"
-              onClick={() => onSeek(item.start_ms!)}
-              className="rounded bg-brand-50 px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-brand-700 hover:bg-brand-100"
-              title="Jump to where this was said"
-            >
-              {formatClock(item.start_ms)}
-            </button>
-          ) : null}
+          {item.start_ms !== null ? <TimeLink ms={item.start_ms} onSeek={onSeek} /> : null}
         </div>
       </div>
 
       <button
         type="button"
         onClick={onDelete}
-        className="rounded p-1 text-gray-300 opacity-0 hover:bg-red-50 hover:text-red-600 focus-visible:opacity-100 group-hover:opacity-100"
+        className="rounded p-1 text-gray-400 opacity-0 hover:bg-red-50 hover:text-red-600 focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100 dark:hover:bg-red-950"
         aria-label={`Delete "${item.text}"`}
       >
         <Trash2 className="size-4" />

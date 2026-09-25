@@ -22,7 +22,7 @@ export function Tooltip({
         <RadixTooltip.Content
           side={side}
           sideOffset={8}
-          className="z-50 rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-canvas shadow-popover"
+          className="z-50 max-w-xs rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-canvas shadow-popover"
         >
           {label}
         </RadixTooltip.Content>

@@ -42,28 +42,22 @@ export const TranscriptLine = memo(function TranscriptLine({
         }
       }}
       className={clsx(
-        "group flex cursor-pointer gap-3 rounded-lg px-3 py-2.5 outline-none transition-colors",
+        "group cursor-pointer rounded-lg border-l-2 px-3 py-2.5 outline-none transition-colors",
         "focus-visible:ring-2 focus-visible:ring-brand-300",
-        isActive ? "bg-brand-50 ring-1 ring-brand-100" : "hover:bg-gray-50",
+        isActive ? "border-brand-500 bg-brand-25" : "border-transparent hover:bg-raised",
       )}
     >
-      <Avatar id={segment.speaker_id} name={speakerName} size="md" className="mt-0.5 ring-0" />
-      <div className="min-w-0 flex-1">
-        <div className="flex items-baseline gap-2">
-          <span className="text-sm font-semibold text-gray-900">{speakerName}</span>
-          <span
-            className={clsx(
-              "text-xs tabular-nums",
-              isActive ? "font-semibold text-brand-600" : "text-gray-400 group-hover:text-brand-600",
-            )}
-          >
-            {formatClock(segment.start_ms)}
-          </span>
-        </div>
-        <p className={clsx("mt-0.5 text-sm leading-6", isActive ? "text-gray-900" : "text-gray-700")}>
-          <HighlightedText text={segment.text} ranges={ranges} activeRange={activeRange} />
-        </p>
+      <div className="flex items-center gap-2">
+        <Avatar id={segment.speaker_id} name={speakerName} size="sm" square className="ring-0" />
+        <span className="text-sm font-medium text-gray-900">{speakerName}</span>
+        <span aria-hidden className="text-gray-300">
+          ·
+        </span>
+        <span className="text-sm tabular-nums text-link group-hover:underline">{formatClock(segment.start_ms)}</span>
       </div>
+      <p className={clsx("mt-1.5 text-[15px] leading-7", isActive ? "text-gray-900" : "text-gray-700")}>
+        <HighlightedText text={segment.text} ranges={ranges} activeRange={activeRange} />
+      </p>
     </div>
   );
 });
