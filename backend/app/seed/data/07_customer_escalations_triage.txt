@@ -1,0 +1,44 @@
+[00:00] Daniel Okafor: Thanks for jumping on so fast, I'll keep this tight. Two customers, Fernhollow Grocers and Redwick Parcel, are reporting that driver apps stop syncing partway through the day. Dispatchers see stale positions, and completed stops never show up.
+[00:25] Jordan Lee: How long has this been going on, and how many drivers are affected? I want to understand the size before we get into causes.
+[00:46] Daniel Okafor: Redwick first noticed it three days ago. It's around forty of their hundred and forty drivers, mostly on long rural routes. Fernhollow is smaller, about fifteen drivers, and it started the same day.
+[01:16] Priya Nair: Three days ago lines up with the driver app release where we shortened the login token lifetime from twenty-four hours to one. That's my first suspect, even before we look at logs.
+[01:40] Ravi Menon: I pulled the logs before this call, and it's the token refresh. When a phone comes back online after being offline past the token expiry, the app fires several requests at once, and each one tries to refresh the token at the same moment.
+[02:09] Priya Nair: And the server rotates the refresh token on the first request, so the second one looks like a reused token, and we revoke the whole session as a security precaution.
+[02:39] Ravi Menon: Exactly. And the app doesn't handle that revocation well. It keeps queueing stops and photos locally, but it never asks the driver to log in again, so from the driver's side everything looks fine.
+[03:07] Jordan Lee: So the data isn't lost, it's just stuck on the phones? That matters a lot for what we tell the customers.
+[03:30] Ravi Menon: Right, nothing is lost as far as I can see. Once a driver logs out and back in, the queue syncs. I confirmed that with two Redwick drivers this morning, through Daniel.
+[03:56] Daniel Okafor: Yes, their dispatcher had two drivers try it while I was on the phone. Both queues synced within a minute, including the delivery photos.
+[04:18] Jordan Lee: That's a relief, honestly. It means the fix is about getting the queues flowing again, not about recovering anything, which changes how the customer message needs to sound.
+[04:41] Priya Nair: Then there are two fixes. On the server, we accept a reused refresh token within a short grace window, say thirty seconds, instead of revoking the session. In the app, only one refresh runs at a time, and the other requests wait for it.
+[05:15] Jordan Lee: Which one can we ship fastest? I care about stopping the bleeding today, and doing it properly second.
+[05:36] Ravi Menon: The server change, by far. It's a small change behind a config value, and it fixes the problem for every app version already on phones. I can have the grace window deployed today, once Priya reviews it.
+[06:04] Priya Nair: I'll review it the moment it's up. The app fix has to go through store review on both mobile platforms, so realistically that's two or three days, and then drivers still have to update.
+[06:33] Jordan Lee: Okay. Let's also be clear about the SLA exposure. Daniel, which of these two customers have an SLA with us?
+[06:51] Daniel Okafor: Redwick is on the enterprise plan, with the 99.5 percent monthly availability commitment. Fernhollow is on the standard plan, so no contractual SLA, but they're a reference customer and I really don't want to lose that.
+[07:23] Priya Nair: Technically the service was up and the apps just couldn't sync, so you could argue it isn't downtime. I don't think we should make that argument, though.
+[07:50] Jordan Lee: No, we shouldn't. From Redwick's side, forty drivers couldn't sync for hours, and that's an outage. Let's treat it as one and offer the credit before they ask.
+[08:11] Daniel Okafor: Thank you, that makes my conversation much easier. By my estimate it's about nine hours of degraded sync spread over three days, which puts them below the SLA for the month.
+[08:38] Priya Nair: Nine hours matches the logs. Most of it was early morning, before drivers got signal back near the depot, which also explains why dispatchers noticed so late.
+[09:04] Jordan Lee: I'll confirm the credit amount with finance today, so Daniel can put an actual number in front of Redwick instead of a vague promise.
+[09:24] Daniel Okafor: Let's talk comms, then. Both customers want to hear from us today. I'd like to send a written incident summary and follow up with a call to each operations lead.
+[09:44] Priya Nair: For the summary, I'd say what happened, that no delivery data was lost, what drivers can do right now, and when the fix lands. Keep the technical detail to one sentence.
+[10:12] Ravi Menon: The workaround is simple enough to include. If a driver sees stops stuck as pending, they log out and log back in, and everything syncs. After my server fix today, even that won't be needed.
+[10:42] Daniel Okafor: Perfect. I'll send the incident summaries to both customers this afternoon and call their operations leads right after. Priya, can you check the draft for technical accuracy before it goes out?
+[11:08] Priya Nair: Yes, send it to me and Jordan, and I'll turn it around within the hour so it doesn't hold you up.
+[11:31] Jordan Lee: Do we need to warn other customers? If the bug hits anyone who goes offline past the token expiry, others must be seeing it too, even if they haven't noticed yet.
+[11:52] Ravi Menon: I checked, eleven other customers have at least one driver with a revoked session this week, but mostly one or two drivers each. The rural fleets are hit hardest, because they go offline for long stretches.
+[12:24] Daniel Okafor: Then I'd rather tell those eleven proactively, with a short note saying we found and fixed an issue. It's better they hear it from us than notice it on their own.
+[12:53] Ravi Menon: I can send Daniel the list of those eleven customers with driver counts this afternoon, so the worst affected ones hear from us first.
+[13:20] Jordan Lee: Agreed. Let's send a shorter version of the summary to those eleven customers once the server fix is live, so the message is simply that we found it and fixed it.
+[13:47] Priya Nair: Okay, the postmortem. I'll write it and schedule the review for Thursday. It's blameless as always, but I want to be honest that we shipped an auth change without testing the offline paths.
+[14:17] Ravi Menon: I think the gap was that our test devices are always online. We never simulated a phone that loses signal for two hours and comes back with a pile of queued requests.
+[14:47] Jordan Lee: What would have caught this earlier, beyond testing? It took customers calling Daniel for us to find out, and that's the part that bothers me most.
+[15:11] Ravi Menon: An alert on the sync failure rate per customer. We have the data, revoked sessions are logged, we just never alert on them. I'll add an alert on driver sync failures per customer by next week.
+[15:44] Priya Nair: And a staged rollout for anything that touches login. We shipped the token change to every driver at once, and starting with five percent would have limited this to a handful of people.
+[16:06] Daniel Okafor: From my side, can the postmortem include a customer timeline? When they first noticed, when they told us, and when we responded, because I want to see how long customers struggled before we knew.
+[16:34] Priya Nair: Yes, good idea, and I'll need the support ticket timestamps from you. That's usually the most humbling part of the document.
+[16:51] Ravi Menon: One more thing on the app fix. It needs the next app release, so I'd like mobile to prioritize it over the other items in that release, even if they slip a few days.
+[17:19] Priya Nair: Agreed, I'll make that call with the mobile engineers today. The single-flight refresh fix goes into the next release, and everything else waits.
+[17:39] Jordan Lee: Okay, let me recap. Ravi deploys the grace window today, Priya reviews it and gets the app fix into the next release, Daniel sends both summaries this afternoon, I confirm the credit with finance, and Priya writes the postmortem for Thursday.
+[18:07] Daniel Okafor: Thanks, everyone. I'll post updates in the incident channel after each customer call, so nobody has to ask me for status.
+[18:27] Jordan Lee: Great work, and thanks, Ravi, for having the logs ready before the call, that saved us a lot of time. Let's regroup tomorrow morning if the server fix doesn't clear it.

@@ -1,0 +1,50 @@
+[00:00] Jordan Lee: Okay, thanks for coming, everyone. This is the design review for the new onboarding flow. Marcus will walk through the signup changes, then empty states and the setup checklist, and Daniel is bringing feedback from recent customer sessions that I really want us to react to.
+[00:47] Marcus Chen: Great. The headline is that signup goes from seven steps to four. Today you create an account, verify your email, enter company details, fleet size and vehicle types, a depot address, invite drivers, and import orders, all before you see the product.
+[01:31] Emily Park: Seven steps before you see anything is brutal. I pulled the funnel for last month's campaign signups, and we lose almost half of people somewhere between verifying the email and entering the depot address.
+[02:17] Daniel Okafor: And the ones who get through aren't always happy. The most common thing I hear on onboarding calls is that people spent twenty minutes setting up and still haven't seen what the product looks like.
+[03:01] Marcus Chen: Right. The new flow is work email, then company name and fleet size, then your first depot, then import stops or try a sample day. Email verification happens in the background, and you can keep going while the link sits in your inbox.
+[03:49] Jordan Lee: What happened to vehicle types and driver invites? Those were in the old flow for a reason, the route planner needs vehicle capacity to plan properly.
+[04:32] Marcus Chen: Vehicle types get a sensible default based on fleet size, standard vans, and you can change them later. Driver invites move out of signup entirely and into the setup checklist, because that's where people stall anyway.
+[05:12] Daniel Okafor: That matches what I see exactly. Dispatchers sign up at their desk, and the driver phone numbers live in a spreadsheet on somebody else's computer. So they hit the invite step, leave to find the list, and never come back.
+[05:58] Jordan Lee: My worry with the default vehicle is that people plan a route with the wrong capacity and decide the planner is bad. Can we make the default visible, so nobody is surprised?
+[06:42] Marcus Chen: Yes, the first route summary will say it was planned with standard vans, with a small inline link to change vehicle types. It's visible without being a blocker.
+[07:21] Emily Park: I like that, it's honest. Can we also look at the fleet size question? Right now it's a free text field, and marketing gets answers like lots, or it depends, which we can't use for anything.
+[08:07] Marcus Chen: It becomes a picker with ranges, one to ten, eleven to fifty, fifty-one to two hundred, and more than two hundred. It's quicker to answer, and it gives Daniel's team a cleaner signal for who needs a call.
+[08:51] Daniel Okafor: Yes, please. Anyone above fifty drivers should get a call from us in the first two days, and today I'm reading free text answers to figure that out.
+[09:36] Jordan Lee: Okay, I'm convinced on four steps. Marcus, can you finalize the four-step flow in the design file and share it with engineering by Thursday, so Priya can size it for the next sprint?
+[10:20] Marcus Chen: Will do, I'll send it by Thursday with the edge cases annotated. Next up is empty states, which is where I think we can win back a lot of the trust we lose today.
+[11:00] Emily Park: Show us. The current empty dashboard is basically a gray map and a button that says new route, and I've watched people just stare at it in session recordings.
+[11:37] Marcus Chen: So the empty dashboard now offers two clear paths, import your stops, or plan a sample day with fifty made-up stops in your depot's city. The sample day shows the whole product, routes on the map, driver progress, and the message a customer would receive.
+[12:21] Daniel Okafor: I love the sample day, but I have to flag something from the sessions. Two trial customers thought the sample routes were real orders, and one of them spent ten minutes trying to work out where those deliveries came from.
+[13:10] Marcus Chen: Oof, okay. Then sample data needs a persistent banner saying it's sample data, with a one-click button to clear it. And the sample customers should have obviously fake names, so nobody mistakes them for real people.
+[13:56] Jordan Lee: Let's make that a hard requirement. Marcus, can you add the sample data banner and the clear button to the design before Thursday as well?
+[14:39] Marcus Chen: Yes, I'll add both. The drivers page gets an empty state too. It explains that drivers get the app by text message, shows a preview of the driver's screen, and has one button to send invites, which also accepts a pasted list of phone numbers.
+[15:29] Daniel Okafor: The pasted list is huge. That's exactly how people have the data, a column copied from a spreadsheet. Please make sure it tolerates messy formatting, spaces, dashes, country codes, all of it.
+[16:14] Emily Park: What about the notifications page? It's the feature we lead with in every campaign, and in the empty state it's just a settings form.
+[16:56] Marcus Chen: That's the one I'm most excited about. The empty state shows a live preview of the customer message with your company name filled in, and a button to send a test notification to your own phone. It turns a settings page into a demo.
+[17:45] Jordan Lee: That's great, and sending yourself a test notification should probably be a checklist item too. Let's talk about the setup checklist next.
+[18:19] Marcus Chen: The setup checklist lives in the corner of the dashboard. Five items, import your stops, plan your first route, invite a driver, send yourself a test notification, and connect your order system, which is marked optional.
+[19:04] Emily Park: How does it behave once you're done? I've seen checklists hang around forever until they turn into wallpaper that nobody reads.
+[19:46] Marcus Chen: It collapses into a small progress ring after three items, and it disappears for good once all the required ones are done. There's a short message when it's complete, and that's the only place we allow an exclamation mark.
+[20:30] Daniel Okafor: Can customer success see the checklist progress? If I could see that an account is stuck on inviting drivers, I'd reach out with something useful instead of a generic check-in email.
+[21:17] Jordan Lee: That's a great point, we should expose checklist progress in the admin view for customer success. I'll write that up as a requirement and follow up with Priya on where the data should live.
+[22:02] Daniel Okafor: Thank you. Honestly, that one view would change how my team spends the first two weeks with every new account.
+[22:38] Emily Park: Can I switch us to copy tone? A few of the screens Marcus showed still have the old voice, and I think we should decide the voice now, before engineering builds anything.
+[23:22] Marcus Chen: Please, yes. I wrote placeholder copy in a slightly playful voice, things like let's get rolling, and I'm not attached to any of it.
+[24:01] Emily Park: My view is that dispatchers open this at five in the morning with drivers waiting. The voice should be plain, direct, and warm, but never cute. Buttons should say what they do, like import stops, instead of get started.
+[24:44] Daniel Okafor: I agree with Emily, and I have evidence for it. In the sessions, nobody laughed at the jokes in the current flow, but three people asked what a button would actually do before clicking it.
+[25:31] Jordan Lee: Then plain and warm is the rule. Verbs on buttons, no exclamation marks except on completion, and no jokes in error messages. Emily, could you rewrite the onboarding copy in that voice?
+[26:17] Emily Park: Yes, I'll rewrite the signup, empty state, and checklist copy by next Tuesday, and I'll share a short voice guide with the team so we stop reinventing it screen by screen.
+[26:55] Marcus Chen: That helps me a lot. I'll mark the copy in the design file as pending until Emily's version comes in.
+[27:33] Jordan Lee: Daniel, you mentioned more feedback from the sessions. What else should we react to before we lock this?
+[28:10] Daniel Okafor: Two more things. First, the word depot confuses some people. A food distributor I work with calls them hubs, and a furniture company calls them yards, and neither was sure the field applied to them.
+[28:51] Marcus Chen: We can keep depot as the term, but add helper text under the field, something like your warehouse, hub, or yard. Renaming it everywhere would be a much bigger change.
+[29:30] Daniel Okafor: That would solve it, I think. Second, a few customers asked for a short video walkthrough, two or three minutes, for the people who missed the kickoff call.
+[30:15] Emily Park: That's something marketing can own. We're recording product videos for the website anyway, so I'll add an onboarding walkthrough to the list for next month.
+[30:55] Jordan Lee: Great. Daniel, could you line up three customers for usability sessions on the new flow next week? Ideally one small fleet, one large one, and one that churned during the trial.
+[31:37] Daniel Okafor: I can do that. I already know a churned trial who would talk to us, they were pretty vocal about the setup pain. I'll send you the three names by Friday.
+[32:21] Marcus Chen: I'll build a clickable prototype for those sessions. It won't have real data, but it'll feel close enough for people to react honestly.
+[33:01] Jordan Lee: Okay, let me recap. Four-step signup, a visible vehicle default, a sample day with a clear banner, empty states for the dashboard, drivers, and notifications, a five-item checklist, and plain, warm copy. Did I miss anything?
+[33:48] Emily Park: Only that checklist progress goes into the admin view for Daniel's team. That came up late, so it's worth saying twice.
+[34:26] Daniel Okafor: And the pasted phone number list, please don't let that one drop. It will save my team so many calls.
+[35:03] Jordan Lee: Noted, both are in. Thanks, everyone, this was a really productive review, and Marcus, I'm looking forward to the updated file on Thursday.

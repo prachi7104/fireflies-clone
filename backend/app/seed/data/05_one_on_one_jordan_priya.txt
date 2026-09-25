@@ -1,0 +1,44 @@
+[00:00] Jordan Lee: Hey Priya, thanks for moving this, I know your calendar got wrecked this week. How are you doing, honestly, not the status update version?
+[00:28] Priya Nair: Honestly, tired but okay. The driver sync escalation took more out of the team than I expected. Everyone did great, but we spent more than a week in reactive mode, and people are only now getting back to normal work.
+[00:58] Jordan Lee: That's what I wanted to start with. From the outside the team looked calm during the incident, but I don't have a good read on how people are feeling now. What are you seeing?
+[01:30] Priya Nair: Mostly fatigue, not frustration. Ravi carried a lot of it, because he found the token refresh bug and then went straight into an on-call week. And one of the frontend engineers told me they felt useless during the incident, because they couldn't help with the backend work.
+[02:00] Jordan Lee: The feeling useless part is interesting. Is that a skills gap, or more that we don't have a role for people outside the backend during incidents?
+[02:23] Priya Nair: More the second one. There were things they could have done, like updating the status page, checking the driver app logs, or helping Daniel with customer updates. We just never defined incident roles, so everyone waited for instructions.
+[02:57] Jordan Lee: That sounds like a cheap fix with a big payoff. Could we write down three or four incident roles, so the next time something breaks, people know where they fit?
+[03:23] Priya Nair: Yes, and it belongs in the postmortem follow-ups anyway. I'll draft the incident roles and share them with the team by next Friday. It's a one-page thing, not a process manual.
+[03:54] Jordan Lee: Perfect. Let's talk about hiring, since that affects everything else. Where are we with the senior backend role?
+[04:21] Priya Nair: Better than last month. We have forty-one applicants, we've done eight phone screens, and two candidates are in the final round. Both are strong on distributed systems, and one has built routing software before, which is rare.
+[04:54] Jordan Lee: That's genuinely great news, and faster than I expected. What do you need from me to help close this quickly?
+[05:13] Priya Nair: Two things. I'd like you to do the product conversation in the final round, because the best candidates always ask about the roadmap, and you answer that better than I do. And I'd like to drop the take-home exercise, it's four hours and we already lost a candidate over it.
+[05:53] Jordan Lee: Yes to both. I'll take the product interview for both finalists this week, just send me the slots. On the take-home, what would you replace it with?
+[06:14] Priya Nair: A ninety-minute paired session on a simplified version of a real problem from our codebase, like the notification queue. We learn more from watching someone think than from reading code they wrote alone over a weekend.
+[06:49] Jordan Lee: I like that a lot, and it's more respectful of their time. Does the rest of the panel need training on it first?
+[07:14] Priya Nair: I'll do a dry run with Ravi and one other engineer, so we calibrate what good looks like. If it goes well, we switch before the next candidate comes in.
+[07:42] Jordan Lee: Okay, and on timeline, if both finalists go well, when could someone realistically start working with the team?
+[08:05] Priya Nair: If we make an offer within two weeks and they have a typical notice period, maybe seven or eight weeks from now. So realistically they help us in the second half of the quarter, not the first.
+[08:32] Jordan Lee: That matters for the roadmap conversation, so let's hold that thought. First, on call. Ravi's pages came up in standup twice this week. How bad is it?
+[08:55] Priya Nair: It's not sustainable. There are three of us in the backend rotation, so everyone is on call every third week, and the last rotation averaged nine pages a week, some at three in the morning. Half of them are noisy alerts nobody acts on.
+[09:26] Jordan Lee: So there are two problems, too few people in the rotation and too many alerts that aren't actionable. Which one can we fix first?
+[09:49] Priya Nair: The noisy alerts, easily. I want to spend a day with Ravi going through every alert from the last month and delete or retune anything that didn't lead to action. My guess is that cuts pages by a third.
+[10:22] Jordan Lee: Do it, and put it on the sprint as real work, not something that happens in the gaps. What about the size of the rotation?
+[10:52] Priya Nair: Until the new hire is ramped up, I'd like to add a secondary on-call from the frontend and mobile engineers for daytime issues, like driver app problems. It spreads the load, and it also helps with the feeling useless problem.
+[11:23] Jordan Lee: That's smart, it solves two problems at once. Should we also give people time back after a heavy on-call week? I'd rather pay for it in time than in burnout.
+[11:46] Priya Nair: Yes, I'd like a rule that if you get paged overnight more than twice in a week, you take the next morning off, no questions asked. I'll write up the on-call changes and share them with you by Friday, so we can announce them together.
+[12:23] Jordan Lee: Let's do that. Okay, I want to spend real time on you, not just the team. Last time you mentioned you'd been thinking about what's next for you. Where has that landed?
+[12:47] Priya Nair: I've been going back and forth between the management path and staying technical. What I've realized is that I really enjoy the people side, the hiring, the one-on-ones, and helping Ravi grow. I want to grow into managing a bigger team over the next year.
+[13:22] Jordan Lee: That's really good to hear, because you're already doing a lot of it. What's missing for you, if you picture being ready for a larger team a year from now?
+[13:48] Priya Nair: Two things. Strategy, because I'm good at executing a plan, but I haven't owned a theme end to end, from why it matters to how we measure it. And customers, I rarely talk to them directly, so a lot of my context arrives second hand through you or Daniel.
+[14:20] Jordan Lee: Both of those are very fixable. What if you owned the reliability theme for Q4? Not just the engineering work, but the story, the metrics, and presenting it at the all-hands.
+[14:46] Priya Nair: I'd love that, it's the theme I care about most after the escalation. I'll write a one-page plan for it first, so we agree on scope before I start telling people I own it.
+[15:17] Jordan Lee: Perfect, we'll review it together next week. And on customers, I'll bring you into customer calls whenever there's a technical conversation, starting with the next prospect that needs an integration review.
+[15:41] Priya Nair: That would help a lot. Even listening in on two or three calls a month would change how I think about trade-offs.
+[16:04] Jordan Lee: Okay, last topic, and I suspect it's related. After the roadmap review you messaged me that you had concerns about scope, so let's talk about it properly.
+[16:29] Priya Nair: Yeah. My concern is simple math. The roadmap assumes the new backend hire is productive by the middle of the quarter, and as we just said, they'll barely have started. On top of that, reliability work always takes longer than planned, because every problem we find leads to another one.
+[17:07] Jordan Lee: That's fair, and I should have pushed back on that assumption. What would you cut, if you had to cut something today?
+[17:27] Priya Nair: I wouldn't cut, I'd sequence. Single sign-on first, because sales has deals waiting on it. Audit logs after that, not in parallel. And the mobile refresh stays phase one only, navigation and sync status, with the visual redesign after peak season.
+[18:00] Jordan Lee: That's reasonable, and honestly easier to sell than a cut. I'll take a proposed cut line to leadership next week, with the hiring timeline as the reason, and I'll show you the draft before it goes out.
+[18:26] Priya Nair: Thank you. I don't want to be the engineering lead who always says no, but I'd rather have this conversation now than in week eight of the quarter.
+[18:54] Jordan Lee: For what it's worth, that isn't saying no, that's the strategy part you said you wanted to grow. This is exactly what owning a theme looks like.
+[19:23] Priya Nair: Ha, fair point, that actually makes me feel better about it. Is there anything you need from me before next week?
+[19:44] Jordan Lee: Just the on-call write-up by Friday and the reliability one-pager for next week. And take care of yourself too, you carried a lot of the escalation even when you weren't the one getting paged.
+[20:13] Priya Nair: I will, thanks Jordan, and I appreciate you asking about the team first. This was a good one, see you at standup tomorrow.

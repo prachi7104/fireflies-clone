@@ -1,0 +1,733 @@
+[
+  {
+    "file": "01_weekly_product_sync.txt",
+    "title": "Weekly Product Sync",
+    "days_ago": 0,
+    "hours_ago": 3,
+    "source": "seed",
+    "extra_participants": [
+      "Ravi Menon"
+    ],
+    "notes": {
+      "overview": "The weekly sync focused on launch readiness for the redesigned pricing page, which ships next Tuesday behind a launch flag with Priya owning launch-day monitoring. The team also reviewed setup checklist completion, walked through three open launch bugs, and agreed to hold the press announcement until Thursday.",
+      "notes": [
+        "The redesigned pricing page is code complete and launches next Tuesday behind a flag that can be turned off within minutes.",
+        "The annual toggle defaults to on, and the monthly equivalent stays prominent so the default does not feel misleading.",
+        "Setup checklist completion rose to 41 percent from 36 percent, and the driver invite step is still the biggest drop-off.",
+        "Open launch bugs are a one-cent rounding error, the toggle resetting after the back button, and stale cached prices on the plans endpoint.",
+        "On small phones the plan comparison table will stack into cards, and the new illustrations will be compressed to recover load time.",
+        "The press announcement moves to Thursday so any rollback happens before the story goes live.",
+        "Checklist numbers stay out of launch messaging until a full cohort confirms the trend."
+      ],
+      "keywords": [
+        "pricing page",
+        "launch readiness",
+        "onboarding checklist",
+        "launch bugs",
+        "press date",
+        "annual toggle"
+      ],
+      "chapters": [
+        {
+          "title": "Pricing page launch readiness",
+          "at": "00:00",
+          "gist": "The redesigned pricing page is code complete, ships next Tuesday behind a launch flag, and Priya owns launch-day monitoring."
+        },
+        {
+          "title": "Onboarding checklist metrics",
+          "at": "08:54",
+          "gist": "Checklist completion reached 41 percent, with the driver invite step still causing the biggest drop-off."
+        },
+        {
+          "title": "Open launch bugs",
+          "at": "14:23",
+          "gist": "Priya walked through a rounding error, a toggle that resets after the back button, and stale cached prices on the plans endpoint."
+        },
+        {
+          "title": "Press date planning",
+          "at": "22:28",
+          "gist": "The team chose to announce on Thursday, two days after launch, once traffic has been stable."
+        },
+        {
+          "title": "Recap and next steps",
+          "at": "28:06",
+          "gist": "Jordan recapped owners and deadlines, and Priya added a short go/no-go check on Monday afternoon."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Send the stacked mobile comparison table mockup to Priya today",
+          "assignee": "Marcus Chen",
+          "at": "03:32",
+          "done": false
+        },
+        {
+          "text": "Write the rollback steps into the launch doc by Monday",
+          "assignee": "Priya Nair",
+          "at": "08:12",
+          "done": false
+        },
+        {
+          "text": "Pull checklist completion by step for the last two cohorts",
+          "assignee": "Jordan Lee",
+          "at": "11:59",
+          "done": false
+        },
+        {
+          "text": "Merge the cache header fix for the plans endpoint by Monday",
+          "assignee": "Ravi Menon",
+          "at": "18:44",
+          "done": false
+        },
+        {
+          "text": "Confirm the press date with the agency before the weekend",
+          "assignee": "Emily Park",
+          "at": "24:53",
+          "done": false
+        },
+        {
+          "text": "Send the go/no-go invite for Monday afternoon",
+          "assignee": "Jordan Lee",
+          "at": "29:27",
+          "done": false
+        }
+      ]
+    }
+  },
+  {
+    "file": "02_discovery_call_brightline.txt",
+    "title": "Discovery Call: Brightline Logistics",
+    "days_ago": 1,
+    "hours_ago": 2,
+    "source": "seed",
+    "extra_participants": [],
+    "notes": {
+      "overview": "Discovery call with Brightline Logistics, which builds routes for fourteen depots in spreadsheets and an aging dispatch system. Their biggest pains are late customer notifications and manual re-routing, and IT needs the nightly warehouse file and single sign-on covered. Both sides agreed to a six-week pilot at three depots, with a proposal covering both pricing models due next Wednesday.",
+      "notes": [
+        "Brightline runs fourteen depots and about three hundred drivers, building routes each morning from an overnight warehouse file in spreadsheets.",
+        "Customers only get a four-hour window the night before, so some depots field over two hundred where-is-my-driver calls a day.",
+        "Re-routing after a sick call or breakdown takes dispatchers up to an hour and happens a couple of times a week per depot.",
+        "Tom is fine with a nightly file drop for the pilot but needs single sign-on and wants the provisioning timeline in writing.",
+        "About eighty seasonal drivers make per stop pricing, roughly seven to ten cents a stop, the likely better fit.",
+        "The pilot covers Eastgate, Pine Hollow and the Harbor depot for six weeks, measured on depot calls, re-routing time and on-time windows."
+      ],
+      "keywords": [
+        "pilot",
+        "pricing models",
+        "customer notifications",
+        "re-routing",
+        "single sign-on",
+        "warehouse integration"
+      ],
+      "chapters": [
+        {
+          "title": "Introductions and goals",
+          "at": "00:00",
+          "gist": "Sofia framed the call around how Brightline dispatches today, where it hurts, and whether a pilot makes sense."
+        },
+        {
+          "title": "Current dispatch process",
+          "at": "02:20",
+          "gist": "Hannah described overnight order files, spreadsheet route building, and a twelve-year-old dispatch system with no new features."
+        },
+        {
+          "title": "Notification and re-routing pain",
+          "at": "07:06",
+          "gist": "Late customer notifications and manual re-routing after sick calls or breakdowns are Brightline's two biggest problems."
+        },
+        {
+          "title": "Integration and single sign-on",
+          "at": "17:06",
+          "gist": "Tom needs the nightly warehouse file, same-day orders and single sign-on handled, with provisioning in writing before a wider rollout."
+        },
+        {
+          "title": "Pricing models",
+          "at": "24:46",
+          "gist": "Sofia explained per active driver and per stop pricing, and per stop likely suits Brightline's seasonal peak."
+        },
+        {
+          "title": "Pilot scope and success",
+          "at": "30:57",
+          "gist": "Both sides agreed on a six-week pilot at three depots with measurable success criteria and a proposal due next Wednesday."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Send a sample warehouse export with anonymized orders",
+          "assignee": "Tom Becker",
+          "at": "19:19",
+          "done": false
+        },
+        {
+          "text": "Send the security overview and questionnaire answers to Tom",
+          "assignee": "Sofia Alvarez",
+          "at": "24:04",
+          "done": false
+        },
+        {
+          "text": "Confirm the three pilot depots with depot managers by Friday",
+          "assignee": "Hannah Schmidt",
+          "at": "31:51",
+          "done": false
+        },
+        {
+          "text": "Send Tom time options for a technical kickoff with Priya",
+          "assignee": "Jordan Lee",
+          "at": "33:20",
+          "done": true
+        },
+        {
+          "text": "Send the pilot proposal with pricing for both models by next Wednesday",
+          "assignee": "Sofia Alvarez",
+          "at": "37:10",
+          "done": false
+        }
+      ]
+    }
+  },
+  {
+    "file": "03_sprint_18_planning.txt",
+    "title": "Sprint 18 Planning",
+    "days_ago": 3,
+    "hours_ago": 1,
+    "source": "seed",
+    "extra_participants": [],
+    "notes": {
+      "overview": "Sprint 18 planning set capacity at about 34 points because Ravi is on call and a frontend engineer is out. The team scoped search down to a sixteen-point phase one and added a ten-point feature flag service so the next pricing experiment has trustworthy assignment. The time zone and photo upload bugs are committed, with the import fix as a stretch goal.",
+      "notes": [
+        "Capacity is about 34 points instead of 42, and Ravi's on-call week may cost more than the half capacity planned.",
+        "The oversensitive queue alert gets retuned during on call, while scaling the queue workers goes to the backlog with a clear owner.",
+        "Search phase one covers orders, stops and drivers with typo tolerance and grouped results, and recent searches and filters move to phase two.",
+        "Depot permissions must be enforced inside the search index so results never leak across depots.",
+        "The quick split script reshuffled returning visitors, so a feature flag service with sticky assignment, exposure logging and a kill switch comes before the next pricing test.",
+        "The time zone notification bug and photo upload retries are committed, and the import fix is a stretch goal."
+      ],
+      "keywords": [
+        "sprint planning",
+        "search revamp",
+        "feature flags",
+        "pricing experiment",
+        "on-call load",
+        "bug triage"
+      ],
+      "chapters": [
+        {
+          "title": "Capacity and on-call load",
+          "at": "00:00",
+          "gist": "Capacity drops to about 34 points with Ravi on call and a frontend engineer out, and noisy queue alerts get retuned."
+        },
+        {
+          "title": "Search revamp scope",
+          "at": "05:15",
+          "gist": "Search was cut to a phase one covering orders, stops and drivers with typo tolerance and grouped results, estimated at sixteen points."
+        },
+        {
+          "title": "Flags for pricing experiments",
+          "at": "15:43",
+          "gist": "A small feature flag service with sticky assignment, exposure logging and a kill switch replaces the quick split script before the next pricing test."
+        },
+        {
+          "title": "Bug triage",
+          "at": "25:01",
+          "gist": "Priya's top five bugs were reviewed, and the time zone and photo upload fixes made the sprint while the import fix became a stretch goal."
+        },
+        {
+          "title": "Sprint commitments",
+          "at": "40:14",
+          "gist": "The sprint goal covers search phase one, experiment flags and the top two bugs, with early warning if on call squeezes the flag work."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Send final search results designs to Priya by Wednesday",
+          "assignee": "Marcus Chen",
+          "at": "12:22",
+          "done": false
+        },
+        {
+          "text": "Write up how the search index handles depot permissions",
+          "assignee": "Ravi Menon",
+          "at": "14:00",
+          "done": false
+        },
+        {
+          "text": "Write the experiment requirements for the flag service by Tuesday",
+          "assignee": "Jordan Lee",
+          "at": "22:24",
+          "done": false
+        },
+        {
+          "text": "Fix the time zone formatting in customer notifications",
+          "assignee": "Priya Nair",
+          "at": "28:25",
+          "done": false
+        },
+        {
+          "text": "Break search phase one into tickets and update the board",
+          "assignee": "Priya Nair",
+          "at": "41:07",
+          "done": true
+        }
+      ]
+    }
+  },
+  {
+    "file": "04_onboarding_design_review.txt",
+    "title": "Onboarding Flow Design Review",
+    "days_ago": 6,
+    "hours_ago": 4,
+    "source": "seed",
+    "extra_participants": [],
+    "notes": {
+      "overview": "Design review of the new onboarding flow, which cuts signup from seven steps to four by deferring vehicle setup and driver invites. The team reviewed new empty states, a five-item setup checklist and a plain, warm copy voice, shaped heavily by Daniel's feedback from customer sessions.",
+      "notes": [
+        "Signup shrinks to work email, company and fleet size, first depot, and import stops or a sample day, with email verification in the background.",
+        "Vehicle types default to standard vans with a visible inline link to change them, and fleet size becomes a range picker.",
+        "Sample data gets a persistent banner, a one-click clear button and obviously fake names after trial users mistook it for real orders.",
+        "The drivers page will accept a pasted list of phone numbers, and the notifications page will preview the real customer message.",
+        "The setup checklist has five items, collapses after three, and its progress should be visible to customer success in the admin view.",
+        "Copy will be plain, direct and warm, with verbs on buttons and exclamation marks reserved for checklist completion.",
+        "Helper text will explain that a depot can be a warehouse, hub or yard, and marketing will add a short walkthrough video."
+      ],
+      "keywords": [
+        "onboarding flow",
+        "signup steps",
+        "empty states",
+        "setup checklist",
+        "copy tone",
+        "sample data"
+      ],
+      "chapters": [
+        {
+          "title": "Seven steps to four",
+          "at": "00:00",
+          "gist": "Marcus proposed cutting signup to four steps, with vehicle types defaulted and driver invites moved into the setup checklist."
+        },
+        {
+          "title": "Empty states",
+          "at": "10:20",
+          "gist": "Empty states now offer a clearly labeled sample day, a drivers page that accepts pasted phone numbers, and a live notification preview."
+        },
+        {
+          "title": "Setup checklist",
+          "at": "17:45",
+          "gist": "A five-item checklist collapses after three items, disappears when complete, and should show progress to customer success."
+        },
+        {
+          "title": "Copy tone",
+          "at": "22:38",
+          "gist": "The team agreed on a plain, direct and warm voice with verbs on buttons and no jokes in error messages."
+        },
+        {
+          "title": "Customer feedback and recap",
+          "at": "27:33",
+          "gist": "Daniel raised confusion over the word depot and requests for a short walkthrough video before Jordan recapped the decisions."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Finalize the four-step signup flow and share it with engineering by Thursday",
+          "assignee": "Marcus Chen",
+          "at": "09:36",
+          "done": false
+        },
+        {
+          "text": "Add a persistent sample data banner with a one-click clear button",
+          "assignee": "Marcus Chen",
+          "at": "13:56",
+          "done": false
+        },
+        {
+          "text": "Write up the admin-view checklist progress requirement and follow up with Priya",
+          "assignee": "Jordan Lee",
+          "at": "21:17",
+          "done": false
+        },
+        {
+          "text": "Rewrite the signup, empty state and checklist copy by next Tuesday",
+          "assignee": "Emily Park",
+          "at": "26:17",
+          "done": false
+        },
+        {
+          "text": "Line up three customers for usability sessions on the new flow",
+          "assignee": "Daniel Okafor",
+          "at": "30:55",
+          "done": true
+        }
+      ]
+    }
+  },
+  {
+    "file": "05_one_on_one_jordan_priya.txt",
+    "title": "1:1 Jordan / Priya",
+    "days_ago": 9,
+    "hours_ago": 2,
+    "source": "seed",
+    "extra_participants": [],
+    "notes": {
+      "overview": "Jordan and Priya's one-on-one covered team health after the driver sync escalation, the senior backend hire, and an on-call rotation that is not sustainable. Priya wants to grow into managing a larger team and will own the reliability theme, and she flagged that the roadmap assumes the new hire is productive too early.",
+      "notes": [
+        "The team is fatigued rather than frustrated after the escalation, and engineers outside the backend felt sidelined without defined incident roles.",
+        "Two strong finalists are in the last round for the senior backend role, with a realistic start about seven or eight weeks out.",
+        "A ninety-minute paired session on a simplified real problem will replace the four-hour take-home exercise.",
+        "On call averages nine pages a week, so the plan is an alert cleanup, a daytime secondary rotation and recovery mornings after heavy weeks.",
+        "Priya wants to move toward managing a larger team and will build strategy and customer exposure by owning the reliability theme.",
+        "Priya recommended sequencing single sign-on before audit logs and limiting the mobile refresh to phase one rather than cutting scope."
+      ],
+      "keywords": [
+        "team health",
+        "hiring",
+        "on-call load",
+        "incident roles",
+        "growth goals",
+        "roadmap scope"
+      ],
+      "chapters": [
+        {
+          "title": "Team health check",
+          "at": "00:00",
+          "gist": "Priya described a tired but steady team after the escalation, and they agreed to define incident roles so everyone knows where to help."
+        },
+        {
+          "title": "Senior backend hiring",
+          "at": "03:54",
+          "gist": "Two finalists are in the last round, Jordan will run the product interview, and a paired session replaces the four-hour take-home."
+        },
+        {
+          "title": "On-call load",
+          "at": "08:32",
+          "gist": "The three-person rotation averages nine pages a week, so noisy alerts get cut, a daytime secondary is added, and heavy weeks earn a recovery morning."
+        },
+        {
+          "title": "Priya's growth goals",
+          "at": "12:23",
+          "gist": "Priya wants to grow into managing a larger team and will own the reliability theme end to end while joining more customer calls."
+        },
+        {
+          "title": "Roadmap scope concerns",
+          "at": "16:04",
+          "gist": "Priya proposed sequencing single sign-on before audit logs and keeping the mobile refresh to phase one, and Jordan will take a cut line to leadership."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Draft incident roles and share them with the team by next Friday",
+          "assignee": "Priya Nair",
+          "at": "03:23",
+          "done": false
+        },
+        {
+          "text": "Run the product interview for both senior backend finalists",
+          "assignee": "Jordan Lee",
+          "at": "05:53",
+          "done": true
+        },
+        {
+          "text": "Write up the on-call changes and share them with Jordan by Friday",
+          "assignee": "Priya Nair",
+          "at": "11:46",
+          "done": true
+        },
+        {
+          "text": "Write a one-page plan for the reliability theme",
+          "assignee": "Priya Nair",
+          "at": "14:46",
+          "done": true
+        },
+        {
+          "text": "Take a proposed roadmap cut line to leadership next week",
+          "assignee": "Jordan Lee",
+          "at": "18:00",
+          "done": false
+        }
+      ]
+    }
+  },
+  {
+    "file": "06_pricing_experiment_readout.txt",
+    "title": "Pricing Page Experiment Readout",
+    "days_ago": 13,
+    "hours_ago": 3,
+    "source": "upload",
+    "extra_participants": [
+      "Daniel Okafor"
+    ],
+    "notes": {
+      "overview": "Readout of the first pricing page experiment, which defaulted the plan toggle to annual. The annual share of self-serve checkouts rose from 22 to 34 percent while checkout conversion held inside the guardrail, so the annual default ships with the redesigned page. The next test will be a cost estimator that helps visitors choose between per driver and per stop, run on the new flag service.",
+      "notes": [
+        "Defaulting the toggle to annual lifted annual plan share from 22 to 34 percent, or 23 to 33 percent using first assignments only.",
+        "The quick split script reshuffled returning visitors into a 53 to 47 split, so sticky assignment is mandatory for future tests.",
+        "Checkout conversion moved from 3.1 to 3.0 percent, well within the guardrail of no more than a five percent relative drop.",
+        "Prospects now raise annual terms earlier, while a couple of small fleets found the default slightly pushy.",
+        "About a third of sales calls include confusion about per driver versus per stop, and unsure visitors tend to request demos.",
+        "Forecasts will use the lower bound of the effect, and refund and downgrade requests will be tracked for sixty days."
+      ],
+      "keywords": [
+        "pricing page",
+        "a/b test",
+        "annual toggle",
+        "guardrail metric",
+        "cost estimator",
+        "sales feedback"
+      ],
+      "chapters": [
+        {
+          "title": "Experiment setup and results",
+          "at": "00:00",
+          "gist": "Defaulting the pricing page toggle to annual raised the annual share of self-serve checkouts from 22 to 34 percent."
+        },
+        {
+          "title": "Guardrail and refunds",
+          "at": "05:10",
+          "gist": "Checkout conversion held at 3.1 versus 3.0 percent, well inside the guardrail, and refund requests will be tracked for sixty days."
+        },
+        {
+          "title": "Sales feedback",
+          "at": "08:18",
+          "gist": "Prospects raise annual terms earlier, a few found the default pushy, and many struggle to choose between per driver and per stop."
+        },
+        {
+          "title": "Decision to ship",
+          "at": "13:44",
+          "gist": "The annual default ships with the redesigned page alongside a clearer trial message, and forecasts will use the lower bound."
+        },
+        {
+          "title": "Next experiment design",
+          "at": "17:04",
+          "gist": "A cost estimator comparing per driver and per stop will be tested once the new flag service supports sticky assignment."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Track refund and downgrade requests from annual sign-ups for sixty days",
+          "assignee": "Daniel Okafor",
+          "at": "07:38",
+          "done": false
+        },
+        {
+          "text": "Collect per driver versus per stop questions from the last twenty sales calls",
+          "assignee": "Sofia Alvarez",
+          "at": "12:27",
+          "done": true
+        },
+        {
+          "text": "Update the redesign spec with the annual default and trial message",
+          "assignee": "Emily Park",
+          "at": "14:21",
+          "done": true
+        },
+        {
+          "text": "Write the hypothesis and success metrics for the estimator test",
+          "assignee": "Jordan Lee",
+          "at": "22:39",
+          "done": false
+        },
+        {
+          "text": "Document the split script issue and how the flag service fixes it",
+          "assignee": "Ravi Menon",
+          "at": "23:56",
+          "done": true
+        }
+      ]
+    }
+  },
+  {
+    "file": "07_customer_escalations_triage.txt",
+    "title": "Customer Escalations Triage",
+    "days_ago": 20,
+    "hours_ago": 5,
+    "source": "seed",
+    "extra_participants": [],
+    "notes": {
+      "overview": "Triage of driver app sync failures at Fernhollow Grocers and Redwick Parcel, traced to a token refresh race introduced when login token lifetimes were shortened. No delivery data was lost, a server-side grace window ships today with an app fix to follow, and Redwick will be offered an SLA credit before they ask. Daniel owns customer communication and Priya will run a blameless postmortem.",
+      "notes": [
+        "About forty Redwick drivers and fifteen Fernhollow drivers stopped syncing after the release that cut login token lifetime from twenty-four hours to one.",
+        "Concurrent token refreshes after offline stretches triggered reuse detection, which revoked sessions while the app kept queueing data locally.",
+        "No data was lost, and logging out and back in flushes the queue, which is the interim workaround for drivers.",
+        "A thirty-second grace window for reused refresh tokens fixes every app version server-side, and a single-flight refresh ships in the next app release.",
+        "Roughly nine hours of degraded sync breaches Redwick's 99.5 percent availability commitment, so a credit will be offered proactively.",
+        "Eleven other customers saw a few revoked sessions and will get a short proactive note once the fix is live.",
+        "Prevention work covers offline testing, a per-customer sync failure alert and staged rollouts for login changes."
+      ],
+      "keywords": [
+        "driver app sync",
+        "token refresh",
+        "sla credit",
+        "customer comms",
+        "postmortem",
+        "staged rollout"
+      ],
+      "chapters": [
+        {
+          "title": "Sync failure reports",
+          "at": "00:00",
+          "gist": "Daniel reported driver apps at Fernhollow Grocers and Redwick Parcel silently stopping sync for about fifty-five drivers over three days."
+        },
+        {
+          "title": "Token refresh root cause",
+          "at": "01:16",
+          "gist": "Concurrent refreshes after offline stretches made the server treat a reused token as suspicious and revoke the session while the app kept queueing data."
+        },
+        {
+          "title": "Fix plan",
+          "at": "04:41",
+          "gist": "A server-side grace window ships today, and a single-flight refresh in the app follows after store review."
+        },
+        {
+          "title": "SLA impact",
+          "at": "06:33",
+          "gist": "Redwick's roughly nine hours of degraded sync breaches its availability commitment, so the team will offer a credit proactively."
+        },
+        {
+          "title": "Customer comms plan",
+          "at": "09:24",
+          "gist": "Daniel will send written incident summaries and call both operations leads, and eleven lightly affected customers get a shorter note once the fix is live."
+        },
+        {
+          "title": "Postmortem and prevention",
+          "at": "13:47",
+          "gist": "Priya will run a blameless postmortem covering offline testing gaps, a per-customer sync alert, staged rollouts for login changes and a customer timeline."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Deploy the server-side grace window for reused refresh tokens",
+          "assignee": "Ravi Menon",
+          "at": "05:36",
+          "done": true
+        },
+        {
+          "text": "Confirm the SLA credit amount for Redwick with finance",
+          "assignee": "Jordan Lee",
+          "at": "09:04",
+          "done": true
+        },
+        {
+          "text": "Send incident summaries to both customers and call their operations leads",
+          "assignee": "Daniel Okafor",
+          "at": "10:42",
+          "done": true
+        },
+        {
+          "text": "Send a short note to the eleven other affected customers once the fix is live",
+          "assignee": null,
+          "at": "13:20",
+          "done": true
+        },
+        {
+          "text": "Write the postmortem and schedule the review for Thursday",
+          "assignee": "Priya Nair",
+          "at": "13:47",
+          "done": true
+        },
+        {
+          "text": "Add an alert on driver sync failures per customer",
+          "assignee": "Ravi Menon",
+          "at": "15:11",
+          "done": false
+        }
+      ]
+    }
+  },
+  {
+    "file": "08_q4_roadmap_review.txt",
+    "title": "Q4 Roadmap Review",
+    "days_ago": 33,
+    "hours_ago": 2,
+    "source": "upload",
+    "extra_participants": [
+      "Ravi Menon"
+    ],
+    "notes": {
+      "overview": "The Q4 roadmap review set three themes, reliability, enterprise readiness and self-serve growth, with a rule that new work must displace existing work. The team agreed on a pricing and packaging update with three tiers and notifications included everywhere, a single sign-on beta in about four weeks, and a functional mobile phase one before customers' peak-season freeze. Audit logs were named as the first item to slip if the senior backend hire starts late.",
+      "notes": [
+        "Reliability targets are 99.9 percent sync success, notifications within sixty seconds for 99 percent of events, and under four pages per on-call week.",
+        "Single sign-on blocks four deals worth about six hundred thousand in annual revenue, and a beta for two design partners is targeted in about four weeks.",
+        "Automatic user provisioning is explicitly kept out of the single sign-on promise to protect the timeline.",
+        "Per active driver and per stop pricing both stay, packaged into Starter, Growth and Enterprise tiers with notifications included in every tier.",
+        "Self-serve aims to lift trial to paid conversion from nine to twelve percent, mainly through the onboarding redesign.",
+        "The mobile refresh is limited to tap targets, the stop list and sync status before the peak-season freeze, with visuals moving to Q1.",
+        "Packaging changes apply only to new customers until January to avoid extra support load during peak season."
+      ],
+      "keywords": [
+        "q4 roadmap",
+        "reliability",
+        "enterprise readiness",
+        "pricing and packaging",
+        "single sign-on",
+        "mobile app refresh"
+      ],
+      "chapters": [
+        {
+          "title": "Q4 themes",
+          "at": "00:00",
+          "gist": "Jordan set three Q4 themes, reliability, enterprise readiness and self-serve growth, with a rule that anything added must displace something else."
+        },
+        {
+          "title": "Reliability goals",
+          "at": "03:56",
+          "gist": "Priya set targets for sync success, notification latency and on-call pages, with queue scaling as the first fix."
+        },
+        {
+          "title": "Enterprise asks",
+          "at": "09:42",
+          "gist": "Single sign-on blocks four deals worth about six hundred thousand, audit logs come second, and a beta is targeted in about four weeks."
+        },
+        {
+          "title": "Pricing, packaging and self-serve",
+          "at": "18:11",
+          "gist": "Both pricing models stay, packaging moves to three tiers with notifications in all of them, and self-serve targets twelve percent trial conversion."
+        },
+        {
+          "title": "Mobile app refresh",
+          "at": "31:20",
+          "gist": "The mobile refresh was cut to a functional phase one before the peak-season freeze, with the visual redesign moving to Q1."
+        },
+        {
+          "title": "Sequencing and risks",
+          "at": "39:44",
+          "gist": "Queue scaling and single sign-on start first, audit logs slip first if hiring runs late, and packaging changes skip existing customers until after peak."
+        }
+      ],
+      "action_items": [
+        {
+          "text": "Deliver the single sign-on beta to two design partners",
+          "assignee": "Priya Nair",
+          "at": "12:30",
+          "done": true
+        },
+        {
+          "text": "Send Jordan the deals blocked on single sign-on or audit logs by Friday",
+          "assignee": "Sofia Alvarez",
+          "at": "15:24",
+          "done": true
+        },
+        {
+          "text": "Collect audit log requirements from the five largest accounts",
+          "assignee": "Daniel Okafor",
+          "at": "17:13",
+          "done": true
+        },
+        {
+          "text": "Draft the packaging change announcement for existing customers",
+          "assignee": "Emily Park",
+          "at": "24:47",
+          "done": false
+        },
+        {
+          "text": "Scope mobile phase one and share it with Priya by next Wednesday",
+          "assignee": "Marcus Chen",
+          "at": "37:03",
+          "done": true
+        },
+        {
+          "text": "Publish the Q4 roadmap one-pager by Monday",
+          "assignee": "Jordan Lee",
+          "at": "48:23",
+          "done": true
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,50 @@
+[00:00] Jordan Lee: Okay, let's get started, I know everyone's busy this week. Ravi is joining but he's heads down on a fix, so he's just listening in. Four things today, pricing page launch readiness, the onboarding checklist numbers, open bugs, and the press date with marketing.
+[00:44] Priya Nair: Sure, so the redesigned pricing page is code complete and has been on staging for two days. QA finished the full regression pass yesterday afternoon, and we're down to three open bugs, which I'll walk through in a minute. Nothing I'd call scary yet.
+[01:32] Jordan Lee: Good. And just so everyone has the same picture, the launch is still next Tuesday, and it ships behind the launch flag, so we can turn it off in minutes if something looks wrong. Marcus, where are we on final visual QA?
+[02:10] Marcus Chen: Mostly done. Desktop looks right, and the annual toggle defaults to on, like we decided after the experiment. The one thing I'm not happy with is the plan comparison table on small phones, it overflows sideways and the per stop column gets cut off.
+[02:54] Priya Nair: Yeah, I saw that one in the QA notes. It's a small CSS fix, but I'd rather Marcus decide what the table should do on small screens before we patch it, whether it stacks or scrolls.
+[03:32] Marcus Chen: I'd stack it. Each plan becomes a card with the key limits on top and the full feature list collapsed underneath. I'll mock that up today and send it to Priya by end of day, so the fix can go in well before launch.
+[04:14] Jordan Lee: That works for me. Emily, from the marketing side, is the copy locked? I know sales had opinions about how we explain per driver versus per stop pricing.
+[04:56] Emily Park: The copy is locked as of this morning. We kept per driver as the headline because that's how most customers think about their fleet, and per stop sits underneath as the option for seasonal or high-volume operations. Sofia signed off on the wording for her team.
+[05:38] Jordan Lee: Great. One thing I want to double check is the annual toggle. The experiment showed a real lift in annual plans, but we need to make sure the monthly price is still visible when the toggle is on, otherwise people feel tricked.
+[06:26] Marcus Chen: It is. When annual is on, we show the monthly equivalent in large type with the yearly total underneath, and switching back to monthly is one tap away. Legal reviewed that pattern last week.
+[07:01] Priya Nair: On the engineering side, the rollout plan is simple. We turn the flag on Tuesday morning, watch checkout errors and conversion for four hours, and if anything looks off, we turn it back off and investigate.
+[07:39] Jordan Lee: And who's watching those dashboards on Tuesday? I don't want it to be everyone, because that usually means no one.
+[08:12] Priya Nair: I'll own it, with Ravi as backup. I'll also write the rollback steps into the launch doc by Monday, so anyone on the team can turn the flag off without waiting for me.
+[08:54] Jordan Lee: Perfect. Let's move to the onboarding checklist, because I promised leadership an update this week. Marcus, you pulled the completion numbers?
+[09:28] Marcus Chen: I did. For workspaces created in the last thirty days, 41 percent completed the full setup checklist, up from 36 percent the month before. The biggest drop is still the step where you invite your drivers, about a third of people stall there.
+[10:09] Jordan Lee: That lines up with what Daniel keeps hearing. Dispatchers sign up at their desk, but they don't have driver phone numbers handy, so they leave to find them and never come back to finish.
+[10:45] Marcus Chen: Right, and that's why the new design lets you skip the invite step and add drivers later from the dashboard. That ships next sprint, so these numbers are our baseline.
+[11:22] Emily Park: Can I ask for one thing there? If checklist completion keeps improving, I'd love to use it in the launch story. Even a directional number helps when we talk about making Relay easier to adopt.
+[11:59] Jordan Lee: Let's be careful with that, a month of baseline isn't a story yet. I'll pull completion by step for the last two cohorts and share it with Emily next week, and then we decide together what's solid enough to say publicly.
+[12:42] Emily Park: That's fair, I'd rather wait for a clean number than walk something back after the press picks it up.
+[13:12] Priya Nair: One more data point on onboarding. The median time from signup to the first planned route dropped to about two days, but that's mostly the sample routes we added, so I wouldn't read too much into it.
+[13:48] Marcus Chen: Agreed. Sample routes make the dashboard look alive, but people still have to import their own stops before Relay is useful to them.
+[14:23] Jordan Lee: Okay, good discussion, let's park onboarding there. Priya, can you walk us through the open bugs on the pricing page?
+[14:58] Priya Nair: Sure. First, the yearly total for the per stop plan is one cent off from what checkout actually charges, because of a rounding difference in the price component. That one is already fixed on a branch.
+[15:40] Jordan Lee: One cent sounds small, but it's exactly the kind of thing that ends up in a screenshot on social media. What's the second one?
+[16:13] Priya Nair: Second, if you switch to monthly, click through to checkout, and then hit back, the page resets to annual. We'll keep the toggle state in the page address, so it survives the back button.
+[16:52] Marcus Chen: That one worries me more than the rounding, honestly. If someone deliberately picks monthly and we flip it back to annual, that's a trust problem, not a bug.
+[17:27] Priya Nair: Agreed, it's top of the list. The third bug is the plans endpoint serving stale prices from cache for up to an hour after we change them in the admin panel. Ravi is patching the cache headers right now, which is why he's quiet today.
+[18:10] Jordan Lee: Thanks, Ravi. Is that fix going to be done before Tuesday? I really don't want to launch with prices that might be out of date.
+[18:44] Priya Nair: Ravi will have the cache fix merged by Monday, and I'll review it myself. Then we clear the cache once more right before launch, as a step in the launch checklist.
+[19:20] Emily Park: Are there any bugs that would change what the page looks like? I'm asking because the agency needs press kit screenshots well before the announcement.
+[20:00] Marcus Chen: Only the mobile table, everything else is behavior, not layout. I can take the press screenshots from staging as soon as the table fix is in.
+[20:37] Jordan Lee: Good. So nothing we'd call a launch blocker once those three are closed? Priya, anything else lurking in the backlog that I should know about?
+[21:17] Priya Nair: There's a tooltip that still says driver seats instead of active drivers, which is a copy fix. And the page loads a bit slower than the old one because of the new illustrations, but it's still within our budget.
+[21:56] Marcus Chen: I can compress the illustrations further. We're using the original files because I ran out of time, not because we need that quality.
+[22:28] Jordan Lee: Let's do that, it's a cheap win. Okay, Emily, let's talk about the press date, since that's the part I'm least sure about.
+[23:05] Emily Park: So the agency pitched two options. One is to announce on launch day, Tuesday, and the other is to wait until Thursday, so we have two days of stable traffic first. I'd lean toward Thursday.
+[23:46] Jordan Lee: I agree with Thursday. If we have to roll back on Tuesday, the last thing I want is a story going live at the same time.
+[24:18] Priya Nair: Same from engineering. Two days gives us time to fix anything small, and the rollback plan is a lot less stressful when nobody outside the company is watching.
+[24:53] Emily Park: Okay, then we need to confirm the press date with the agency before the weekend, and I'll call them this afternoon. They also want a short quote from someone on the product side.
+[25:37] Jordan Lee: I can do the quote. Send me a draft in the voice you want and I'll edit it, that's usually faster than me starting from a blank page.
+[26:19] Emily Park: Will do. I'll send you the customer announcement email and the quote draft by Monday, and the sales one-pager goes to Sofia's team at the same time.
+[26:54] Marcus Chen: Should the email include the new screenshots? If so, I'll send final pricing page screenshots to Emily by Monday, both desktop and mobile.
+[27:32] Emily Park: Yes please, desktop and mobile. And if there's a short screen recording of the annual toggle, that would be great for the social posts.
+[28:06] Jordan Lee: Okay, let me recap. Marcus sends the mobile table mockup today and the screenshots by Monday. Priya writes the rollback steps and owns launch monitoring. Ravi merges the cache fix, and Emily confirms the press date and sends her drafts.
+[28:46] Priya Nair: One addition, can we do a quick go/no-go check on Monday afternoon? Fifteen minutes, just to look at the bug list and the dashboards together before we flip anything.
+[29:27] Jordan Lee: Yes, I'll send the go/no-go invite for Monday afternoon right after this. And I'll pull those checklist numbers by step, like I said. Anything else before we wrap?
+[30:09] Marcus Chen: Nothing from me. I'll post the mockup in the design channel so everyone can see it.
+[30:42] Emily Park: All good here. Thanks, everyone, this launch is in much better shape than I expected a couple of weeks ago.
+[31:18] Jordan Lee: Agreed, genuinely nice work from all of you. Let's keep the bug list tight and talk again on Monday for the go/no-go.

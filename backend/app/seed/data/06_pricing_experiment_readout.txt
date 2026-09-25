@@ -1,0 +1,44 @@
+[00:00] Jordan Lee: Okay, let's get into it. This is the readout for the first pricing page experiment, the annual plan toggle defaulted on. Emily ran the analysis, Ravi is here for data questions, Sofia brings the sales view, and Daniel is listening in for the customer side.
+[00:46] Emily Park: Thanks. A quick recap of the setup. For three weeks, half of pricing page visitors saw the page as it is, with monthly selected, and the other half saw annual selected by default. Nothing else changed, same prices, same layout.
+[01:25] Jordan Lee: And the primary metric was the share of self-serve checkouts that choose an annual plan, with overall checkout conversion as the guardrail, right? I want everyone to hear the metrics before the numbers.
+[02:06] Emily Park: Exactly. The primary metric went from 22 percent annual in control to 34 percent in the variant. That's a big jump, and it holds up even with the caveat Ravi is about to explain.
+[02:44] Ravi Menon: Yeah, so the caveat. The split wasn't clean, we ended up with 53 percent of visitors in control and 47 in the variant. The quick split script assigned people on every visit instead of once, so returning visitors got reshuffled.
+[03:26] Jordan Lee: How much should that worry us? An imbalance like that sounds small, but I know it can mean something is broken underneath.
+[04:00] Ravi Menon: In this case we know what broke, so I re-ran everything using only each visitor's first assignment. The numbers barely moved, 23 percent versus 33 percent. So I trust the direction and the size, but the next test really needs proper sticky assignment.
+[04:39] Emily Park: Those first-assignment numbers are the ones in the readout doc, by the way. I didn't want to present anything built on the reshuffled data.
+[05:10] Jordan Lee: Good call. What about the guardrail? A higher annual share doesn't mean much if fewer people check out at all.
+[05:41] Emily Park: Checkout conversion was 3.1 percent in control and 3.0 percent in the variant. That's within noise, and well inside the guardrail we set, which allowed no more than a five percent relative drop. So we didn't scare people away.
+[06:26] Ravi Menon: One nuance there. Time on the pricing page went up by about twenty seconds in the variant. My read is that people pause to check the monthly equivalent, which is fine, but worth watching if we add anything else to that page.
+[07:07] Jordan Lee: Interesting. Emily, is there anything in the data about what happens after checkout, like refunds or downgrades from annual to monthly?
+[07:38] Emily Park: It's too early to tell. Annual plans can be refunded within thirty days, and the test only ended last week. Daniel's team is going to track refund and downgrade requests from annual sign-ups for the next sixty days, he set that up before this call.
+[08:18] Jordan Lee: Good, that's the right safety net. Sofia, what are you hearing from the sales side? Did the new default show up in conversations at all?
+[08:51] Sofia Alvarez: It did, in a few ways. Mostly positive, prospects who come in through the pricing page now ask about annual terms before I bring them up, which saves me a whole negotiation step. Two people did say the default felt a bit pushy, though.
+[09:34] Jordan Lee: Pushy in what way? Did they feel misled about what they'd pay, or just nudged harder than they liked?
+[10:04] Sofia Alvarez: Just nudged. Both saw the monthly equivalent and understood it. One said it felt like we assumed they'd commit before trying the product, which is fair for a small fleet with no history with us.
+[10:41] Emily Park: That's a useful signal for the redesign. We can keep the default but make the trial message more prominent, so it's clear you aren't committing to anything today.
+[11:12] Sofia Alvarez: The bigger pattern, honestly, isn't the toggle, it's per driver versus per stop. About a third of my calls this month included someone asking which model they should pick, and the pricing page doesn't help them decide.
+[11:53] Ravi Menon: The data backs that up. Visitors who open the per stop tooltip are twice as likely to request a demo instead of checking out. It looks like the page sends people to sales whenever they're unsure.
+[12:27] Jordan Lee: That's not necessarily bad for big fleets, but it's expensive for small ones. Sofia, could you collect the actual questions from your last twenty calls, word for word if you can, so we design the next test around real confusion?
+[13:09] Sofia Alvarez: I can do that. I'll pull them from my call notes and send them to you and Emily by next Wednesday, and I'll mark which ones came from small fleets and which from bigger operations.
+[13:44] Jordan Lee: Okay, let's decide on this test before we talk about the next one. My proposal is that we ship annual as the default on the redesigned pricing page, and add the clearer trial message Emily mentioned.
+[14:21] Emily Park: Agreed. The primary metric moved a lot, the guardrail held, and the qualitative feedback is manageable. I'll update the redesign spec with the annual default and the trial message today.
+[14:58] Sofia Alvarez: I'm on board. From sales, I'd only ask that we don't hide the monthly option from small fleets. If it's still one click away, I'm happy.
+[15:30] Ravi Menon: No objections from data. I'd just like it on record that the effect might shrink once the novelty wears off, so we shouldn't bake 34 percent into the revenue forecast.
+[16:02] Jordan Lee: Fair, let's use the lower bound in any forecast. Emily, please share the readout with leadership by Friday, with Ravi's caveat and the lower bound up front.
+[16:33] Emily Park: Will do. I'll send it on Thursday, so there's time for questions before their Friday meeting.
+[17:04] Jordan Lee: Now the next experiment. Based on what Sofia and Ravi just said, I think the biggest opportunity is helping people choose between per driver and per stop, not squeezing more out of the toggle.
+[17:38] Emily Park: I've been sketching something for that. A small cost estimator on the pricing page, where you enter your number of drivers and roughly how many stops you do a month, and it shows the monthly cost under both models.
+[18:14] Sofia Alvarez: I love that, as long as the number is honest. If the estimator says per stop is cheaper and then my quote comes in higher, I've lost the deal before the first call.
+[18:53] Emily Park: It would use the same list prices you quote from, and show a range rather than a single number. Anything above fifty drivers gets a talk to sales prompt instead of an estimate.
+[19:31] Ravi Menon: For this one, we can't use the old split script. We need sticky assignment, exposure logging, and a kill switch, which is the flag work Priya wants in the next sprint. I'd rather wait two weeks than run another test we have to caveat.
+[20:12] Jordan Lee: Agreed, no more caveats. What would the primary metric be? I'd lean toward checkout conversion for small fleets and demo requests for larger ones.
+[20:48] Emily Park: That's two metrics, which makes the test longer. I'd pick one, completed checkouts plus qualified demo requests combined, and keep the annual share as a guardrail, so the estimator doesn't undo what we just won.
+[21:22] Ravi Menon: Combining them works if we agree on what a qualified demo request is. If sales gives us a definition, I can compute it from the form data.
+[21:58] Sofia Alvarez: A qualified request is more than fifteen drivers and a work email, that's what we already use to route leads. I'll write it down properly so there's no ambiguity.
+[22:39] Jordan Lee: Great. I'll write the hypothesis and success metrics for the estimator test by next Monday. Emily, could you work with Marcus on a rough mockup of the estimator, so we can show it to a few customers?
+[23:19] Emily Park: Yes, I'll grab time with Marcus this week. We'll aim for something rough rather than polished, so the feedback is about the idea and not the colors.
+[23:56] Ravi Menon: I'll write a short note on what went wrong with the split script and how the new flag service fixes it, so everyone knows why we're waiting. I can have it done by Thursday.
+[24:30] Jordan Lee: That note will be really useful, especially for leadership, who will ask why we didn't just run the next test right away. Anything else before we wrap?
+[25:05] Sofia Alvarez: Just one thing. Can sales get a heads-up before the redesigned page goes live? If prospects see a different page mid-conversation, I want my team ready for their questions.
+[25:38] Emily Park: Absolutely. I'll run a short enablement session for sales the week before launch, with screenshots and the new trial message.
+[26:09] Jordan Lee: Perfect. So we ship the annual default with the redesign, Daniel tracks refunds, Sofia collects the questions, I write the next hypothesis, and Ravi documents the split issue. Thanks, everyone, good readout.

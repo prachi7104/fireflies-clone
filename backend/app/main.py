@@ -8,6 +8,7 @@ from app.core.config import Settings, get_settings
 from app.core.database import create_db_engine, init_db
 from app.core.errors import register_exception_handlers
 from app.routers import action_items, meetings, meta, participants, users
+from app.seed.seed import seed_database
 from app.services.meta_service import increment_boot_count
 from app.services.user_service import ensure_demo_user
 
@@ -23,6 +24,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.state.fts5_enabled = init_db(engine)
         with session_factory() as db:
             ensure_demo_user(db)
+            if settings.seed_on_startup:
+                seed_database(db)  # no-op once this database has been seeded
             increment_boot_count(db)
         yield
         engine.dispose()
