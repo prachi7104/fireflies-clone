@@ -144,3 +144,14 @@ export interface ActionItemUpdateInput {
   assignee_id?: number | null;
   is_done?: boolean;
 }
+
+export interface TaskItem extends ActionItem {
+  meeting_title: string;
+  meeting_started_at: string;
+  assignee_name: string | null;
+}
+
+export interface TaskListParams {
+  scope: "mine" | "all";
+  status: "open" | "done" | "all";
+}

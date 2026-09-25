@@ -10,6 +10,8 @@ import type {
   MeetingListParams,
   MeetingUpdateInput,
   ParticipantListItem,
+  TaskItem,
+  TaskListParams,
   User,
 } from "./types";
 
@@ -109,6 +111,8 @@ export const deleteMeeting = (id: number) => apiFetch<void>(`/api/meetings/${id}
 export const listParticipants = (q?: string) =>
   apiFetch<ParticipantListItem[]>("/api/participants", { query: { q } });
 
+export const listTasks = (params: TaskListParams) =>
+  apiFetch<{ items: TaskItem[] }>("/api/action-items", { query: { ...params } });
 export const createActionItem = (meetingId: number, input: ActionItemCreateInput) =>
   apiFetch<ActionItem>(`/api/meetings/${meetingId}/action-items`, { method: "POST", json: input });
 export const updateActionItem = (id: number, input: ActionItemUpdateInput) =>

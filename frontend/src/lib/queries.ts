@@ -14,6 +14,7 @@ import {
   importMeeting,
   listMeetings,
   listParticipants,
+  listTasks,
   updateActionItem,
   updateMeeting,
 } from "./api";
@@ -24,6 +25,7 @@ import type {
   MeetingDetail,
   MeetingListParams,
   MeetingUpdateInput,
+  TaskListParams,
 } from "./types";
 
 export const queryKeys = {
@@ -31,6 +33,7 @@ export const queryKeys = {
   meetings: (params: MeetingListParams) => ["meetings", params] as const,
   meeting: (id: number) => ["meeting", id] as const,
   participants: (q: string) => ["participants", q] as const,
+  tasks: (params: TaskListParams) => ["tasks", params] as const,
 };
 
 export function useMe() {
@@ -45,8 +48,9 @@ export function useMeetings(params: MeetingListParams) {
   });
 }
 
-export function useMeeting(id: number) {
+export function useMeeting(id: number, { enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
+    enabled,
     queryKey: queryKeys.meeting(id),
     queryFn: () => getMeeting(id),
     retry: (failures, error) => !(error instanceof ApiError && error.status === 404) && failures < 1,
@@ -131,6 +135,7 @@ export function useCreateActionItem(meetingId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.meeting(meetingId) });
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 }
@@ -163,6 +168,7 @@ export function useUpdateActionItem(meetingId: number) {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: key });
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 }
@@ -174,6 +180,37 @@ export function useDeleteActionItem(meetingId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.meeting(meetingId) });
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+}
+
+export function useTasks(params: TaskListParams) {
+  return useQuery({ queryKey: queryKeys.tasks(params), queryFn: () => listTasks(params), placeholderData: keepPreviousData });
+}
+
+/** Tasks page edits: the item may belong to any meeting, so refresh that meeting and every task list. */
+export function useUpdateTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, input }: { id: number; input: ActionItemUpdateInput }) => updateActionItem(id, input),
+    onSettled: (item) => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      if (item) queryClient.invalidateQueries({ queryKey: queryKeys.meeting(item.meeting_id) });
+    },
+  });
+}
+
+/** "+ New" on the Tasks page: add an action item to any of your meetings. */
+export function useCreateTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ meetingId, input }: { meetingId: number; input: ActionItemCreateInput }) => createActionItem(meetingId, input),
+    onSuccess: (item) => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.meeting(item.meeting_id) });
     },
   });
 }
