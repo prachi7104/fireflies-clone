@@ -7,7 +7,7 @@ A functional clone of the logged-in [Fireflies.ai](https://fireflies.ai) meeting
 
 The live app opens straight into a seeded workspace with eight realistic meetings. There's no login: the brief says to assume a default logged-in user, so you're signed in as the demo user **Jordan Lee**.
 
-> Educational project. Not affiliated with, endorsed by, or connected to Fireflies.ai. The logo is an original mark.
+> Educational project. Not affiliated with, endorsed by, or connected to Fireflies.ai. The Fireflies name and logo belong to Fireflies.ai and are used only to recreate its interface for this assignment.
 
 ---
 

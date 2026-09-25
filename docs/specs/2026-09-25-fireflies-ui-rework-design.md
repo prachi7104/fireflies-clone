@@ -10,7 +10,7 @@
 | Topic | Decision |
 |---|---|
 | Theme | **Dark by default** (the user's decision, matching how their Fireflies workspace looks), plus a **Light / Dark / System** picker in Settings, the same as Fireflies. This also covers the brief's "Dark mode" bonus. |
-| Branding | Our own **lookalike mark**: a magenta rounded square with a white "F", drawn in SVG (not the Fireflies logo file). No ".clone" text. Tab titles read "… · Fireflies". The "not affiliated" note moves to Settings → About and the README. |
+| Branding | The Fireflies "F" logo mark (user decision, changed from an earlier lookalike), used in the rail and as the tab icon. No ".clone" text. Tab titles read "… · Fireflies". The "not affiliated" note is in Settings → About and the README. |
 | Scope | All screens: shell, meeting page, Meetings library, Home, Tasks, Settings. |
 
 ## 2. Reference observations (logged-in Fireflies, 2026-09-25)
