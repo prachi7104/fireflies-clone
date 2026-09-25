@@ -119,7 +119,7 @@ backend/
     routers/                   meetings.py, action_items.py, participants.py, users.py, meta.py
     seed/                      seed.py + data/ (meetings.json + one .txt transcript per meeting)
   tests/
-  requirements.txt · .python-version · railway.json · .env.example
+  requirements.txt · .python-version · .env.example
 docs/specs/ · docs/plans/
 README.md
 ```
@@ -424,7 +424,7 @@ hooks/                      useMeetingFilters, usePlaybackClock, useActiveSegmen
 
 **Railway (backend)**
 - Service root is `backend/`, with Python pinned in `.python-version`.
-- `railway.json`: start command `uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT`, health check `/api/health`.
+- Start command `uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT` and health check `/api/health`, both set in the Railway dashboard (Railway no longer reads `railway.json`, so the repo doesn't include one).
 - Volume mounted at `/data`.
 - Variables:
   - `DATABASE_URL=sqlite:////data/app.db`;

@@ -83,7 +83,7 @@
 
 **Files:**
 - Create:
-  - `backend/requirements.txt`, `backend/.python-version`, `backend/pytest.ini`, `backend/railway.json`, `backend/.env.example`
+  - `backend/requirements.txt`, `backend/.python-version`, `backend/pytest.ini`, `backend/.env.example`
   - `backend/app/__init__.py`, `backend/app/main.py`
   - `backend/app/core/__init__.py`, `backend/app/core/config.py`, `backend/app/core/database.py`, `backend/app/core/time.py`
   - `backend/app/models/__init__.py`, `backend/app/models/app_meta.py`
@@ -190,10 +190,7 @@ def test_cors_allows_configured_origin(client):
   - FTS DDL, executed with `exec_driver_sql` inside `init_db` after `Base.metadata.create_all`. The FTS table itself is created in Task 4 once `transcript_segments` exists. For now `init_db` only probes FTS5 with `CREATE VIRTUAL TABLE temp.fts5_probe USING fts5(x)` followed by `DROP TABLE temp.fts5_probe`, returning `True` or `False`.
   - CORS: `CORSMiddleware(allow_origins=settings.cors_origin_list, allow_methods=["*"], allow_headers=["*"])`.
   - Health runs `SELECT 1`.
-  - `railway.json`:
-    ```json
-    {"$schema":"https://railway.com/railway.schema.json","deploy":{"startCommand":"uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT","healthcheckPath":"/api/health","healthcheckTimeout":60,"restartPolicyType":"ON_FAILURE"}}
-    ```
+  - Railway start command `uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT` and health check `/api/health` are set in the Railway dashboard. (A `railway.json` was dropped: Railway no longer reads config-as-code for this service.)
   - `.env.example` lists every backend env var with safe defaults and `GROQ_API_KEY=` empty.
 - [ ] **Step 5: Run the tests.** Expected: 3 passed. Also check `.venv/Scripts/python -m uvicorn app.main:create_app --factory --port 8000`: `http://localhost:8000/api/health` should return the JSON and `/docs` should load.
 - [ ] **Step 6: Commit** with `git add backend && git commit -m "feat(backend): FastAPI skeleton with SQLite, health check and CORS"`.
