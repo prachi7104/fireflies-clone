@@ -36,6 +36,18 @@ export function formatShortDate(iso: string, now: Date = new Date()): string {
   });
 }
 
+/** ISO timestamp → value for <input type="datetime-local"> ("YYYY-MM-DDTHH:mm", local time). */
+export function toLocalInputValue(value: string | Date): string {
+  const date = new Date(value);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/** <input type="datetime-local"> value (local time) → ISO timestamp in UTC. */
+export function fromLocalInputValue(value: string): string {
+  return new Date(value).toISOString();
+}
+
 /** "Today", "Yesterday", or a short date, for grouping the meetings list by day. */
 export function formatDayLabel(iso: string, now: Date = new Date()): string {
   const date = new Date(iso);

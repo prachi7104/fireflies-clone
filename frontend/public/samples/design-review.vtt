@@ -1,0 +1,37 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:14.000
+<v Marcus Chen>Thanks for joining. Today we're reviewing the new route timeline for the dispatcher dashboard.
+
+2
+00:00:14.500 --> 00:00:31.000
+<v Emily Park>I like the colour coding. My only worry is that late stops and skipped stops look almost the same.
+
+3
+00:00:31.500 --> 00:00:49.000
+<v Marcus Chen>Fair point. I'll add an icon to skipped stops so they don't rely on colour alone.
+
+4
+00:00:49.500 --> 00:01:08.000
+<v Daniel Okafor>Customers keep asking to export the timeline. Could we add a download button next to the date picker?
+
+5
+00:01:08.500 --> 00:01:25.000
+<v Jordan Lee>Let's scope that as a follow-up. We need to ship the timeline itself first.
+
+6
+00:01:25.500 --> 00:01:44.000
+<v Daniel Okafor>That's fine. I'll collect the three accounts asking for it so we can talk to them next week.
+
+7
+00:01:44.500 --> 00:02:02.000
+<v Emily Park>For the launch post, can you send me two screenshots of the timeline by Friday, Marcus?
+
+8
+00:02:02.500 --> 00:02:15.000
+<v Marcus Chen>Yes, I'll export them from the final file.
+
+9
+00:02:15.500 --> 00:02:30.000
+<v Jordan Lee>Great. So the icon change, screenshots for Emily, and Daniel's customer list. Thanks all.

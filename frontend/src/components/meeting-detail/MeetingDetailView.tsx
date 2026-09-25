@@ -2,8 +2,11 @@
 
 import { SearchX, TriangleAlert } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
+import { DeleteMeetingDialog } from "@/components/meetings/DeleteMeetingDialog";
+import { EditMeetingDialog } from "@/components/meetings/EditMeetingDialog";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -13,6 +16,7 @@ import { useMeeting } from "@/lib/queries";
 import { findActiveIndex } from "@/lib/sync";
 import type { MeetingDetail } from "@/lib/types";
 
+import { ActionItemsList } from "./ActionItemsList";
 import { MeetingHeader } from "./MeetingHeader";
 import { NotesPanel } from "./NotesPanel";
 import { PlayerBar } from "./PlayerBar";
@@ -56,7 +60,23 @@ export function MeetingDetailView({ id, initialMs }: { id: number; initialMs: nu
 }
 
 function MeetingWorkspace({ meeting, initialMs }: { meeting: MeetingDetail; initialMs: number }) {
+  const router = useRouter();
   const clock = usePlaybackClock(meeting.duration_ms, initialMs);
+  const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
+  const { seek } = clock;
+
+  // Built once per data change (not per clock tick) so the memoised notes panel stays cheap.
+  const actionItems = useMemo(
+    () => (
+      <ActionItemsList
+        meetingId={meeting.id}
+        items={meeting.action_items}
+        participants={meeting.participants}
+        onSeek={seek}
+      />
+    ),
+    [meeting.id, meeting.action_items, meeting.participants, seek],
+  );
 
   const lineStarts = useMemo(() => meeting.segments.map((segment) => segment.start_ms), [meeting.segments]);
   const chapterStarts = useMemo(() => meeting.chapters.map((chapter) => chapter.start_ms), [meeting.chapters]);
@@ -69,7 +89,18 @@ function MeetingWorkspace({ meeting, initialMs }: { meeting: MeetingDetail; init
 
   return (
     <div className="flex h-full flex-col bg-white">
-      <MeetingHeader meeting={meeting} />
+      <MeetingHeader meeting={meeting} onEdit={() => setDialog("edit")} onDelete={() => setDialog("delete")} />
+      <EditMeetingDialog
+        meetingId={meeting.id}
+        open={dialog === "edit"}
+        onOpenChange={(open) => setDialog(open ? "edit" : null)}
+      />
+      <DeleteMeetingDialog
+        meeting={meeting}
+        open={dialog === "delete"}
+        onOpenChange={(open) => setDialog(open ? "delete" : null)}
+        onDeleted={() => router.push("/meetings")}
+      />
       <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-[minmax(0,45%)_minmax(0,55%)] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-1">
         <div className="flex min-h-0 flex-col border-b border-gray-200 lg:border-b-0 lg:border-r">
           <NotesPanel
@@ -77,15 +108,15 @@ function MeetingWorkspace({ meeting, initialMs }: { meeting: MeetingDetail; init
             keywords={meeting.keywords}
             chapters={meeting.chapters}
             activeChapterIndex={activeChapterIndex}
-            onSeek={clock.seek}
-            actionItems={<p className="text-sm text-gray-500">{meeting.action_items.length} action items</p>}
+            onSeek={seek}
+            actionItems={actionItems}
           />
         </div>
         <TranscriptPanel
           segments={meeting.segments}
           participants={meeting.participants}
           activeIndex={activeIndex}
-          onSeek={clock.seek}
+          onSeek={seek}
         />
       </div>
       <PlayerBar clock={clock} durationMs={meeting.duration_ms} chapters={meeting.chapters} />

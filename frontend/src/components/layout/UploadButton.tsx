@@ -1,15 +1,20 @@
 "use client";
 
 import { Upload } from "lucide-react";
+import { useState } from "react";
 
+import { CreateMeetingDialog } from "@/components/meetings/CreateMeetingDialog";
 import { Button } from "@/components/ui/Button";
 
-// Opens the create-meeting dialog. The dialog itself is wired in with the create/edit/delete UI.
 export function UploadButton() {
+  const [open, setOpen] = useState(false);
   return (
-    <Button variant="primary" disabled title="Upload arrives with the create dialog">
-      <Upload className="size-4" />
-      <span className="hidden sm:inline">Upload</span>
-    </Button>
+    <>
+      <Button variant="primary" onClick={() => setOpen(true)}>
+        <Upload className="size-4" />
+        <span className="hidden sm:inline">Upload</span>
+      </Button>
+      <CreateMeetingDialog open={open} onOpenChange={setOpen} />
+    </>
   );
 }

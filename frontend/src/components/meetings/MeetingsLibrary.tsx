@@ -3,13 +3,17 @@
 import { CloudUpload, SearchX, TriangleAlert, Video } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { UploadButton } from "@/components/layout/UploadButton";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useMeetingFilters } from "@/hooks/useMeetingFilters";
 import { hasActiveFilters, serializeFilters, toApiParams } from "@/lib/filters";
 import { useMeetings } from "@/lib/queries";
+import type { MeetingListItem } from "@/lib/types";
 
+import { DeleteMeetingDialog } from "./DeleteMeetingDialog";
+import { EditMeetingDialog } from "./EditMeetingDialog";
 import { MeetingFilters } from "./MeetingFilters";
 import { MeetingList } from "./MeetingList";
 
@@ -46,6 +50,8 @@ export function MeetingsLibrary() {
 
   const isUploads = filters.view === "uploads";
   const filtered = hasActiveFilters(filters);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [deleting, setDeleting] = useState<MeetingListItem | null>(null);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-8">
@@ -103,12 +109,19 @@ export function MeetingsLibrary() {
                 icon={isUploads ? CloudUpload : Video}
                 title={isUploads ? "No uploads yet" : "No meetings yet"}
                 description="Upload a .txt, .vtt or .json transcript, or paste one, to create your first meeting."
+                action={<UploadButton />}
               />
             )}
           </div>
         ) : (
           <>
-            <MeetingList meetings={data.items} query={filters.q} now={now} />
+            <MeetingList
+              meetings={data.items}
+              query={filters.q}
+              now={now}
+              onEdit={(meeting) => setEditingId(meeting.id)}
+              onDelete={setDeleting}
+            />
             {data.items.length < data.total ? (
               <div className="mt-6 flex justify-center">
                 <Button onClick={() => setPaging({ key: filterKey, pages: pages + 1 })} disabled={isFetching}>
@@ -119,6 +132,17 @@ export function MeetingsLibrary() {
           </>
         )}
       </div>
+
+      <EditMeetingDialog
+        meetingId={editingId}
+        open={editingId !== null}
+        onOpenChange={(open) => !open && setEditingId(null)}
+      />
+      <DeleteMeetingDialog
+        meeting={deleting}
+        open={deleting !== null}
+        onOpenChange={(open) => !open && setDeleting(null)}
+      />
     </div>
   );
 }

@@ -1,0 +1,16 @@
+{
+  "segments": [
+    { "speaker": "Sofia Alvarez", "start": 0, "text": "Thanks for making time today. I'd love to hear how your team plans deliveries right now." },
+    { "speaker": "Hannah Schmidt", "start": 9.5, "text": "Mostly spreadsheets. Each depot lead builds routes the night before and emails them to drivers." },
+    { "speaker": "Tom Becker", "start": 21, "text": "And when a customer changes a delivery window, someone has to rebuild the route by hand." },
+    { "speaker": "Sofia Alvarez", "start": 33.5, "text": "That's exactly what Relay automates. Routes update live and drivers get the change in the app." },
+    { "speaker": "Hannah Schmidt", "start": 46, "text": "How does pricing work if we have seasonal peaks? Our volume doubles in November." },
+    { "speaker": "Sofia Alvarez", "start": 57.5, "text": "We have a per stop plan for exactly that. I'll send you a pricing comparison for both plans by Wednesday." },
+    { "speaker": "Tom Becker", "start": 71, "text": "On the IT side we need single sign-on and an export to our warehouse system." },
+    { "speaker": "Sofia Alvarez", "start": 82.5, "text": "Both are supported. Tom, could you share your identity provider details so our engineers can check the setup?" },
+    { "speaker": "Tom Becker", "start": 95, "text": "Sure, I'll send them over tomorrow." },
+    { "speaker": "Hannah Schmidt", "start": 101.5, "text": "If the numbers work, we'd want a pilot at two depots before the peak season." },
+    { "speaker": "Sofia Alvarez", "start": 112, "text": "Let's plan that. We need to agree on success criteria for the pilot before we start." },
+    { "speaker": "Hannah Schmidt", "start": 124.5, "text": "Agreed. Thanks, this was helpful." }
+  ]
+}

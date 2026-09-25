@@ -1,0 +1,12 @@
+[00:00] Priya Nair: Morning everyone, quick standup today because the release branch gets cut at noon.
+[00:18] Ravi Menon: Yesterday I finished the retry logic for the driver sync job. Today I'm pairing with QA on the offline test cases.
+[00:41] Priya Nair: Nice. Any blockers on the offline cases?
+[00:52] Ravi Menon: One. The staging devices still run the old app build. I'll ask the device lab to reflash them this morning.
+[01:14] Marcus Chen: On design, the empty states for the dispatcher dashboard are ready for review. I'll share the file in the design channel after standup.
+[01:36] Priya Nair: Great. Marcus, can you also check the contrast on the new status badges? Support flagged that the amber one is hard to read.
+[01:55] Marcus Chen: Sure, I'll fix the amber badge contrast by Thursday.
+[02:12] Jordan Lee: From product, the release notes draft is in the shared folder. We need to confirm which fixes are customer facing before Friday.
+[02:35] Priya Nair: I can go through the list with you after lunch.
+[02:47] Jordan Lee: Perfect. Ravi, could you add the sync fix to the release notes once QA signs off?
+[03:05] Ravi Menon: Will do.
+[03:12] Priya Nair: That's everything. Let's keep the release branch green today.
