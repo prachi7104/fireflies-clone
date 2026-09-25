@@ -192,10 +192,10 @@ def test_cors_allows_configured_origin(client):
   - Health runs `SELECT 1`.
   - `railway.json`:
     ```json
-    {"$schema":"https://railway.com/railway.schema.json","deploy":{"startCommand":"uvicorn app.main:app --host 0.0.0.0 --port $PORT","healthcheckPath":"/api/health","healthcheckTimeout":60,"restartPolicyType":"ON_FAILURE"}}
+    {"$schema":"https://railway.com/railway.schema.json","deploy":{"startCommand":"uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT","healthcheckPath":"/api/health","healthcheckTimeout":60,"restartPolicyType":"ON_FAILURE"}}
     ```
   - `.env.example` lists every backend env var with safe defaults and `GROQ_API_KEY=` empty.
-- [ ] **Step 5: Run the tests.** Expected: 3 passed. Also check `.venv/Scripts/python -m uvicorn app.main:app --port 8000`: `http://localhost:8000/api/health` should return the JSON and `/docs` should load.
+- [ ] **Step 5: Run the tests.** Expected: 3 passed. Also check `.venv/Scripts/python -m uvicorn app.main:create_app --factory --port 8000`: `http://localhost:8000/api/health` should return the JSON and `/docs` should load.
 - [ ] **Step 6: Commit** with `git add backend && git commit -m "feat(backend): FastAPI skeleton with SQLite, health check and CORS"`.
 
 **Done when:** the tests pass, the local server serves `/api/health` and `/docs`, and there are no secrets in the repo.

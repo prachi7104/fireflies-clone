@@ -424,7 +424,7 @@ hooks/                      useMeetingFilters, usePlaybackClock, useActiveSegmen
 
 **Railway (backend)**
 - Service root is `backend/`, with Python pinned in `.python-version`.
-- `railway.json`: start command `uvicorn app.main:app --host 0.0.0.0 --port $PORT`, health check `/api/health`.
+- `railway.json`: start command `uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT`, health check `/api/health`.
 - Volume mounted at `/data`.
 - Variables:
   - `DATABASE_URL=sqlite:////data/app.db`;
