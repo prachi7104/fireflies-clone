@@ -2,7 +2,7 @@
 
 A functional clone of the logged-in [Fireflies.ai](https://fireflies.ai) meeting workspace, built for the Scaler AI Labs SDE Fullstack assignment. You get a meetings library, an interactive transcript synced to a player, AI-generated notes and action items, and full create, edit and delete, all in a Fireflies-style dark (or light) interface.
 
-- **Live app:** https://fireflies-clone-cyan.vercel.app
+- **Live app:** https://fireflies--clone.vercel.app
 - **API:** https://fireflies-clone-backend.up.railway.app (interactive docs at [`/docs`](https://fireflies-clone-backend.up.railway.app/docs))
 
 The live app opens straight into a seeded workspace with eight realistic meetings. There's no login: the brief says to assume a default logged-in user, so you're signed in as the demo user **Jordan Lee**.
@@ -478,7 +478,7 @@ Every change is also checked with `npm run lint`, `npm run typecheck` and `npm r
 - **Volume** mounted at `/data`.
 - **Variables:**
   - `DATABASE_URL=sqlite:////data/app.db`;
-  - `CORS_ORIGINS=https://fireflies-clone-cyan.vercel.app,http://localhost:3000`;
+  - `CORS_ORIGINS=https://fireflies--clone.vercel.app,http://localhost:3000`;
   - optionally `LLM_PROVIDER` and `GROQ_API_KEY`.
 - A public domain is generated for the service.
 - **Persistence:** the database file lives on the volume, so data survives redeploys. `/api/health` reports a `boot_count` that goes up on every start, which makes this easy to verify.
