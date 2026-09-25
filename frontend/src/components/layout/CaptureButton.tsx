@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarPlus, ChevronDown, ClipboardPaste, Upload, Video } from "lucide-react";
+import { AudioLines, CalendarPlus, ChevronDown, ClipboardPaste, Upload, Video } from "lucide-react";
 import { toast } from "sonner";
 
 import { useOpenCreateMeeting } from "@/components/meetings/CreateMeetingContext";
@@ -32,6 +32,16 @@ export function CaptureButton() {
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => toast.info("Calendar scheduling is coming soon.")}>
             <CalendarPlus className="size-4" /> Schedule new meeting
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={() =>
+              toast.info("Speech-to-text is coming soon.", {
+                description: "Upload or paste a transcript instead; notes and action items are generated from it.",
+              })
+            }
+          >
+            <AudioLines className="size-4" /> Upload audio or video
+            <span className="ml-auto rounded bg-raised px-1.5 text-[10px] font-medium text-gray-500">Soon</span>
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => openCreate("upload")}>
             <Upload className="size-4" /> Upload transcript file

@@ -70,6 +70,10 @@ function CreateMeetingForm({ initialTab, onDone }: { initialTab: CreateTab; onDo
     setError(null);
     if (!candidate) return;
     const extension = candidate.name.slice(candidate.name.lastIndexOf(".")).toLowerCase();
+    // Audio and video need speech-to-text, which the brief lists as a "coming soon" placeholder.
+    if (candidate.type.startsWith("audio/") || candidate.type.startsWith("video/")) {
+      return setError("Speech-to-text for audio and video is coming soon. Upload or paste a transcript instead.");
+    }
     if (!ACCEPTED.includes(extension)) return setError("Choose a .txt, .vtt or .json transcript.");
     if (candidate.size > MAX_BYTES) return setError("That file is larger than 1 MB.");
     setFile(candidate);
@@ -184,6 +188,9 @@ function CreateMeetingForm({ initialTab, onDone }: { initialTab: CreateTab; onDo
             onChange={(event) => pickFile(event.target.files?.[0])}
           />
           <p className="mt-2 text-xs text-gray-500">
+            Audio and video transcription is coming soon; for now, add a transcript file.
+          </p>
+          <p className="mt-1 text-xs text-gray-500">
             No transcript handy? Download a sample:{" "}
             {SAMPLES.map((sample, index) => (
               <span key={sample.href}>
