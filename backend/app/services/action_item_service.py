@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.core.errors import InvalidInputError, NotFoundError
 from app.core.time import utcnow
-from app.models import ActionItem, Meeting, MeetingParticipant, User
-from app.schemas.action_item import ActionItemOut
+from app.models import ActionItem, Meeting, MeetingParticipant, Participant, User
+from app.schemas.action_item import ActionItemOut, TaskOut
 
 
 def create_action_item(db: Session, owner: User, meeting_id: int, *, text: str, assignee_id: int | None) -> ActionItem:
@@ -42,6 +42,37 @@ def update_action_item(db: Session, owner: User, item_id: int, fields: dict) -> 
 def delete_action_item(db: Session, owner: User, item_id: int) -> None:
     db.delete(_owned_item(db, owner, item_id))
     db.commit()
+
+
+def list_tasks(db: Session, owner: User, *, scope: str, status: str) -> list[TaskOut]:
+    """Action items across all of the owner's meetings: open first, then newest meeting first.
+
+    scope="mine" keeps items assigned to the owner's own participant record (participants.user_id).
+    """
+    query = select(ActionItem, Meeting).join(Meeting, Meeting.id == ActionItem.meeting_id).where(Meeting.owner_id == owner.id)
+    if scope == "mine":
+        me = select(Participant.id).where(Participant.user_id == owner.id).scalar_subquery()
+        query = query.where(ActionItem.assignee_id == me)
+    if status != "all":
+        query = query.where(ActionItem.is_done == (status == "done"))
+    rows = db.execute(query.order_by(ActionItem.is_done, Meeting.started_at.desc(), ActionItem.id)).all()
+
+    # One lookup for every assignee name on the page, instead of one query per row.
+    assignee_ids = {item.assignee_id for item, _ in rows if item.assignee_id is not None}
+    names = (
+        dict(db.execute(select(Participant.id, Participant.name).where(Participant.id.in_(assignee_ids))).all())
+        if assignee_ids
+        else {}
+    )
+    return [
+        TaskOut(
+            **to_action_item_out(item).model_dump(),
+            meeting_title=meeting.title,
+            meeting_started_at=meeting.started_at,
+            assignee_name=names.get(item.assignee_id) if item.assignee_id is not None else None,
+        )
+        for item, meeting in rows
+    ]
 
 
 def to_action_item_out(item: ActionItem) -> ActionItemOut:

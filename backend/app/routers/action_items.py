@@ -1,13 +1,26 @@
-from fastapi import APIRouter, Depends, Response
+from typing import Literal
+
+from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session
 
 from app.core.deps import get_current_user, get_db
 from app.models import User
-from app.schemas.action_item import ActionItemCreate, ActionItemOut, ActionItemUpdate
+from app.schemas.action_item import ActionItemCreate, ActionItemOut, ActionItemUpdate, TaskListOut
 from app.services import action_item_service
 
 # Created under their meeting; edited and deleted by their own id (shallow nesting).
 router = APIRouter(prefix="/api", tags=["action items"])
+
+
+@router.get("/action-items", response_model=TaskListOut)
+def list_action_items(
+    scope: Literal["mine", "all"] = Query("all"),
+    status: Literal["open", "done", "all"] = Query("all"),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> TaskListOut:
+    """Every action item across your meetings, for the Tasks page."""
+    return TaskListOut(items=action_item_service.list_tasks(db, user, scope=scope, status=status))
 
 
 @router.post("/meetings/{meeting_id}/action-items", response_model=ActionItemOut, status_code=201)
