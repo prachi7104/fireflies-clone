@@ -25,9 +25,9 @@ from app.schemas.meeting import ChapterOut, MeetingDetail, SegmentOut, SummaryOu
 from app.schemas.participant import MeetingParticipantOut
 from app.services.action_item_service import to_action_item_out
 from app.services.names import normalize_name
-from app.services.notes import GeneratedNotes, NotesProvider, generate_notes
+from app.services.notes import GeneratedActionItem, GeneratedChapter, GeneratedNotes, NotesProvider, generate_notes
 from app.services.participant_service import get_or_create_participants
-from app.services.transcript_parser import parse_transcript
+from app.services.transcript_parser import ParsedSegment, parse_transcript
 
 Source = Literal["seed", "upload", "paste"]
 UPLOAD_FORMATS = {".txt": "txt", ".vtt": "vtt", ".json": "json"}
@@ -73,12 +73,7 @@ def create_meeting(
 ) -> Meeting:
     segments = parse_transcript(raw_text, fmt)
     duration_ms = max(segment.end_ms for segment in segments)
-
-    # Everyone who speaks, then anyone else listed, by normalised name.
-    names: dict[str, str] = {}
-    for raw in [segment.speaker for segment in segments] + list(extra_participants):
-        display, key = normalize_name(raw)
-        names.setdefault(key, display)
+    names = _attendee_names([segment.speaker for segment in segments], extra_participants)
 
     # Notes come first, before any write: SQLite has a single writer, so a slow LLM call
     # must never happen while this request holds the write lock.
@@ -100,6 +95,27 @@ def create_meeting(
     db.add_all(MeetingParticipant(meeting_id=meeting.id, participant_id=person.id) for person in people)
     db.flush()  # attendees must exist before segments reference them (composite foreign key)
 
+    rows = _insert_transcript(db, meeting, segments, person_id)
+    _save_summary(db, meeting, notes)
+    _save_keywords(db, meeting, notes.keywords)
+    _save_chapters(db, meeting, notes.chapters)
+    _save_action_items(db, meeting, notes.action_items, rows, person_id)
+    db.commit()
+    return get_meeting(db, owner, meeting.id)
+
+
+def _attendee_names(speakers: list[str], extra: Sequence[str]) -> dict[str, str]:
+    """Everyone who speaks, then anyone else listed: normalised name key → display name."""
+    names: dict[str, str] = {}
+    for raw in [*speakers, *extra]:
+        display, key = normalize_name(raw)
+        names.setdefault(key, display)
+    return names
+
+
+def _insert_transcript(
+    db: Session, meeting: Meeting, segments: list[ParsedSegment], person_id: dict[str, int]
+) -> list[TranscriptSegment]:
     rows = [
         TranscriptSegment(
             meeting_id=meeting.id,
@@ -113,15 +129,10 @@ def create_meeting(
     ]
     db.add_all(rows)
     db.flush()
-
-    _save_notes(db, meeting, notes, rows, person_id)
-    db.commit()
-    return get_meeting(db, owner, meeting.id)
+    return rows
 
 
-def _save_notes(
-    db: Session, meeting: Meeting, notes: GeneratedNotes, rows: list[TranscriptSegment], person_id: dict[str, int]
-) -> None:
+def _save_summary(db: Session, meeting: Meeting, notes: GeneratedNotes) -> None:
     db.add(
         Summary(
             meeting_id=meeting.id,
@@ -133,14 +144,18 @@ def _save_notes(
         )
     )
 
-    seen_terms: set[str] = set()
-    for term in notes.keywords:
-        term = term.strip().lower()[:80]  # stored lower-case so the topic filter is an exact, indexed match
-        if term and term not in seen_terms:
-            seen_terms.add(term)
-            db.add(MeetingKeyword(meeting_id=meeting.id, term=term, rank=len(seen_terms)))
 
-    for position, chapter in enumerate(sorted(notes.chapters, key=lambda c: c.start_ms)):
+def _save_keywords(db: Session, meeting: Meeting, keywords: Sequence[str]) -> None:
+    seen: set[str] = set()
+    for term in keywords:
+        term = term.strip().lower()[:80]  # stored lower-case so the topic filter is an exact, indexed match
+        if term and term not in seen:
+            seen.add(term)
+            db.add(MeetingKeyword(meeting_id=meeting.id, term=term, rank=len(seen)))
+
+
+def _save_chapters(db: Session, meeting: Meeting, chapters: Sequence[GeneratedChapter]) -> None:
+    for position, chapter in enumerate(sorted(chapters, key=lambda c: c.start_ms)):
         db.add(
             Chapter(
                 meeting_id=meeting.id,
@@ -151,7 +166,15 @@ def _save_notes(
             )
         )
 
-    for item in notes.action_items:
+
+def _save_action_items(
+    db: Session,
+    meeting: Meeting,
+    items: Sequence[GeneratedActionItem],
+    rows: list[TranscriptSegment],
+    person_id: dict[str, int],
+) -> None:
+    for item in items:
         assignee = person_id.get(normalize_name(item.assignee)[1]) if item.assignee and item.assignee.strip() else None
         in_range = item.segment_index is not None and 0 <= item.segment_index < len(rows)
         db.add(
@@ -232,17 +255,7 @@ def delete_meeting(db: Session, owner: User, meeting_id: int) -> None:
 
 
 def to_detail(meeting: Meeting) -> MeetingDetail:
-    first_spoke: dict[int, int] = {}
-    for segment in meeting.segments:
-        first_spoke.setdefault(segment.speaker_id, segment.position)
-    links = sorted(
-        meeting.participant_links,
-        key=lambda link: (
-            link.participant_id not in first_spoke,
-            first_spoke.get(link.participant_id, 0),
-            link.participant.name.casefold(),
-        ),
-    )
+    first_spoke = _first_line_by_speaker(meeting)
     summary = meeting.summary
     return MeetingDetail(
         id=meeting.id,
@@ -258,11 +271,30 @@ def to_detail(meeting: Meeting) -> MeetingDetail:
                 name=link.participant.name,
                 is_speaker=link.participant_id in first_spoke,
             )
-            for link in links
+            for link in _in_speaking_order(meeting.participant_links, first_spoke)
         ],
         segments=[SegmentOut.model_validate(segment, from_attributes=True) for segment in meeting.segments],
         summary=SummaryOut.model_validate(summary, from_attributes=True) if summary else None,
         keywords=[keyword.term for keyword in meeting.keywords],
         chapters=[ChapterOut.model_validate(chapter, from_attributes=True) for chapter in meeting.chapters],
         action_items=[to_action_item_out(item) for item in meeting.action_items],
+    )
+
+
+def _first_line_by_speaker(meeting: Meeting) -> dict[int, int]:
+    first_spoke: dict[int, int] = {}
+    for segment in meeting.segments:
+        first_spoke.setdefault(segment.speaker_id, segment.position)
+    return first_spoke
+
+
+def _in_speaking_order(links: list[MeetingParticipant], first_spoke: dict[int, int]) -> list[MeetingParticipant]:
+    """Speakers in the order they first spoke, then silent attendees alphabetically."""
+    return sorted(
+        links,
+        key=lambda link: (
+            link.participant_id not in first_spoke,
+            first_spoke.get(link.participant_id, 0),
+            link.participant.name.casefold(),
+        ),
     )

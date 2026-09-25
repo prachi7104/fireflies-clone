@@ -158,7 +158,7 @@ def _chapters(
 ) -> list[GeneratedChapter]:
     if not segments:
         return []
-    count = min(max(2, min(8, round(duration_ms / 60_000 / 5))), len(segments))
+    count = _chapter_count(duration_ms, len(segments))
     window = max(1, math.ceil(max(duration_ms, 1) / count))
     groups: dict[int, list[int]] = {}
     for index, segment in enumerate(segments):
@@ -180,12 +180,23 @@ def _chapters(
     return chapters
 
 
-def _action_items(segments: list[ParsedSegment], participants: list[str]) -> list[GeneratedActionItem]:
+def _chapter_count(duration_ms: int, segment_count: int) -> int:
+    """About one chapter per five minutes, between 2 and 8, never more than there are lines."""
+    per_five_minutes = round(duration_ms / 60_000 / 5)
+    return min(max(2, min(8, per_five_minutes)), segment_count)
+
+
+def _first_name_lookup(participants: list[str]) -> dict[str, str | None]:
+    """First name → full name. An ambiguous first name maps to None, so it matches no one."""
     first_names: dict[str, str | None] = {}
     for name in participants:
         first = name.split()[0]
-        first_names[first] = None if first in first_names else name  # an ambiguous first name matches no one
+        first_names[first] = None if first in first_names else name
+    return first_names
 
+
+def _action_items(segments: list[ParsedSegment], participants: list[str]) -> list[GeneratedActionItem]:
+    first_names = _first_name_lookup(participants)
     items: list[GeneratedActionItem] = []
     seen: set[str] = set()
     for index, segment in enumerate(segments):
@@ -223,6 +234,13 @@ def _task_from_sentence(
     else:
         return None
 
+    task = _tidy_task(task, first_names)
+    if len(task.split()) < MIN_TASK_WORDS:
+        return None
+    return task, assignee
+
+
+def _tidy_task(task: str, first_names: dict[str, str | None]) -> str:
     task = task.strip().rstrip(".?!").strip()
     # "…by Friday, Marcus" → the name says who it's for, not what to do.
     trailing = re.search(r",\s*([A-Z][a-z]+)$", task)
@@ -230,6 +248,4 @@ def _task_from_sentence(
         task = task[: trailing.start()].strip()
     if len(task) > 160:
         task = task[:157].rsplit(" ", 1)[0] + "…"
-    if len(task.split()) < MIN_TASK_WORDS:
-        return None
-    return task[:1].upper() + task[1:], assignee
+    return task[:1].upper() + task[1:]

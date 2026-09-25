@@ -91,15 +91,10 @@ def parse_transcript(raw: str, fmt: str = "auto") -> list[ParsedSegment]:
     if not text.strip():
         raise TranscriptParseError("Transcript is empty")
     kind = detect_format(text) if fmt == "auto" else fmt
-    if kind == "txt":
-        drafts = _parse_txt(text)
-    elif kind == "vtt":
-        drafts = _parse_vtt(text)
-    elif kind == "json":
-        drafts = _parse_json(text)
-    else:
+    parser = _PARSERS.get(kind)
+    if parser is None:
         raise TranscriptParseError(f"Unsupported transcript format: {fmt}")
-    return _finalize(drafts)
+    return _with_timings(_clean(parser(text)))
 
 
 def _parse_txt(text: str) -> list[_Draft]:
@@ -186,7 +181,8 @@ def _parse_json(text: str) -> list[_Draft]:
     return drafts
 
 
-def _finalize(drafts: list[_Draft]) -> list[ParsedSegment]:
+def _clean(drafts: list[_Draft]) -> list[_Draft]:
+    """Collapse whitespace, drop empty lines and enforce the size limits."""
     cleaned: list[_Draft] = []
     for draft in drafts:
         speaker = _WHITESPACE.sub(" ", draft.speaker).strip() or UNKNOWN_SPEAKER
@@ -205,27 +201,38 @@ def _finalize(drafts: list[_Draft]) -> list[ParsedSegment]:
         raise TranscriptParseError(f"Too many segments (max {MAX_SEGMENTS})")
     if len({draft.speaker.casefold() for draft in cleaned}) > MAX_SPEAKERS:
         raise TranscriptParseError(f"Too many speakers (max {MAX_SPEAKERS})")
+    return cleaned
 
-    if all(draft.start_ms is None for draft in cleaned):
-        segments, clock = [], 0
-        for draft in cleaned:
-            duration = _estimate_ms(draft.text)
-            segments.append(ParsedSegment(draft.speaker, clock, clock + duration, draft.text))
-            clock += duration
-        return segments
 
-    ordered = sorted(cleaned, key=lambda draft: draft.start_ms)  # stable: ties keep input order
+def _with_timings(drafts: list[_Draft]) -> list[ParsedSegment]:
+    if all(draft.start_ms is None for draft in drafts):
+        return _estimated_timeline(drafts)
+
+    ordered = sorted(drafts, key=lambda draft: draft.start_ms)  # stable: ties keep input order
     segments = []
     for index, draft in enumerate(ordered):
         next_start = ordered[index + 1].start_ms if index + 1 < len(ordered) else None
-        if draft.end_ms is not None and draft.end_ms >= draft.start_ms:
-            end = draft.end_ms
-        elif next_start is not None and next_start > draft.start_ms:
-            end = next_start
-        else:
-            end = draft.start_ms + _estimate_ms(draft.text)
-        segments.append(ParsedSegment(draft.speaker, draft.start_ms, end, draft.text))
+        segments.append(ParsedSegment(draft.speaker, draft.start_ms, _end_ms(draft, next_start), draft.text))
     return segments
+
+
+def _estimated_timeline(drafts: list[_Draft]) -> list[ParsedSegment]:
+    """No timestamps at all: lay the lines end to end at an estimated speaking speed."""
+    segments, clock = [], 0
+    for draft in drafts:
+        duration = _estimate_ms(draft.text)
+        segments.append(ParsedSegment(draft.speaker, clock, clock + duration, draft.text))
+        clock += duration
+    return segments
+
+
+def _end_ms(draft: _Draft, next_start: int | None) -> int:
+    """The given end, else where the next line starts, else an estimate."""
+    if draft.end_ms is not None and draft.end_ms >= draft.start_ms:
+        return draft.end_ms
+    if next_start is not None and next_start > draft.start_ms:
+        return next_start
+    return draft.start_ms + _estimate_ms(draft.text)
 
 
 def _estimate_ms(text: str) -> int:
@@ -248,3 +255,6 @@ def _json_time(value: object, index: int, field: str) -> int | None:
         return parse_timestamp(value)  # type: ignore[arg-type]
     except (TypeError, ValueError):
         raise TranscriptParseError(f"Segment {index}: invalid '{field}' value") from None
+
+
+_PARSERS = {"txt": _parse_txt, "vtt": _parse_vtt, "json": _parse_json}
