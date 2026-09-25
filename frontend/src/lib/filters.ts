@@ -16,6 +16,7 @@ export interface LibraryFilters {
   from: string | null; // YYYY-MM-DD, local calendar date (custom range only)
   to: string | null; // YYYY-MM-DD, inclusive
   sources: MeetingSource[]; // "Captured from": upload / paste / seed; empty means any
+  keywords: string[]; // topics (meeting keywords); any of them
   sort: "newest" | "oldest";
   view: LibraryView;
 }
@@ -27,6 +28,7 @@ export const DEFAULT_FILTERS: LibraryFilters = {
   from: null,
   to: null,
   sources: [],
+  keywords: [],
   sort: "newest",
   view: "all",
 };
@@ -46,6 +48,7 @@ export function parseFilters(params: URLSearchParams): LibraryFilters {
     preset: PRESETS.find((value) => value === preset) ?? "any",
     from: from && ISO_DATE.test(from) ? from : null,
     to: to && ISO_DATE.test(to) ? to : null,
+    keywords: params.getAll("keyword").map((value) => value.trim()).filter(Boolean),
     sources: params.getAll("source").filter((value): value is MeetingSource => SOURCES.includes(value as MeetingSource)),
     sort: params.get("sort") === "oldest" ? "oldest" : "newest",
     view: params.get("view") === "uploads" ? "uploads" : "all",
@@ -62,13 +65,14 @@ export function serializeFilters(filters: LibraryFilters): URLSearchParams {
     if (filters.to) params.set("to", filters.to);
   }
   for (const source of filters.sources) params.append("source", source);
+  for (const keyword of filters.keywords) params.append("keyword", keyword);
   if (filters.sort !== "newest") params.set("sort", filters.sort);
   if (filters.view !== "all") params.set("view", filters.view);
   return params;
 }
 
 export function hasActiveFilters(filters: LibraryFilters): boolean {
-  return Boolean(filters.q) || filters.participantIds.length > 0 || filters.preset !== "any" || filters.sources.length > 0;
+  return Boolean(filters.q) || filters.participantIds.length > 0 || filters.preset !== "any" || filters.sources.length > 0 || filters.keywords.length > 0;
 }
 
 function localMidnight(date: Date): Date {
@@ -85,6 +89,7 @@ export function toApiParams(filters: LibraryFilters, now: Date): MeetingListPara
   const params: MeetingListParams = { sort: filters.sort };
   if (filters.q) params.q = filters.q;
   if (filters.participantIds.length) params.participant_id = filters.participantIds;
+  if (filters.keywords.length) params.keyword = filters.keywords;
   if (filters.view === "uploads") params.source = ["upload", "paste"];
   else if (filters.sources.length) params.source = filters.sources;
 

@@ -4,6 +4,7 @@ import type {
   ActionItemCreateInput,
   ActionItemUpdateInput,
   Health,
+  KeywordListItem,
   MeetingCreateInput,
   MeetingDetail,
   MeetingListPage,
@@ -108,6 +109,7 @@ export const updateMeeting = (id: number, input: MeetingUpdateInput) =>
   apiFetch<MeetingDetail>(`/api/meetings/${id}`, { method: "PATCH", json: input });
 export const deleteMeeting = (id: number) => apiFetch<void>(`/api/meetings/${id}`, { method: "DELETE" });
 
+export const listKeywords = () => apiFetch<KeywordListItem[]>("/api/keywords");
 export const listParticipants = (q?: string) =>
   apiFetch<ParticipantListItem[]>("/api/participants", { query: { q } });
 

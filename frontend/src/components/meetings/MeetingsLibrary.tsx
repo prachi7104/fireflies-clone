@@ -60,7 +60,10 @@ export function MeetingsLibrary() {
   const channel: Channel = isUploads ? "uploads" : searchParams.get("scope") === "all" ? "all" : "mine";
   const filtered = hasActiveFilters(filters);
   const activeCount =
-    (filters.participantIds.length ? 1 : 0) + (filters.preset !== "any" ? 1 : 0) + (filters.sources.length ? 1 : 0);
+    (filters.participantIds.length ? 1 : 0) +
+    (filters.keywords.length ? 1 : 0) +
+    (filters.preset !== "any" ? 1 : 0) +
+    (filters.sources.length ? 1 : 0);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState<MeetingListItem | null>(null);
 
@@ -236,6 +239,13 @@ function ActiveFilterChips({
       key: `p${id}`,
       label: name,
       remove: () => onChange({ participantIds: filters.participantIds.filter((value) => value !== id) }),
+    });
+  }
+  for (const keyword of filters.keywords) {
+    chips.push({
+      key: `k:${keyword}`,
+      label: `# ${keyword}`,
+      remove: () => onChange({ keywords: filters.keywords.filter((value) => value !== keyword) }),
     });
   }
   if (filters.preset !== "any") {

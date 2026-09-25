@@ -13,6 +13,7 @@ import {
   getMeeting,
   importMeeting,
   listMeetings,
+  listKeywords,
   listParticipants,
   listTasks,
   updateActionItem,
@@ -34,6 +35,7 @@ export const queryKeys = {
   meeting: (id: number) => ["meeting", id] as const,
   participants: (q: string) => ["participants", q] as const,
   tasks: (params: TaskListParams) => ["tasks", params] as const,
+  keywords: ["keywords"] as const,
 };
 
 export function useMe() {
@@ -65,6 +67,11 @@ export function useMeetingDetails(ids: number[]) {
   });
 }
 
+/** Topics across your meetings, with meeting counts (the library's Topics filter). */
+export function useKeywords() {
+  return useQuery({ queryKey: queryKeys.keywords, queryFn: listKeywords });
+}
+
 export function useParticipants(q = "") {
   return useQuery({ queryKey: queryKeys.participants(q), queryFn: () => listParticipants(q || undefined) });
 }
@@ -74,6 +81,7 @@ function useRefreshLists() {
   return () => {
     queryClient.invalidateQueries({ queryKey: ["meetings"] });
     queryClient.invalidateQueries({ queryKey: ["participants"] });
+    queryClient.invalidateQueries({ queryKey: ["keywords"] });
   };
 }
 

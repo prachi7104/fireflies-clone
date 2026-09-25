@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_FILTERS, parseFilters, serializeFilters, toApiParams } from "./filters";
+import { DEFAULT_FILTERS, hasActiveFilters, parseFilters, serializeFilters, toApiParams } from "./filters";
 
 const now = new Date(2026, 8, 25, 15, 0, 0); // local time, Sep 25 2026 15:00
 
@@ -46,5 +46,16 @@ describe("filters", () => {
 
   it("passes chosen sources to the API and counts them as an active filter", () => {
     expect(toApiParams({ ...DEFAULT_FILTERS, sources: ["paste"] }, now).source).toEqual(["paste"]);
+  });
+
+  it("round-trips topic keywords and passes them to the API", () => {
+    const f = parseFilters(new URLSearchParams("keyword=pricing+page&keyword=launch"));
+    expect(f.keywords).toEqual(["pricing page", "launch"]);
+    expect(serializeFilters(f).toString()).toBe("keyword=pricing+page&keyword=launch");
+    expect(toApiParams(f, now).keyword).toEqual(["pricing page", "launch"]);
+  });
+
+  it("counts topics as an active filter", () => {
+    expect(hasActiveFilters({ ...DEFAULT_FILTERS, keywords: ["launch"] })).toBe(true);
   });
 });

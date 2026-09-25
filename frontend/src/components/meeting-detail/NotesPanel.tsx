@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import { Copy, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { memo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
@@ -85,10 +86,17 @@ export const NotesPanel = memo(function NotesPanel({
           </div>
 
           {keywords.length > 0 ? (
-            <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Keywords">
+            <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Topics">
               {keywords.map((keyword) => (
-                <li key={keyword} className="rounded bg-raised px-2 py-1 text-xs text-gray-700 ring-1 ring-line">
-                  {keyword}
+                <li key={keyword}>
+                  {/* A topic chip opens the library filtered to meetings that share this topic. */}
+                  <Link
+                    href={`/meetings?keyword=${encodeURIComponent(keyword)}`}
+                    title={`Meetings about "${keyword}"`}
+                    className="inline-block rounded bg-raised px-2 py-1 text-xs text-gray-700 ring-1 ring-line hover:text-brand-700 hover:ring-brand-300"
+                  >
+                    {keyword}
+                  </Link>
                 </li>
               ))}
             </ul>

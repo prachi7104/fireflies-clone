@@ -1,18 +1,19 @@
 "use client";
 
 import clsx from "clsx";
-import { CalendarDays, Check, ListFilter, Mic, Search, Users, type LucideIcon } from "lucide-react";
+import { CalendarDays, Check, Hash, ListFilter, Mic, Search, Users, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import type { DatePreset, LibraryFilters } from "@/lib/filters";
-import { useParticipants } from "@/lib/queries";
+import { useKeywords, useParticipants } from "@/lib/queries";
 import type { MeetingSource } from "@/lib/types";
 
-type Category = "participants" | "date" | "source";
+type Category = "participants" | "topics" | "date" | "source";
 
 const CATEGORIES: { value: Category; label: string; icon: LucideIcon }[] = [
   { value: "participants", label: "Participants", icon: Users },
+  { value: "topics", label: "Topics", icon: Hash },
   { value: "date", label: "Date Range", icon: CalendarDays },
   { value: "source", label: "Captured From", icon: Mic },
 ];
@@ -63,6 +64,10 @@ export function FiltersPopover({
 }) {
   const [category, setCategory] = useState<Category>("participants");
   const [personQuery, setPersonQuery] = useState("");
+  const [topicQuery, setTopicQuery] = useState("");
+  const { data: topics = [] } = useKeywords();
+  const shownTopics = topics.filter((topic) => topic.term.includes(topicQuery.trim().toLowerCase()));
+  const selectedTopics = new Set(filters.keywords);
   const { data: people = [] } = useParticipants();
   const shownPeople = people.filter((person) => person.name.toLowerCase().includes(personQuery.trim().toLowerCase()));
   const selectedPeople = new Set(filters.participantIds);
@@ -72,6 +77,13 @@ export function FiltersPopover({
     if (next.has(id)) next.delete(id);
     else next.add(id);
     onChange({ participantIds: [...next] });
+  }
+
+  function toggleTopic(term: string) {
+    const next = new Set(selectedTopics);
+    if (next.has(term)) next.delete(term);
+    else next.add(term);
+    onChange({ keywords: [...next] });
   }
 
   function toggleSource(source: MeetingSource) {
@@ -154,6 +166,39 @@ export function FiltersPopover({
                       <Checkbox checked={selectedPeople.has(person.id)} />
                       <span className="flex-1 truncate">{person.name}</span>
                       <span className="text-xs text-gray-400">{person.meeting_count}</span>
+                    </button>
+                  ))
+                )}
+              </div>
+            </>
+          ) : category === "topics" ? (
+            <>
+              <div className="relative mb-2">
+                <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
+                <input
+                  value={topicQuery}
+                  onChange={(event) => setTopicQuery(event.target.value)}
+                  placeholder="Search topics"
+                  aria-label="Search topics"
+                  className="h-9 w-full rounded-lg border border-gray-200 bg-surface pl-8 pr-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100"
+                />
+              </div>
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                {shownTopics.length === 0 ? (
+                  <p className="px-2.5 py-4 text-sm text-gray-500">No topics match.</p>
+                ) : (
+                  shownTopics.map((topic) => (
+                    <button
+                      key={topic.term}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={selectedTopics.has(topic.term)}
+                      onClick={() => toggleTopic(topic.term)}
+                      className={optionClass}
+                    >
+                      <Checkbox checked={selectedTopics.has(topic.term)} />
+                      <span className="flex-1 truncate">{topic.term}</span>
+                      <span className="text-xs text-gray-400">{topic.meeting_count}</span>
                     </button>
                   ))
                 )}

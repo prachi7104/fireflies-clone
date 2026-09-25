@@ -113,6 +113,7 @@ export interface MeetingListParams {
   date_from?: string;
   date_to?: string;
   source?: MeetingSource[];
+  keyword?: string[];
   sort?: "newest" | "oldest";
   limit?: number;
   offset?: number;
@@ -154,4 +155,9 @@ export interface TaskItem extends ActionItem {
 export interface TaskListParams {
   scope: "mine" | "all";
   status: "open" | "done" | "all";
+}
+
+export interface KeywordListItem {
+  term: string;
+  meeting_count: number;
 }
