@@ -1,0 +1,42 @@
+# Assignment brief files are not part of the submission
+*.docx
+*.pptx
+
+# AI assistant local files
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# SQLite databases (created at runtime)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+backend/data/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.vercel/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
