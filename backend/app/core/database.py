@@ -9,8 +9,23 @@ class Base(DeclarativeBase):
     pass
 
 
-# Full-text index over transcript text. Filled in once transcript_segments exists.
-FTS_DDL: list[str] = []
+# Full-text index over transcript text. It stores no copy of the text (external content) and
+# triggers keep it in sync, including rows removed by ON DELETE CASCADE.
+FTS_DDL: list[str] = [
+    """CREATE VIRTUAL TABLE IF NOT EXISTS segments_fts USING fts5(
+        text, content='transcript_segments', content_rowid='id', tokenize='unicode61 remove_diacritics 2'
+    )""",
+    """CREATE TRIGGER IF NOT EXISTS transcript_segments_ai AFTER INSERT ON transcript_segments BEGIN
+        INSERT INTO segments_fts(rowid, text) VALUES (new.id, new.text);
+    END""",
+    """CREATE TRIGGER IF NOT EXISTS transcript_segments_ad AFTER DELETE ON transcript_segments BEGIN
+        INSERT INTO segments_fts(segments_fts, rowid, text) VALUES ('delete', old.id, old.text);
+    END""",
+    """CREATE TRIGGER IF NOT EXISTS transcript_segments_au AFTER UPDATE ON transcript_segments BEGIN
+        INSERT INTO segments_fts(segments_fts, rowid, text) VALUES ('delete', old.id, old.text);
+        INSERT INTO segments_fts(rowid, text) VALUES (new.id, new.text);
+    END""",
+]
 
 
 def create_db_engine(url: str) -> Engine:
