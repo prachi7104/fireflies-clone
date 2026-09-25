@@ -512,40 +512,40 @@ hooks/                      useMeetingFilters, usePlaybackClock, useActiveSegmen
 
 ## 17. Requirements traceability
 
-Evidence and status are filled in during verification.
+Verified on 2026-09-25/26 against the live site (https://fireflies--clone.vercel.app + the Railway API), a fresh clone following the README, and the test suites (88 backend, 32 frontend). Component names reflect the Fireflies UI rework (`docs/specs/2026-09-25-fireflies-ui-rework-design.md`).
 
 | ID | Requirement | Implementation | Test | Evidence | Status |
 |---|---|---|---|---|---|
-| REQ-01 | List shows title, date, duration, participants | `GET /api/meetings`, `MeetingRow` | test_list_fields; walkthrough | | Planned |
-| REQ-02 | Search/filter by title, date, participant | `search_service`, `MeetingFilters`, URL params | test_list_filters_*; walkthrough | | Planned |
-| REQ-03 | Sort by recency | `sort` param | test_list_sort | | Planned |
-| REQ-04 | Navbar with profile/settings placeholders | `Topbar`, `ProfileMenu`, `/settings` | walkthrough | | Planned |
-| REQ-05 | Transcript with speaker labels + timestamps | `TranscriptPanel`, `TranscriptLine` | test_get_detail; walkthrough | | Planned |
-| REQ-06 | Player area with seek bar | `PlayerBar`, `usePlaybackClock` | walkthrough | | Planned |
-| REQ-07 | Line click seeks; playback moves highlight | `useActiveSegment`, `useAutoFollow` | walkthrough | | Planned |
-| REQ-08 | Transcript search with highlighted matches | `useTranscriptSearch`, `HighlightedText` | walkthrough | | Planned |
-| REQ-09 | AI summary | `summaries`, `NotesPanel` | test_create_generates_notes | | Planned |
-| REQ-10 | Action items extracted | `notes.rules`, `action_items` | test_rules_action_items | | Planned |
-| REQ-11 | Topics / outline / chapters | `meeting_keywords`, `chapters`, Outline | test_rules_chapters | | Planned |
-| REQ-12 | Create by upload / paste / form | `POST /meetings`, `/meetings/import`, `CreateMeetingDialog` | test_create_*; walkthrough | | Planned |
-| REQ-13 | Edit title + participants | `PATCH /meetings/{id}`, `EditMeetingDialog` | test_patch_*; walkthrough | | Planned |
-| REQ-14 | Delete meeting | `DELETE /meetings/{id}`, `DeleteMeetingDialog` | test_delete_cascades | | Planned |
-| REQ-15 | Add / edit / complete action items | action-item endpoints, `ActionItemsList` | test_action_items_*; walkthrough | | Planned |
-| REQ-16 | Everything persists | SQLite on Railway volume | redeploy persistence check | | Planned |
-| REQ-17 | Fireflies navigation + layout | `AppShell`, `Sidebar` | screenshot comparison | | Planned |
-| REQ-18 | Transcript + summary panels | `NotesPanel`, `TranscriptPanel` | screenshot comparison | | Planned |
-| REQ-19 | Forms, modals, search, filters | dialogs, `MeetingFilters` | walkthrough | | Planned |
-| REQ-20 | Toasts | sonner + global error handler | walkthrough | | Planned |
-| REQ-21 | Settings placeholders | `/settings`, `ComingSoon` pages | walkthrough | | Planned |
-| REQ-22 | Default logged-in user | seeded user, `get_current_user` | test_me; test_other_user_404 | | Planned |
-| REQ-23 | Next.js + TypeScript | `frontend/` | lint + tsc + build | | Planned |
-| REQ-24 | FastAPI backend | `backend/` | pytest | | Planned |
-| REQ-25 | SQLite with own schema | `models/`, §6 | schema constraint tests | | Planned |
-| REQ-26 | Seeded meetings with transcripts, notes, action items | `seed/` | test_seed_idempotent; first-load check | | Planned |
-| REQ-27 | UI resembles Fireflies | tokens + components | side-by-side screenshots | | Planned |
-| REQ-28 | Original work | own code, incremental commits | git log | | Planned |
-| REQ-29 | Public repo with `frontend/` + `backend/` | GitHub | logged-out check | | Planned |
-| REQ-30 | README: setup, stack, architecture, schema, API, assumptions | `README.md` | section checklist + fresh clone | | Planned |
-| REQ-31 | Hosted working link | Vercel + Railway | private-window smoke test | | Planned |
-| REQ-32 | Submit both links | submission form | confirmation | | Planned |
-| REQ-33 | Explain every line | interview prep | walkthrough rehearsal | | Planned |
+| REQ-01 | List shows title, date, duration, participants | `GET /api/meetings`, `MeetingRow` | test_list_item_shape | Live `/meetings`: rows with title, date, duration, avatars, open tasks | Done |
+| REQ-02 | Search/filter by title, date, participant | `search_service`, `FiltersPopover`, URL params | test_q_matches_*, test_filter_by_participants_matches_any, test_filter_by_date_range_inclusive_start_exclusive_end, test_q_with_special_characters_never_errors | Live: "pricing" → 6 meetings with highlighted transcript snippets; participant / date / source / topic filters | Done |
+| REQ-03 | Sort by recency | `sort` param, sort toggle | test_default_sort_is_newest_first, test_sort_oldest | Live: newest first by default, Oldest toggles | Done |
+| REQ-04 | Navbar with profile/settings placeholders | `IconRail`, `Topbar`, `ProfileMenu`, `/settings` | walkthrough | Live: rail (expandable), avatar menu, Settings sections | Done |
+| REQ-05 | Transcript with speaker labels + timestamps | `TranscriptPanel`, `TranscriptLine` | test_create_from_pasted_text_builds_transcript_and_notes | Live meeting 1: 50 lines, name · timestamp per line | Done |
+| REQ-06 | Player area with seek bar | `PlayerBar`, `usePlaybackClock` | findActiveIndex tests (vitest) | Live: full-width player, seek, ±15 s, speed | Done |
+| REQ-07 | Line click seeks; playback moves highlight | `findActiveIndex`, `useAutoFollow` | findActiveIndex tests | Live: click 0:44 line → player 0:44; play advances highlight and scrolls | Done |
+| REQ-08 | Transcript search with highlighted matches | `useTranscriptSearch`, `HighlightedText` | findMatches / splitByRanges tests | Live: "pricing" → "1 of 5", next/previous | Done |
+| REQ-09 | AI summary | `summaries`, `NotesPanel` | test_create_from_pasted_text_builds_transcript_and_notes, test_overview_and_notes_are_sentences_from_the_transcript | Live: upload and paste both produced overview + notes | Done |
+| REQ-10 | Action items extracted | `notes.rules`, `action_items` | test_action_items_find_commitments_and_requests_with_assignees, test_ai_action_items_link_to_the_transcript_moment | Live paste: "Ben, can you…" assigned to Ben with timestamp | Done |
+| REQ-11 | Topics / outline / chapters | `meeting_keywords`, `chapters`, Outline | test_chapters_are_ordered_and_start_on_segment_boundaries, test_keywords_prefer_repeated_phrases_and_skip_stopwords | Live: outline with clickable (mm:ss); topic chips filter the library | Done |
+| REQ-12 | Create by upload / paste / form | `POST /meetings`, `/meetings/import`, `CreateMeetingDialog` | test_import_vtt_file, test_create_*, test_import_rejects_* | Live: design-review.vtt upload → meeting; pasted transcript → meeting | Done |
+| REQ-13 | Edit title + participants | `PATCH /meetings/{id}`, `EditMeetingDialog` | test_patch_* | Live: title renamed, non-speaker removed, new participant added | Done |
+| REQ-14 | Delete meeting | `DELETE /meetings/{id}`, `DeleteMeetingDialog` | test_delete_meeting_removes_it_and_its_children, test_deleting_a_meeting_cascades_to_everything_including_search_index | Live: confirm → toast → API 404 → "Meeting not found" | Done |
+| REQ-15 | Add / edit / complete action items | action-item endpoints, `ActionItemsList`, `/tasks` | test_create_assigned_action_item, test_complete_and_uncomplete, test_explicit_null_unassigns_but_omitting_keeps_assignee, test_delete_action_item, tests/test_tasks_api.py | Live: add, complete, assign, rename on the meeting page; rename, reassign, delete on Tasks | Done |
+| REQ-16 | Everything persists | SQLite on the Railway volume | test_boot_count_survives_restart_on_same_database | Live: meetings created early survived redeploys (boot_count 2 → 18) | Done |
+| REQ-17 | Fireflies navigation + layout | `AppShell`, `IconRail`, `Topbar` | comparison with logged-in Fireflies | Rail, top bar, Capture ▾, Home, three-column library | Done |
+| REQ-18 | Transcript + summary panels | `NotesPanel`, `TranscriptPanel`, `SmartSearchPanel` | comparison with logged-in Fireflies | Smart Search | Notes | AskFred/Transcript, full-width player | Done |
+| REQ-19 | Forms, modals, search, filters | dialogs, `FiltersPopover` | walkthrough | Create/edit/delete/new-task dialogs; two-pane Filters | Done |
+| REQ-20 | Toasts | sonner + global error handler | walkthrough | Live: created / deleted / copied / errors | Done |
+| REQ-21 | Settings placeholders | `/settings`, `ComingSoon` pages | walkthrough | Working theme picker; placeholder toggles; coming-soon pages incl. speech-to-text | Done |
+| REQ-22 | Default logged-in user | seeded user, `get_current_user` | test_me_returns_demo_user, test_other_users_meeting_is_404, test_unknown_user_header_is_rejected | Live: Jordan Lee everywhere | Done |
+| REQ-23 | Next.js + TypeScript | `frontend/` | lint + typecheck + vitest + build | All pass, including on a fresh clone | Done |
+| REQ-24 | FastAPI backend | `backend/` | pytest (88) | Pass locally and on a fresh clone | Done |
+| REQ-25 | SQLite with own schema | `models/`, §6 | test_schema_constraints (composite FKs, CHECKs, cascades) | README schema section | Done |
+| REQ-26 | Seeded meetings with transcripts, notes, action items | `seed/` | test_seed_creates_eight_complete_meetings, test_seed_is_idempotent | Fresh clone seeds 8 meetings on first start | Done |
+| REQ-27 | UI resembles Fireflies | tokens + components | side-by-side with logged-in Fireflies | Dark default, Fireflies logo, matching layouts | Done |
+| REQ-28 | Original work | own code, incremental commits | git log | 36+ commits by prachi7104; no other repo's code read or used | Done |
+| REQ-29 | Public repo with `frontend/` + `backend/` | GitHub | logged-out check | Structure verified by fresh clone; repo is private until submission | Pending: make public |
+| REQ-30 | README: setup, stack, architecture, schema, API, assumptions | `README.md` | fresh clone following it | Fresh clone: install, tests, run all worked (typecheck script fixed) | Done |
+| REQ-31 | Hosted working link | Vercel + Railway | live smoke test | https://fireflies--clone.vercel.app | Done |
+| REQ-32 | Submit both links | submission form | confirmation | — | Pending |
+| REQ-33 | Explain every line | interview prep | walkthrough rehearsal | — | Pending |
