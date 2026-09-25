@@ -1,7 +1,7 @@
 "use client";
 
 // Server state: every read is a query and every write is a mutation that refreshes what it changed.
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   ApiError,
@@ -51,6 +51,13 @@ export function useMeeting(id: number) {
     queryFn: () => getMeeting(id),
     retry: (failures, error) => !(error instanceof ApiError && error.status === 404) && failures < 1,
     meta: { silentError: true }, // the page renders its own not-found / error state
+  });
+}
+
+/** Several meetings' details at once (Home's AI Feed shows each meeting's overview). */
+export function useMeetingDetails(ids: number[]) {
+  return useQueries({
+    queries: ids.map((id) => ({ queryKey: queryKeys.meeting(id), queryFn: () => getMeeting(id) })),
   });
 }
 
