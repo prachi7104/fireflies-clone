@@ -135,9 +135,9 @@ def _save_notes(
 
     seen_terms: set[str] = set()
     for term in notes.keywords:
-        term = term.strip()[:80]
-        if term and term.casefold() not in seen_terms:
-            seen_terms.add(term.casefold())
+        term = term.strip().lower()[:80]  # stored lower-case so the topic filter is an exact, indexed match
+        if term and term not in seen_terms:
+            seen_terms.add(term)
             db.add(MeetingKeyword(meeting_id=meeting.id, term=term, rank=len(seen_terms)))
 
     for position, chapter in enumerate(sorted(notes.chapters, key=lambda c: c.start_ms)):

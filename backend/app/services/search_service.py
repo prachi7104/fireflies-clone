@@ -10,7 +10,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session, selectinload
 
 from app.core.time import to_utc_naive
-from app.models import ActionItem, Meeting, MeetingParticipant, Participant, TranscriptSegment, User
+from app.models import ActionItem, Meeting, MeetingKeyword, MeetingParticipant, Participant, TranscriptSegment, User
 from app.schemas.meeting import MeetingListItem, MeetingListPage, TranscriptMatch
 from app.schemas.participant import ParticipantRef
 
@@ -25,6 +25,7 @@ class MeetingFilters:
     date_from: datetime | None = None
     date_to: datetime | None = None
     sources: list[str] = field(default_factory=list)
+    keywords: list[str] = field(default_factory=list)
     sort: Literal["newest", "oldest"] = "newest"
     limit: int = 20
     offset: int = 0
@@ -73,6 +74,10 @@ def list_meetings(db: Session, owner: User, filters: MeetingFilters, *, use_fts:
         conditions.append(Meeting.started_at < to_utc_naive(filters.date_to))
     if filters.sources:
         conditions.append(Meeting.source.in_(filters.sources))
+    if filters.keywords:
+        # Topics are stored lower-case, one row per (meeting, term); the term column is indexed.
+        terms = [term.strip().lower() for term in filters.keywords if term.strip()]
+        conditions.append(Meeting.id.in_(select(MeetingKeyword.meeting_id).where(MeetingKeyword.term.in_(terms))))
 
     total = db.scalar(select(func.count()).select_from(Meeting).where(*conditions)) or 0
     order = (Meeting.started_at.desc(), Meeting.id.desc()) if filters.sort == "newest" else (
