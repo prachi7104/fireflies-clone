@@ -11,24 +11,38 @@ The live app opens straight into a seeded workspace with eight realistic meeting
 
 ---
 
+## Screenshots
+
+![Meeting page: Smart Search, AI notes, transcript synced to the player](docs/screenshots/meeting.png)
+
+| | |
+|---|---|
+| ![Home](docs/screenshots/home.png) **Home**: welcome, quick start, recent meetings | ![Meetings library](docs/screenshots/meetings.png) **Meetings**: channels, filters, AskFred panel |
+| ![Search across transcripts](docs/screenshots/search.png) **Search** matches titles, people and transcript text | ![Smart Search filter](docs/screenshots/smart-search.png) **Smart Search**: transcript narrowed to the 13 questions |
+| ![Transcript search](docs/screenshots/transcript-search.png) **Transcript search** with highlighted matches, "2 of 5" | ![Create a meeting](docs/screenshots/create-dialog.png) **Add a meeting** by upload or paste |
+| ![Tasks](docs/screenshots/tasks.png) **Tasks** from every meeting | ![Light theme](docs/screenshots/meeting-light.png) **Light theme** (Settings → Appearance) |
+
+<p align="center"><img src="docs/screenshots/mobile-meeting.png" alt="Meeting page on a phone" width="260"><br><b>Phone</b>: Notes / Transcript / Insights tabs, player always reachable</p>
+
 ## Contents
 
-1. [Features](#features)
-2. [Where to find each requirement](#where-to-find-each-requirement)
-3. [Tech stack](#tech-stack)
-4. [Architecture](#architecture)
-5. [Project structure](#project-structure)
-6. [Run it locally](#run-it-locally)
-7. [Environment variables](#environment-variables)
-8. [Seed data](#seed-data)
-9. [Database schema](#database-schema)
-10. [API overview](#api-overview)
-11. [Transcript formats](#transcript-formats)
-12. [How the AI notes work](#how-the-ai-notes-work)
-13. [Testing](#testing)
-14. [Deployment](#deployment)
-15. [Assumptions and limitations](#assumptions-and-limitations)
-16. [Future work](#future-work)
+1. [Screenshots](#screenshots)
+2. [Features](#features)
+3. [Where to find each requirement](#where-to-find-each-requirement)
+4. [Tech stack](#tech-stack)
+5. [Architecture](#architecture)
+6. [Project structure](#project-structure)
+7. [Run it locally](#run-it-locally)
+8. [Environment variables](#environment-variables)
+9. [Seed data](#seed-data)
+10. [Database schema](#database-schema)
+11. [API overview](#api-overview)
+12. [Transcript formats](#transcript-formats)
+13. [How the AI notes work](#how-the-ai-notes-work)
+14. [Testing](#testing)
+15. [Deployment](#deployment)
+16. [Assumptions and limitations](#assumptions-and-limitations)
+17. [Future work](#future-work)
 
 ---
 
