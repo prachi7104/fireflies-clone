@@ -62,14 +62,14 @@ const BOTTOM: RailLink[] = [
 ];
 
 const itemBase =
-  "flex h-10 items-center rounded-lg transition-colors " +
+  "flex h-8 items-center rounded-md transition-colors " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500";
 
 function itemClass(expanded: boolean, active: boolean) {
   return clsx(
     itemBase,
     expanded ? "w-full gap-3 px-3 text-sm" : "w-10 justify-center",
-    active ? "bg-brand-50 font-medium text-brand-600" : "text-gray-500 hover:bg-raised hover:text-gray-900",
+    active ? "bg-gray-100 font-medium text-gray-700" : "text-gray-500 hover:bg-gray-50 hover:text-gray-700",
   );
 }
 

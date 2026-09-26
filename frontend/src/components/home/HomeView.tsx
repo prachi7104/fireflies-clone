@@ -28,13 +28,15 @@ export function HomeView() {
   const firstName = (hydrated && me?.name.split(" ")[0]) || "";
 
   return (
-    <div className="mx-auto w-full max-w-[868px] px-4 py-6 sm:px-6 sm:py-16">
-      <section className="flex flex-col gap-6 rounded-2xl border border-[#f6dccb] bg-[#fff4ec] p-6 sm:min-h-52 sm:flex-row sm:items-center sm:justify-between sm:px-14 lg:px-28 dark:border-[#4a3324] dark:bg-[#3a1f0f]">
+    <div className="relative">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[280px] bg-[linear-gradient(rgba(255,255,255,0),#ffffff),linear-gradient(128.58deg,rgba(17,112,207,0.3)_20.58%,rgba(254,172,170,0.45)_62.69%,rgba(254,209,170,0.6)_96.89%,rgba(255,255,255,0)_113.84%)] dark:bg-[linear-gradient(rgba(19,19,20,0),#131314),linear-gradient(128.58deg,rgba(17,112,207,0.12)_20.58%,rgba(254,172,170,0.08)_62.69%,rgba(254,209,170,0.1)_96.89%,rgba(19,19,20,0)_113.84%)]" />
+    <div className="relative mx-auto w-full max-w-[868px] px-4 py-6 sm:px-6 sm:py-16">
+      <section className="flex flex-col gap-6 rounded-[20px] border border-transparent p-6 [background:linear-gradient(#fef6ee,#fef6ee)_padding-box,linear-gradient(#f7b27a,transparent)_border-box] sm:min-h-[211px] sm:flex-row sm:items-center sm:justify-between sm:px-14 lg:px-28 dark:[background:linear-gradient(#3a1f0f,#3a1f0f)_padding-box,linear-gradient(#5c3d26,#3a1f0f)_border-box]">
         <div>
-          <h1 className="text-xl font-medium text-[#5a3a28] dark:text-[#d8cdc7]">
+          <h1 className="text-xl font-medium text-gray-900 dark:text-[#d8cdc7]">
             Welcome Aboard{firstName ? `, ${firstName}` : ""}!
           </h1>
-          <p className="mt-2 max-w-xs text-sm leading-6 text-[#8a6a58] dark:text-[#c3a898]">
+          <p className="mt-2 max-w-xs text-sm leading-6 text-gray-500 dark:text-[#c3a898]">
             Fireflies is now ready to automate your meetings and streamline your workflows.
           </p>
         </div>
@@ -57,20 +59,20 @@ export function HomeView() {
         <p className="mt-1 text-sm text-gray-500">Capture your first meeting or upload a transcript to see Fireflies in action.</p>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           <QuickStart
-            icon={<CalendarPlus className="size-5 text-[#c0506f] dark:text-[#853351]" />}
-            tint="bg-[#fdf0f3] dark:bg-[#3a1423]"
+            icon={<CalendarPlus className="size-5 text-[#faa7e0] dark:text-[#853351]" />}
+            tint="bg-[#fdf2fa] dark:bg-[#3a1423]"
             label="Schedule Meeting"
             onClick={() => toast.info("Calendar scheduling is coming soon.")}
           />
           <QuickStart
-            icon={<Upload className="size-5 text-[#2f8a78] dark:text-[#206156]" />}
-            tint="bg-[#eefaf6] dark:bg-[#0c2622]"
+            icon={<Upload className="size-5 text-[#5fe9d0] dark:text-[#206156]" />}
+            tint="bg-[#f0fdf9] dark:bg-[#0c2622]"
             label="Upload File"
             onClick={() => openCreate("upload")}
           />
           <QuickStart
-            icon={<Plus className="size-5 text-[#6a60c8] dark:text-[#3f387c]" />}
-            tint="bg-[#f3f2fd] dark:bg-[#17152e]"
+            icon={<Plus className="size-5 text-[#bdb4fe] dark:text-[#3f387c]" />}
+            tint="bg-[#f4f3ff] dark:bg-[#17152e]"
             label="Paste Transcript"
             onClick={() => openCreate("paste")}
           />
@@ -132,6 +134,7 @@ export function HomeView() {
         </div>
       </section>
     </div>
+    </div>
   );
 }
 
@@ -140,11 +143,11 @@ function QuickStart({ icon, tint, label, onClick }: { icon: ReactNode; tint: str
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-3 rounded-lg border border-[#eaecf0] px-4 py-3.5 text-left text-[15px] font-medium text-gray-700 transition-colors hover:border-gray-300 focus-visible:outline-2 focus-visible:outline-brand-500 dark:border-[#292929] dark:hover:border-[#3a3a3d] ${tint}`}
+      className={`flex items-center gap-3 rounded-lg border border-gray-100 px-4 py-4 text-left text-sm text-gray-700 shadow-[0_2px_2px_rgba(16,24,40,0.04)] transition-colors hover:border-gray-300 focus-visible:outline-2 focus-visible:outline-brand-500 dark:border-[#292929] dark:hover:border-[#3a3a3d] ${tint}`}
     >
       {icon}
       <span className="flex-1">{label}</span>
-      <ChevronRight className="size-4 text-gray-400" />
+      <ChevronRight className="size-4 text-gray-700" />
     </button>
   );
 }

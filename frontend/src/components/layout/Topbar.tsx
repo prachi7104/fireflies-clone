@@ -30,7 +30,7 @@ export function Topbar() {
   const title = TITLES[pathname] ?? "";
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-3 border-b border-line bg-surface px-3 sm:px-5">
+    <header className="flex h-[52px] shrink-0 items-center gap-3 border-b border-line bg-surface px-3 sm:px-5">
       <h1 className="hidden w-32 shrink-0 truncate text-[15px] font-medium text-gray-900 sm:block">{title}</h1>
       <div className="flex min-w-0 flex-1 justify-center">
         {/* Remounting on URL change keeps the box in sync with Back/Forward and "Clear filters". */}
@@ -76,7 +76,7 @@ function SearchBox({ initialQuery }: { initialQuery: string }) {
   return (
     <form
       role="search"
-      className="relative w-full max-w-md"
+      className="relative w-full max-w-80"
       onSubmit={(event) => {
         event.preventDefault();
         submit(query);
@@ -91,7 +91,7 @@ function SearchBox({ initialQuery }: { initialQuery: string }) {
         placeholder="Search by title or keyword"
         aria-label="Search meetings"
         aria-keyshortcuts="Control+K Meta+K"
-        className="h-9 w-full rounded-lg border border-gray-200 bg-surface pl-9 pr-16 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100 [&::-webkit-search-cancel-button]:hidden"
+        className="h-[34px] w-full rounded border border-gray-200 bg-gray-50 pl-9 pr-16 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-100 [&::-webkit-search-cancel-button]:hidden"
       />
       {query ? (
         <button

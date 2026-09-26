@@ -5,7 +5,7 @@ export function UpgradeLink() {
   return (
     <Link
       href="/upgrade"
-      className="hidden h-8 items-center rounded-md border border-emerald-600/30 px-2.5 text-sm font-medium text-emerald-700 hover:bg-emerald-50 md:inline-flex dark:text-emerald-400 dark:hover:bg-emerald-950"
+      className="hidden h-8 items-center rounded bg-gradient-to-b from-[#ecfdf3] to-[#d1fadf] px-2 text-sm font-medium text-[#107569] shadow-[0_2px_4px_rgba(0,0,0,0.15)] ring-1 ring-[#d1fae8] hover:to-[#a6f4c5] md:inline-flex dark:from-[#14281f] dark:to-[#14281f] dark:text-emerald-400 dark:shadow-none dark:ring-[#1f4633] dark:hover:to-[#1a3528]"
     >
       Upgrade
     </Link>

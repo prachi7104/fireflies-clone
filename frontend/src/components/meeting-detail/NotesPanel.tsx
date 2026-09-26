@@ -72,7 +72,7 @@ export const NotesPanel = memo(function NotesPanel({
         </div>
       ) : (
         <article className="mx-auto max-w-3xl px-5 pb-16 pt-3 md:px-10">
-          <h1 className="text-2xl font-medium leading-tight text-gray-900">{meeting.title}</h1>
+          <h1 className="text-2xl font-normal leading-tight text-gray-900">{meeting.title}</h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-gray-500">
             <span className="font-medium text-gray-700 underline decoration-gray-300 underline-offset-4">{ownerName}</span>
             <span>{formatMeetingDate(meeting.started_at)}</span>

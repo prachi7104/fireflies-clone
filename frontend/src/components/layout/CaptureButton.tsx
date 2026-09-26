@@ -10,11 +10,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 export function CaptureButton() {
   const openCreate = useOpenCreateMeeting();
   return (
-    <div className="inline-flex h-9 shrink-0 rounded-lg bg-brand-500 text-white shadow-card">
+    <div className="inline-flex h-8 shrink-0 rounded bg-[#6938ef] text-white">
       <button
         type="button"
         onClick={() => openCreate("upload")}
-        className="inline-flex items-center gap-2 rounded-l-lg px-3 text-sm font-medium hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+        className="inline-flex items-center gap-2 rounded-l pl-2 pr-3 text-sm font-medium hover:bg-[#5925dc] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
       >
         <Video className="size-4" />
         <span className="hidden sm:inline">Capture</span>
@@ -22,7 +22,7 @@ export function CaptureButton() {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label="More ways to add a meeting"
-          className="inline-flex items-center rounded-r-lg border-l border-white/25 px-2 hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+          className="inline-flex items-center rounded-r border-l border-white/25 px-2 hover:bg-[#5925dc] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
         >
           <ChevronDown className="size-4" />
         </DropdownMenuTrigger>

@@ -43,7 +43,7 @@ export function MeetingTopBar({
         <span aria-hidden className="text-gray-300">
           /
         </span>
-        <span className="truncate font-medium text-gray-900" title={meeting.title} aria-current="page">
+        <span className="truncate text-gray-600" title={meeting.title} aria-current="page">
           {meeting.title}
         </span>
       </nav>
