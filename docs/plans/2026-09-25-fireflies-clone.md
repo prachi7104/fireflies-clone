@@ -1,6 +1,6 @@
 # Fireflies Clone Implementation Plan
 
-> **For agentic workers:** executed inline in one session with superpowers:executing-plans. Steps use checkbox (`- [ ]`) syntax. Backend work is test-first: write the listed test, watch it fail, implement, watch it pass, commit.
+> **How to use this plan:** work through the tasks in order. Steps use checkbox (`- [ ]`) syntax. Backend work is test-first: write the listed test, watch it fail, implement, watch it pass, commit.
 
 **Goal:** Ship a deployed Fireflies.ai clone (meetings library, interactive transcript with a synced player, AI notes, full create/edit/delete) built on Next.js + FastAPI + SQLite, by 09:30 IST on 2026-09-26.
 
@@ -50,7 +50,7 @@
 - **Env vars:**
   - backend: `DATABASE_URL`, `CORS_ORIGINS`, `SEED_ON_STARTUP`, `LLM_PROVIDER`, `GROQ_API_KEY`, `LLM_MODEL`, `LLM_TIMEOUT_SECONDS`, `MAX_UPLOAD_BYTES`, `DEFAULT_PAGE_SIZE`;
   - frontend: `NEXT_PUBLIC_API_BASE_URL`.
-- **Commits:** plain messages authored by prachi7104. **No `Co-Authored-By` trailers.** Secrets never committed.
+- **Commits:** small, one per task, with plain messages. Secrets are never committed.
 - **Windows commands:**
   - backend Python is `backend/.venv/Scripts/python`;
   - macOS/Linux equivalents go in the README.
@@ -1104,7 +1104,7 @@ def test_startup_seeding_makes_the_app_usable(settings):
 - `providers.tsx`: `QueryClientProvider` whose `QueryCache` and `MutationCache` `onError` call `toast.error(err.detail ?? err.message)`, plus `<Toaster richColors position="bottom-right" />`.
 - **Tokens** in `globals.css` via `@theme`:
   - brand purple, sidebar background, borders, text scale, radius, shadow, font;
-  - taken from the user's Fireflies screenshots;
+  - taken from reference Fireflies screenshots;
   - until those arrive, provisional values: primary `#7c3aed`, sidebar `#f8f7fc`, border `#e7e5ef`, text `#1f1d2b` / `#6b6880`, radius `10px`, Inter via `next/font`.
 - **Shell:**
   - fixed left sidebar (logo, Meetings, Uploads (should), AskFred, Integrations, Analytics, Team, Live bot, Settings), with "Soon" badges on placeholders;
@@ -1406,7 +1406,7 @@ describe("findActiveIndex", () => {
 
 ### Task 18: Match the UI to the reference screenshots
 
-- [ ] Compare the library, meeting page, dialogs and settings side by side with the user's Fireflies screenshots.
+- [ ] Compare the library, meeting page, dialogs and settings side by side with reference Fireflies screenshots.
 - [ ] Adjust tokens (colours, font, radius, spacing), sidebar items and order, row layout, notes section styling and player bar styling.
 - [ ] Re-run lint, tsc and build, then commit with `git commit -m "style: match Fireflies reference screenshots"` and push.
 

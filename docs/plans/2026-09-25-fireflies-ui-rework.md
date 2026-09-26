@@ -1,6 +1,6 @@
 # Fireflies UI Rework Implementation Plan
 
-> **For agentic workers:** executed inline in this session with superpowers:executing-plans. Steps use checkbox (`- [ ]`) syntax. Backend work is test-first; frontend logic in `lib/` is test-first with Vitest; visual components are verified with lint, typecheck, build and a browser click-through against the Fireflies reference.
+> **How to use this plan:** work through the tasks in order. Steps use checkbox (`- [ ]`) syntax. Backend work is test-first; frontend logic in `lib/` is test-first with Vitest; visual components are verified with lint, typecheck, build and a browser click-through against the Fireflies reference.
 
 **Goal:** Make the frontend look and behave like the logged-in Fireflies workspace (light by default with a Light/Dark/System theme, icon rail, Fireflies meeting page, three-column library, Home, Tasks, Settings), responsive down to phone width, with no regressions in the existing features.
 
@@ -21,7 +21,7 @@
 - Light theme is the default. Theme preference key: `localStorage["theme"]`, values `light | dark | system`.
 - Brand: our own SVG mark (magenta rounded square, white "F"). Never the Fireflies logo file. No ".clone" text. Title template `%s · Fireflies`.
 - Verification per task: `npm run lint`, `npm run typecheck`, `npx vitest run`, `npm run build` (in `frontend/`), and `.venv/Scripts/python -m pytest` (in `backend/`) when backend changes.
-- Commits: plain messages, author prachi7104, no Co-Authored-By trailer, explicit file paths staged. Never push without the user's explicit OK (show hashes and messages first, 2 commits per push).
+- Commits: one per page or task, plain messages, only the files that belong to the change. Push after each verified page.
 - Responsive targets: 1440, 1024, 768 and 390 px wide. No horizontal page scroll at any width.
 
 ## File map
@@ -659,6 +659,6 @@ Performance note: the names lookup loads every participant name. That's fine at 
 - [ ] At 390px, check every page: no horizontal scroll; dialogs fit (`max-h-[90dvh]`, full-width on phones); the meeting page tabs work; the player is reachable; tap targets ≥ 36px.
 - [ ] Keyboard: tab through the rail, top bar, Capture menu, filters pop-over, meeting tabs and transcript lines, with a visible `focus-visible` ring everywhere (`outline-brand-500`); Esc closes pop-overs and dialogs.
 - [ ] Loading, empty and error states on Home, Meetings, the meeting page and Tasks (stop the backend locally to see errors, then Retry).
-- [ ] Lint, typecheck, vitest, build and pytest all green. Then **ask the user for push approval**, push, and let Vercel redeploy.
+- [ ] Lint, typecheck, vitest, build and pytest all green. Then push, and let Vercel redeploy.
 - [ ] Live click-through on the Vercel URL, every row of spec §17 (light and dark, desktop and phone width), plus a side-by-side look with the Fireflies tab. Fix blockers immediately; list cosmetic ones.
 - [ ] Then the remaining main-plan items: delete-meeting check, Railway redeploy persistence check (user redeploys), README (main plan Task 16), extras (Tasks 17–19, explained first), final (Tasks 20–21).

@@ -1,16 +1,16 @@
 # Fireflies UI Rework: Design Spec
 
 - **Date:** 2026-09-25 (evening)
-- **Status:** Draft, awaiting approval
+- **Status:** Implemented
 - **Extends:** `2026-09-25-fireflies-clone-design.md`. That spec still holds for the backend, schema, API and behaviour. This one replaces its §11 "UI" details and the "original logo" decision.
 - **Why:** the brief says the app "should totally resemble Fireflies's design", and UI/UX similarity is an evaluation criterion. A side-by-side check against the logged-in Fireflies app showed that every feature works but the layout and shell don't look like Fireflies.
 
-## 1. Decisions (approved in chat)
+## 1. Decisions
 
 | Topic | Decision |
 |---|---|
-| Theme | **Dark by default** (the user's decision, matching how their Fireflies workspace looks), plus a **Light / Dark / System** picker in Settings, the same as Fireflies. This also covers the brief's "Dark mode" bonus. |
-| Branding | The Fireflies "F" logo mark (user decision, changed from an earlier lookalike), used in the rail and as the tab icon. No ".clone" text. Tab titles read "… · Fireflies". The "not affiliated" note is in Settings → About and the README. |
+| Theme | **Dark by default** (matching the logged-in Fireflies workspace), plus a **Light / Dark / System** picker in Settings, the same as Fireflies. This also covers the brief's "Dark mode" bonus. |
+| Branding | The Fireflies "F" logo mark (chosen over an earlier lookalike mark), used in the rail and as the tab icon. No ".clone" text. Tab titles read "… · Fireflies". The "not affiliated" note is in Settings → About and the README. |
 | Scope | All screens: shell, meeting page, Meetings library, Home, Tasks, Settings. |
 
 ## 2. Reference observations (logged-in Fireflies, 2026-09-25)
