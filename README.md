@@ -13,24 +13,20 @@ The live app opens straight into a seeded workspace with eight realistic meeting
 
 ## Screenshots
 
-Dark is the default theme; every screen also works in light (Settings → Appearance).
+Shown in the light theme, Fireflies' default look. The app opens in dark (see below) and switches in **Settings → Appearance**.
 
-![Meeting page: Smart Search, AI notes and a transcript synced to the player](docs/screenshots/meeting-dark.png)
+![Meeting page: Smart Search, AI notes and a transcript synced to the player](docs/screenshots/meeting-light.png)
+<p align="center"><b>Meeting page</b>: transcript with speakers and timestamps synced to the player, AI summary, Smart Search</p>
 
-| Screen | Dark | Light |
-|---|---|---|
-| **Home**<br>welcome banner, quick start, recent meetings | ![Home, dark](docs/screenshots/home-dark.png) | ![Home, light](docs/screenshots/home-light.png) |
-| **Meetings library**<br>channels, Filters pop-up (participants, topics, dates, source), AskFred | ![Meetings library, dark](docs/screenshots/filters-dark.png) | ![Meetings library, light](docs/screenshots/filters-light.png) |
-| **Search**<br>matches titles, people and transcript text, with the matching line | ![Search, dark](docs/screenshots/search-dark.png) | ![Search, light](docs/screenshots/search-light.png) |
-| **Meeting page**<br>Smart Search, AI notes, transcript synced to the player | ![Meeting page, dark](docs/screenshots/meeting-dark.png) | ![Meeting page, light](docs/screenshots/meeting-light.png) |
-| **Action items**<br>grouped by person; complete, assign, edit, delete | ![Action items, dark](docs/screenshots/action-items-dark.png) | ![Action items, light](docs/screenshots/action-items-light.png) |
-| **Transcript search**<br>highlighted matches with next / previous | ![Transcript search, dark](docs/screenshots/transcript-search-dark.png) | ![Transcript search, light](docs/screenshots/transcript-search-light.png) |
-| **Add a meeting**<br>upload a .txt / .vtt / .json file or paste text | ![Add a meeting, dark](docs/screenshots/create-dialog-dark.png) | ![Add a meeting, light](docs/screenshots/create-dialog-light.png) |
-| **Edit a meeting**<br>title, date, participants (speakers are locked) | ![Edit a meeting, dark](docs/screenshots/edit-dialog-dark.png) | ![Edit a meeting, light](docs/screenshots/edit-dialog-light.png) |
-| **Tasks**<br>action items from every meeting | ![Tasks, dark](docs/screenshots/tasks-dark.png) | ![Tasks, light](docs/screenshots/tasks-light.png) |
-| **Settings**<br>Light / Dark / System theme picker | ![Settings, dark](docs/screenshots/settings-dark.png) | ![Settings, light](docs/screenshots/settings-light.png) |
+| | |
+|---|---|
+| ![Meetings library with the Filters pop-up](docs/screenshots/filters-light.png)<br>**Meetings library**: filters by participant, topic, date and source; newest / oldest sort | ![Search across meetings](docs/screenshots/search-light.png)<br>**Search** matches titles, people and transcript text |
+| ![Action items](docs/screenshots/action-items-light.png)<br>**Action items** grouped by person, plus the outline; complete, assign, edit, delete | ![Add a meeting](docs/screenshots/create-dialog-light.png)<br>**Add a meeting** by uploading a .txt / .vtt / .json file or pasting text |
+| ![Edit a meeting](docs/screenshots/edit-dialog-light.png)<br>**Edit a meeting**: title, date and participants (speakers are locked) | ![Home](docs/screenshots/home-light.png)<br>**Home**: welcome banner, quick start, recent meetings |
 
-<p align="center"><img src="docs/screenshots/mobile-meeting-dark.png" alt="Meeting page on a phone" width="260"><br><b>Phone</b>: Notes / Transcript / Insights tabs, with the player always reachable</p>
+| Dark theme (default) | Phone |
+|---|---|
+| ![Meeting page in the dark theme](docs/screenshots/meeting-dark.png) | <img src="docs/screenshots/mobile-meeting-dark.png" alt="Meeting page on a phone" width="260"> |
 
 ## Contents
 
