@@ -11,27 +11,33 @@ import { Topbar } from "./Topbar";
 
 /**
  * Fireflies-style frame: icon rail on the left, a top bar, and a scrolling content area.
- * A meeting page has its own breadcrumb bar instead of the global top bar, as in Fireflies.
+ * A meeting page has its own breadcrumb bar instead of the global top bar, and Settings is a
+ * full-screen page with its own sidebar, as in Fireflies.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isMeetingPage = /^\/meetings\/[^/]+$/.test(pathname);
+  const isSettings = pathname.startsWith("/settings");
 
   return (
     <TooltipProvider delayDuration={200}>
       <CreateMeetingProvider>
-        <div className="flex h-dvh overflow-hidden bg-canvas">
-          <IconRail />
-          <div className="flex min-w-0 flex-1 flex-col">
-            {isMeetingPage ? null : (
-              // The top bar reads the URL's search params, which needs a Suspense boundary in the App Router.
-              <Suspense fallback={<div className="h-14 shrink-0 border-b border-line bg-surface" />}>
-                <Topbar />
-              </Suspense>
-            )}
-            <main className="min-h-0 flex-1 overflow-y-auto bg-canvas">{children}</main>
+        {isSettings ? (
+          <div className="h-dvh overflow-hidden bg-canvas">{children}</div>
+        ) : (
+          <div className="flex h-dvh overflow-hidden bg-canvas">
+            <IconRail />
+            <div className="flex min-w-0 flex-1 flex-col">
+              {isMeetingPage ? null : (
+                // The top bar reads the URL's search params, which needs a Suspense boundary in the App Router.
+                <Suspense fallback={<div className="h-[52px] shrink-0 border-b border-line bg-surface" />}>
+                  <Topbar />
+                </Suspense>
+              )}
+              <main className="min-h-0 flex-1 overflow-y-auto bg-canvas">{children}</main>
+            </div>
           </div>
-        </div>
+        )}
       </CreateMeetingProvider>
     </TooltipProvider>
   );
