@@ -13,16 +13,24 @@ The live app opens straight into a seeded workspace with eight realistic meeting
 
 ## Screenshots
 
-![Meeting page: Smart Search, AI notes, transcript synced to the player](docs/screenshots/meeting.png)
+Dark is the default theme; every screen also works in light (Settings → Appearance).
 
-| | |
-|---|---|
-| ![Home](docs/screenshots/home.png) **Home**: welcome, quick start, recent meetings | ![Meetings library](docs/screenshots/meetings.png) **Meetings**: channels, filters, AskFred panel |
-| ![Search across transcripts](docs/screenshots/search.png) **Search** matches titles, people and transcript text | ![Smart Search filter](docs/screenshots/smart-search.png) **Smart Search**: transcript narrowed to the 13 questions |
-| ![Transcript search](docs/screenshots/transcript-search.png) **Transcript search** with highlighted matches, "2 of 5" | ![Create a meeting](docs/screenshots/create-dialog.png) **Add a meeting** by upload or paste |
-| ![Tasks](docs/screenshots/tasks.png) **Tasks** from every meeting | ![Light theme](docs/screenshots/meeting-light.png) **Light theme** (Settings → Appearance) |
+![Meeting page: Smart Search, AI notes and a transcript synced to the player](docs/screenshots/meeting-dark.png)
 
-<p align="center"><img src="docs/screenshots/mobile-meeting.png" alt="Meeting page on a phone" width="260"><br><b>Phone</b>: Notes / Transcript / Insights tabs, player always reachable</p>
+| Screen | Dark | Light |
+|---|---|---|
+| **Home**<br>welcome banner, quick start, recent meetings | ![Home, dark](docs/screenshots/home-dark.png) | ![Home, light](docs/screenshots/home-light.png) |
+| **Meetings library**<br>channels, Filters pop-up (participants, topics, dates, source), AskFred | ![Meetings library, dark](docs/screenshots/filters-dark.png) | ![Meetings library, light](docs/screenshots/filters-light.png) |
+| **Search**<br>matches titles, people and transcript text, with the matching line | ![Search, dark](docs/screenshots/search-dark.png) | ![Search, light](docs/screenshots/search-light.png) |
+| **Meeting page**<br>Smart Search, AI notes, transcript synced to the player | ![Meeting page, dark](docs/screenshots/meeting-dark.png) | ![Meeting page, light](docs/screenshots/meeting-light.png) |
+| **Action items**<br>grouped by person; complete, assign, edit, delete | ![Action items, dark](docs/screenshots/action-items-dark.png) | ![Action items, light](docs/screenshots/action-items-light.png) |
+| **Transcript search**<br>highlighted matches with next / previous | ![Transcript search, dark](docs/screenshots/transcript-search-dark.png) | ![Transcript search, light](docs/screenshots/transcript-search-light.png) |
+| **Add a meeting**<br>upload a .txt / .vtt / .json file or paste text | ![Add a meeting, dark](docs/screenshots/create-dialog-dark.png) | ![Add a meeting, light](docs/screenshots/create-dialog-light.png) |
+| **Edit a meeting**<br>title, date, participants (speakers are locked) | ![Edit a meeting, dark](docs/screenshots/edit-dialog-dark.png) | ![Edit a meeting, light](docs/screenshots/edit-dialog-light.png) |
+| **Tasks**<br>action items from every meeting | ![Tasks, dark](docs/screenshots/tasks-dark.png) | ![Tasks, light](docs/screenshots/tasks-light.png) |
+| **Settings**<br>Light / Dark / System theme picker | ![Settings, dark](docs/screenshots/settings-dark.png) | ![Settings, light](docs/screenshots/settings-light.png) |
+
+<p align="center"><img src="docs/screenshots/mobile-meeting-dark.png" alt="Meeting page on a phone" width="260"><br><b>Phone</b>: Notes / Transcript / Insights tabs, with the player always reachable</p>
 
 ## Contents
 
