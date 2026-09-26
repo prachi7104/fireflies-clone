@@ -3,10 +3,10 @@
 import { Search, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 
 import { CaptureButton } from "./CaptureButton";
 import { NotificationsButton } from "./NotificationsButton";
+import { UpgradeLink } from "./UpgradeLink";
 
 const TITLES: Record<string, string> = {
   "/": "Home",
@@ -19,6 +19,7 @@ const TITLES: Record<string, string> = {
   "/live": "Agents",
   "/team": "Team",
   "/integrations": "Integrations",
+  "/upgrade": "Upgrade",
 };
 
 /** Page title, global search (Ctrl/⌘+K) and the Capture menu, laid out like the Fireflies top bar. */
@@ -36,13 +37,7 @@ export function Topbar() {
         <SearchBox key={urlQuery} initialQuery={urlQuery} />
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        <button
-          type="button"
-          onClick={() => toast.info("Plans and billing are out of scope for this demo.")}
-          className="hidden h-8 items-center rounded-md border border-emerald-600/30 px-2.5 text-sm font-medium text-emerald-700 hover:bg-emerald-50 md:inline-flex dark:text-emerald-400 dark:hover:bg-emerald-950"
-        >
-          Upgrade
-        </button>
+        <UpgradeLink />
         <NotificationsButton />
         <CaptureButton />
       </div>

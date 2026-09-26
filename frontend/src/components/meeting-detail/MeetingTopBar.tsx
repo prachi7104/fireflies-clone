@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
+import { UpgradeLink } from "@/components/layout/UpgradeLink";
 import type { MeetingDetail } from "@/lib/types";
 
 function copyMeetingLink(id: number) {
@@ -79,13 +80,7 @@ export function MeetingTopBar({
       </DropdownMenu>
 
       <div className="ml-auto flex shrink-0 items-center gap-2">
-        <button
-          type="button"
-          onClick={() => toast.info("Plans and billing are out of scope for this demo.")}
-          className="hidden h-8 items-center rounded-md border border-emerald-600/30 px-2.5 text-sm font-medium text-emerald-700 hover:bg-emerald-50 md:inline-flex dark:text-emerald-400 dark:hover:bg-emerald-950"
-        >
-          Upgrade
-        </button>
+        <UpgradeLink />
         <button
           type="button"
           onClick={() => copyMeetingLink(meeting.id)}

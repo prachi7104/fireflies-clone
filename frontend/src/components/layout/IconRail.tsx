@@ -20,7 +20,6 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { toast } from "sonner";
 
 import { Tooltip } from "@/components/ui/Tooltip";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -53,6 +52,7 @@ const GROUPS: RailLink[][] = [
     { href: "/analytics", label: "Analytics", icon: ChartColumn, match: exact("/analytics") },
     { href: "/live", label: "Agents", icon: BotMessageSquare, match: exact("/live") },
   ],
+  [{ href: "/upgrade", label: "Upgrade", icon: Zap, match: exact("/upgrade") }],
 ];
 
 const BOTTOM: RailLink[] = [
@@ -137,19 +137,6 @@ export function IconRail() {
           ))}
         </div>
       ))}
-      <div className={clsx("flex flex-col border-t border-line pt-2", expanded ? "" : "items-center")}>
-        <WithTooltip label="Upgrade" show={!expanded}>
-          <button
-            type="button"
-            aria-label={expanded ? undefined : "Upgrade"}
-            onClick={() => toast.info("Plans and billing are out of scope for this demo.")}
-            className={itemClass(expanded, false)}
-          >
-            <Zap className="size-[18px] shrink-0" />
-            {expanded ? <span>Upgrade</span> : null}
-          </button>
-        </WithTooltip>
-      </div>
 
       <div className={clsx("mt-auto flex flex-col gap-1", expanded ? "" : "items-center")}>
         {BOTTOM.map((item) => (
