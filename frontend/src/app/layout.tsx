@@ -11,7 +11,7 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "Fireflies", template: "%s · Fireflies" },
+  title: { default: "Fireflies.ai", template: "%s - Fireflies.ai" },
   description: "Meeting library, interactive transcripts and AI notes in a Fireflies.ai-style workspace (educational clone).",
 };
 

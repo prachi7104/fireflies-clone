@@ -28,54 +28,56 @@ export function HomeView() {
   const firstName = (hydrated && me?.name.split(" ")[0]) || "";
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
-      <section className="flex flex-col gap-6 rounded-2xl border border-orange-200/60 bg-gradient-to-br from-[#fff4ed] to-[#fdeff4] p-6 sm:flex-row sm:items-center sm:p-8 dark:border-orange-900/40 dark:from-[#3a1d0e] dark:to-[#2a1420]">
-        <div className="flex-1">
-          <h1 className="font-display text-2xl font-semibold text-gray-900">Welcome aboard{firstName ? `, ${firstName}` : ""}!</h1>
-          <p className="mt-2 max-w-md text-[15px] leading-6 text-gray-600">
-            Your workspace is ready. Open a meeting to see AI notes, action items and a transcript that follows the player.
+    <div className="mx-auto w-full max-w-[868px] px-4 py-6 sm:px-6 sm:py-16">
+      <section className="flex flex-col gap-6 rounded-2xl border border-[#f6dccb] bg-[#fff4ec] p-6 sm:min-h-52 sm:flex-row sm:items-center sm:justify-between sm:px-14 lg:px-28 dark:border-[#4a3324] dark:bg-[#3a1f0f]">
+        <div>
+          <h1 className="text-xl font-medium text-[#5a3a28] dark:text-[#d8cdc7]">
+            Welcome Aboard{firstName ? `, ${firstName}` : ""}!
+          </h1>
+          <p className="mt-2 max-w-xs text-sm leading-6 text-[#8a6a58] dark:text-[#c3a898]">
+            Fireflies is now ready to automate your meetings and streamline your workflows.
           </p>
         </div>
         <Link
           href={newest ? `/meetings/${newest.id}` : "/meetings"}
-          className="group relative flex h-32 w-full shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-[#2b1a66] via-brand-600 to-[#120b33] ring-4 ring-orange-100 sm:w-56 dark:ring-orange-950"
+          className="group relative flex h-[136px] w-full shrink-0 items-center justify-center overflow-hidden rounded-xl border-[3px] border-[#fcc7a5] bg-gradient-to-b from-[#0a0138] via-[#2b1a8a] to-[#040022] sm:w-[202px]"
           aria-label={newest ? `Open ${newest.title}` : "Open meetings"}
         >
-          <span className="absolute left-3 top-2 max-w-[85%] truncate text-xs font-medium text-white/80">
+          <span className="absolute left-3 top-2 max-w-[85%] truncate text-[11px] font-medium text-white/80">
             {newest?.title ?? "Your meetings"}
           </span>
-          <span className="flex size-11 items-center justify-center rounded-full bg-white/20 backdrop-blur transition-transform group-hover:scale-110">
-            <Play className="ml-0.5 size-5 text-white" fill="currentColor" />
+          <span className="flex size-10 items-center justify-center rounded-full bg-brand-400/70 transition-transform group-hover:scale-110">
+            <Play className="ml-0.5 size-4 text-white" fill="currentColor" />
           </span>
         </Link>
       </section>
 
-      <section className="mt-8">
-        <h2 className="font-display text-lg font-semibold text-gray-900">Quick Start</h2>
-        <p className="mt-1 text-sm text-gray-500">Add a transcript or capture a meeting to see Fireflies in action.</p>
-        <div className="mt-4 grid gap-3 md:grid-cols-3">
+      <section className="mt-12">
+        <h2 className="text-lg font-medium text-gray-900">Quick Start</h2>
+        <p className="mt-1 text-sm text-gray-500">Capture your first meeting or upload a transcript to see Fireflies in action.</p>
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
           <QuickStart
-            icon={<CalendarPlus className="size-5 text-rose-500" />}
-            tint="bg-rose-50/70 border-rose-100 dark:bg-rose-950/40 dark:border-rose-900/50"
+            icon={<CalendarPlus className="size-5 text-[#c0506f] dark:text-[#853351]" />}
+            tint="bg-[#fdf0f3] dark:bg-[#3a1423]"
             label="Schedule Meeting"
             onClick={() => toast.info("Calendar scheduling is coming soon.")}
           />
           <QuickStart
-            icon={<Upload className="size-5 text-emerald-600" />}
-            tint="bg-emerald-50/70 border-emerald-100 dark:bg-emerald-950/40 dark:border-emerald-900/50"
+            icon={<Upload className="size-5 text-[#2f8a78] dark:text-[#206156]" />}
+            tint="bg-[#eefaf6] dark:bg-[#0c2622]"
             label="Upload File"
             onClick={() => openCreate("upload")}
           />
           <QuickStart
-            icon={<Plus className="size-5 text-brand-500" />}
-            tint="bg-brand-25 border-brand-100"
+            icon={<Plus className="size-5 text-[#6a60c8] dark:text-[#3f387c]" />}
+            tint="bg-[#f3f2fd] dark:bg-[#17152e]"
             label="Paste Transcript"
             onClick={() => openCreate("paste")}
           />
         </div>
       </section>
 
-      <section className="mt-8">
+      <section className="mt-10">
         <div className="flex items-center justify-between gap-3">
           <Tabs
             label="Home lists"
@@ -138,7 +140,7 @@ function QuickStart({ icon, tint, label, onClick }: { icon: ReactNode; tint: str
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-3 rounded-xl border px-4 py-4 text-left text-[15px] font-medium text-gray-800 transition-shadow hover:shadow-card focus-visible:outline-2 focus-visible:outline-brand-500 ${tint}`}
+      className={`flex items-center gap-3 rounded-lg border border-[#eaecf0] px-4 py-3.5 text-left text-[15px] font-medium text-gray-700 transition-colors hover:border-gray-300 focus-visible:outline-2 focus-visible:outline-brand-500 dark:border-[#292929] dark:hover:border-[#3a3a3d] ${tint}`}
     >
       {icon}
       <span className="flex-1">{label}</span>

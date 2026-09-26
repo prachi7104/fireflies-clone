@@ -140,7 +140,7 @@ function MeetingWorkspace({ meeting, initialMs }: { meeting: MeetingDetail; init
   const activeChapterIndex = findActiveIndex(chapterStarts, clock.currentMs);
 
   useEffect(() => {
-    document.title = `${meeting.title} · Fireflies`;
+    document.title = `${meeting.title} - Fireflies.ai`;
   }, [meeting.title]);
 
   const smartSearch = (

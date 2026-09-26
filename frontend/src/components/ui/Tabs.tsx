@@ -23,7 +23,7 @@ export function Tabs<T extends string>({
   className?: string;
 }) {
   return (
-    <div role="tablist" aria-label={label} className={clsx("inline-flex rounded-lg bg-gray-100 p-1", className)}>
+    <div role="tablist" aria-label={label} className={clsx("inline-flex rounded-lg bg-gray-100 p-[3px] dark:bg-[#292929]", className)}>
       {items.map((item) => {
         const selected = item.value === value;
         return (
@@ -34,9 +34,11 @@ export function Tabs<T extends string>({
             aria-selected={selected}
             onClick={() => onValueChange(item.value)}
             className={clsx(
-              "inline-flex h-7 items-center gap-1.5 rounded-md px-3 font-display text-sm transition-colors",
+              "inline-flex h-6 items-center gap-1.5 rounded-md px-3 font-display text-sm transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-500",
-              selected ? "bg-surface font-medium text-gray-900 shadow-card" : "text-gray-500 hover:text-gray-800",
+              selected
+                ? "bg-surface font-medium text-gray-900 shadow-card dark:bg-[#48494c]"
+                : "text-gray-500 hover:text-gray-800",
             )}
           >
             {item.label}
